@@ -49,6 +49,10 @@ userModel.find({
 ```javascript
 userModel.find({}).stream()
   .associatedWith(userModel.find({firstName: 'Chris'}))
+  .map(user => {
+    user.weight++;
+    return user.save();
+  })
 ```
 
 
