@@ -19,6 +19,22 @@ const schema = schema.new({
 });
 
 ```
+### ilorm.schema ###
+* new( schema ) : Create a new ilorm schema
+* String() : Declare a string field
+* Number() : Declare a number field
+* Boolean() : Declare a boolean field.
+* Object( subSchema ) : Declare a subobject schema
+* Array( subSchema ) : Declare an array schema
+* Map( subSchema ) : Declare a map
+
+### allSchemaType ###
+* required() : The field is required for create an object (per default not required).
+* default(value) : Set a precise value for default (if you do not set a value at creation).
+
+### Number() ###
+
+### String() ###
 
 ## Models
 ```javascript
@@ -44,6 +60,23 @@ userModel.find({
 });
 ```
 
+### ilorm.model ###
+* find( query )
+* findOne( query )
+* insert( item )
+* remove( query )
+* update( query, update )
+
+## Instances
+Instances are returned after a loading (find, or stream). It's a specific item loaded from the database. You can create a new instance from the model :
+```javascript
+const instance = new userModel();
+instance.firstName = 'Thibauld';
+instance.lastName = 'Smith';
+instance.save();
+```
+* save() : Save the instance in the database (auto insert or update).
+* remove() : Delete the instance from the database.
 
 ## Streams
 ```javascript
