@@ -4,10 +4,13 @@
 
 const Id = require('./Id');
 
-function injectDependencies({name, schema, connector}) {
+function injectDependencies({name, schema, Connector}) {
+  const connector = new Connector();
 
   class Model {
     constructor(obj) {
+      this.__ilorm__properties = {};
+
       Object.defineProperties(this, {
         __ilorm__isNewObject: {
           enumerable: false,
@@ -15,11 +18,11 @@ function injectDependencies({name, schema, connector}) {
           configurable: false,
           value: !obj
         },
-        __ilorm__edited: {
+        __ilorm__editedFields: {
           enumerable: false,
-          writable: false,
+          writable: true,
           configurable: false,
-          value: false
+          value: []
         }
       });
 
@@ -31,18 +34,28 @@ function injectDependencies({name, schema, connector}) {
     save() {
       if(this.__ilorm__isNewObject) {
         this.__ilorm__isNewObject = false;
-        return connector.create({obj: this, schema});
+        return connector.create({
+          obj: this
+        });
       }
-      if(!this.__ilorm__edited) {
+
+      if(this.__ilorm__editedFields.length === 0) {
         return Promise.resolve(this);
       }
-      this.__ilorm__edited = false;
-      return connector.updateOne({obj: this, schema});
+
+      const result = connector.updateOne({
+        obj: this,
+        editedFields: this.__ilorm__editedFields
+      });
+      this.__ilorm__editedFields = [];
+      return result;
     }
 
     remove() {
       if(!this.__ilorm__isNewObject) {
-        return connector.removeOne({obj: this, schema});
+        return connector.removeOne({
+          obj: this
+        });
       }
     }
 
@@ -97,7 +110,7 @@ function injectDependencies({name, schema, connector}) {
           throw new Error('BAD_VALUE:' + value + ',model:' + name + ',field:' + key);
         }
         this.__ilorm__properties[key] = value;
-        this.__ilorm__edited = true;
+        this.__ilorm__editedFields.push(key);
       }
     });
   });
