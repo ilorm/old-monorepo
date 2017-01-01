@@ -2,16 +2,21 @@
  * Created by guil_ on 27/12/2016.
  */
 
-const Id = require('./Id');
+const Id = require('./../Id');
+const initProperties = require('./initProperties');
 
 function injectDependencies({name, schema, Connector}) {
-  const connector = new Connector();
+  const connector = new Connector({ name, schema });
 
   class Model {
     constructor(obj) {
-      this.__ilorm__properties = {};
-
       Object.defineProperties(this, {
+        __ilorm__properties: {
+          enumerable: false,
+          writable: true,
+          configurable: false,
+          value: {}
+        },
         __ilorm__isNewObject: {
           enumerable: false,
           writable: true,
@@ -76,44 +81,7 @@ function injectDependencies({name, schema, Connector}) {
     }
   }
 
-  Object.defineProperties(Model.prototype, {
-    __ilorm__name: {
-      enumerable: false,
-      writable: false,
-      configurable: false,
-      value: name
-    },
-    __ilorm__schema: {
-      enumerable: false,
-      writable: false,
-      configurable: false,
-      value: schema
-    },
-    __ilorm__connector: {
-      enumerable: false,
-      writable: false,
-      configurable: false,
-      value: connector
-    }
-  });
-
-  schema.keys.forEach(key => {
-    Object.defineProperty(Model.prototype, key, {
-      enumerable: true,
-      writable: true,
-      configurable: true,
-      get: function get() {
-        return this.__ilorm__properties[key];
-      },
-      set: function set(value) {
-        if(!schema[key].isValid(value)) {
-          throw new Error('BAD_VALUE:' + value + ',model:' + name + ',field:' + key);
-        }
-        this.__ilorm__properties[key] = value;
-        this.__ilorm__editedFields.push(key);
-      }
-    });
-  });
+  initProperties({ Model, name, schema, connector });
 
   return Model;
 }

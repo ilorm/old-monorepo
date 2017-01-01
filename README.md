@@ -1,5 +1,5 @@
 # ilorm (I Love ORM)
-New kind of NodeJS ORM
+New kind of NodeJS ORM.
 
 ## Features
 
@@ -67,7 +67,7 @@ userModel.query()
 ## Query ##
 ### Fields ###
 * fields(name or arrayOfName) : Run next filter or update on one or multiple fields
-* name : Shortcut for fields(name)
+* [name] : Shortcut for fields(name)
 
 ### Filters ###
 * [field].is(value) : The query have an : field === value
