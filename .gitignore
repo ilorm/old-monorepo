@@ -1,0 +1,24 @@
+.foreverignore
+.elasticbeanstalk/
+.vscode/
+.idea/
+node_modules/*
+misc/
+tmp/
+dist/
+coverage/
+typings/
+uploads/
+docs/
+commit.txt
+providers/config.js
+*.sublime-*
+heapdump-*
+.DS_Store
+
+# CONFIG
+
+# Elastic Beanstalk Files
+.elasticbeanstalk/*
+!.elasticbeanstalk/*.cfg.yml
+!.elasticbeanstalk/*.global.yml
