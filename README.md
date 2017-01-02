@@ -31,6 +31,36 @@ const schema = schema.new({
 ### allSchemaType ###
 * required() : The field is required for create an object (per default not required).
 * default(value) : Set a precise value for default (if you do not set a value at creation).
+* deprecated() : Declare the field at deprecated
+
+#### [schemaType].deprecated({options}) ####
+Could be used to declare a field deprecated.
+* options.local : Declare a field to move the value
+* options.keepLocal (default true) : Do not move the value if the new value is already set
+* options.resolveLocal : Define a function to resolve the new value ;
+  * function resolve(deprecatedValue, localValue) 
+    * should return the new local value
+    * deprecatedValue is the value of the old field
+    * localValue is the value of the new field (undefined if not setted)
+
+```javascript
+const schema = schema.new({
+  firstName: schema.String().required(),
+  lastName: schema.String().required(),
+  first_name: schema.String().deprecated({
+    local: 'firstName' //Move the value first_name to firstName
+  }),
+  last_name: schema.String().deprecated({
+    local: 'lastName',
+    resolveLocal: function(oldValue, newValue) {
+      if(newValue) {
+        return newValue;
+      }
+      return oldValue.toUpperCase();
+    }
+  })
+});
+```
 
 ### Number() ###
 
@@ -117,6 +147,15 @@ userModel.query()
     ...
   });
 ```
+
+#### Query.stream ####
+```javascript
+userModel.query()
+  .stream() //Return a standard stream
+  .pipe(otherStream);
+
+```
+
 
 ## Instances
 Instances are returned after a loading (find, or stream). It's a specific item loaded from the database. You can create a new instance from the model :
