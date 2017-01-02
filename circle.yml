@@ -1,0 +1,7 @@
+## Customize the test machine
+machine:
+  node:
+    version: 6.2.2
+test:
+  override:
+    - npm run circle_ci_test
