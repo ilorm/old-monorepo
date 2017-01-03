@@ -7,8 +7,7 @@ const SchemaType = require('./SchemaType');
 class SchemaString extends SchemaType {
 
   isValid(value) {
-    return typeof(value) === 'string' &&
-        super.isValid(value);
+    return (!this.isRequired && value === undefined) || typeof(value) === 'string';
   }
 
 }

@@ -6,21 +6,26 @@ const SchemaType = require('./SchemaType');
 
 class SchemaNumber extends SchemaType {
 
-  min(min) {
-    this.min = min;
+  min(minValue) {
+    this.minValue = minValue;
     return this;
   }
 
-  max(max) {
-    this.max = max;
-    return max;
+  max(maxValue) {
+    this.maxValue = maxValue;
+    return this;
+  }
+
+  between(minValue, maxValue) {
+    this.minValue = minValue;
+    this.maxValue = maxValue;
+    return this;
   }
 
   isValid(value) {
-    return typeof(value) === 'number' ||
-      (!this.max || this.max > value) &&
-      (!this.min || this.min < value) &&
-      super.isValid(value);
+    return (!this.isRequired && value === undefined) || (typeof(value) === 'number' &&
+      (!this.maxValue || this.maxValue > value) &&
+      (!this.minValue || this.minValue < value));
   }
 
 }

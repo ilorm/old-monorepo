@@ -39,9 +39,9 @@ describe('ilorm-schema - ', () => {
       //If isRequired is false :
       expect(schema.isValid(undefined)).to.be.equal(true);
 
-      //If  isRequired is true :
+      //If isRequired is true :
       schema.required();
-      expect(schema.isValid(undefined)).to.be.equal(true);
+      expect(schema.isValid(undefined)).to.be.equal(false);
     });
 
     it('schema.initValue shoud init a valid value a field', () => {
@@ -50,6 +50,15 @@ describe('ilorm-schema - ', () => {
 
       //defaultValue is undefined
       expect(schema.initValue()).to.be.equal(undefined);
+
+      //Init with a standard var :
+      schema.default(3);
+      expect(schema.initValue()).to.be.equal(3);
+
+      //Init with a function generator (test Date.now)
+      const now = Date.now();
+      schema.default(() => (now));
+      expect(schema.initValue()).to.be.equal(now);
 
     });
 
