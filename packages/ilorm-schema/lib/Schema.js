@@ -18,7 +18,7 @@ class Schema {
 
   }
 
-  initValue(obj) {
+  initValues(obj) {
     this.keys.forEach(key => {
       obj[key] = this.definition[key].initValue();
     });

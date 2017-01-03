@@ -1,0 +1,20 @@
+{
+  "name": "ilorm-query",
+  "version": "1.0.0",
+  "description": "Package used by ilorm to make query",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "query",
+    "orm",
+    "ilorm"
+  ],
+  "dependencies": {
+    "ilorm-schema": "^1.0.0",
+    "ilorm-model": "^1.0.0"
+  },
+  "author": "guillaume DAIX",
+  "license": "ISC"
+}

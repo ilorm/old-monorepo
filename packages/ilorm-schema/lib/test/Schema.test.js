@@ -46,7 +46,7 @@ describe('ilorm-schema - ', () => {
     it('Should init with default value', () => {
       const schema = buildUserSchema();
 
-      const user = schema.initValue({});
+      const user = schema.initValues({});
 
       expect(user.firstName).to.be.equal(undefined);
       expect(user.lastName).to.be.equal(undefined);

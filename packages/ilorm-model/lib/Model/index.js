@@ -32,7 +32,7 @@ function injectDependencies({name, schema, Connector}) {
       });
 
       if(!obj) {
-        schema.initValue(this);
+        schema.initValues(this);
       }
     }
 
