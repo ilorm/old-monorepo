@@ -12,6 +12,7 @@
     "ilorm"
   ],
   "dependencies": {
+    "ilorm-query": "^1.0.0"
   },
   "author": "guillaume DAIX",
   "license": "ISC"

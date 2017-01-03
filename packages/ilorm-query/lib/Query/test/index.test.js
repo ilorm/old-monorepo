@@ -12,9 +12,9 @@ function buildUserSchema() {
   });
 }
 
-function buildQuery(Connector) {
+function buildQuery(connector) {
   return queryInjector({
-    Connector,
+    connector,
     model: {},
     schema: buildUserSchema(),
   });

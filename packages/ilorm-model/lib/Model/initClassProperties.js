@@ -1,6 +1,8 @@
 /**
  * Created by guillaume on 01/01/2017.
  */
+const queryInjector = require('ilorm-query');
+const Id = require('../Id');
 
 function initProperties({ Model, schema, name, connector }) {
   Object.defineProperties(Model.prototype, {
@@ -21,25 +23,13 @@ function initProperties({ Model, schema, name, connector }) {
       writable: false,
       configurable: false,
       value: connector
+    },
+    __ilorm__Query: {
+      enumerable: false,
+      writable: false,
+      configurable: false,
+      value: queryInjector({ Model, Id, schema, connector})
     }
-  });
-
-  schema.keys.forEach(key => {
-    Object.defineProperty(Model.prototype, key, {
-      enumerable: true,
-      writable: true,
-      configurable: true,
-      get: function get() {
-        return this.__ilorm__properties[key];
-      },
-      set: function set(value) {
-        if(!schema[key].isValid(value)) {
-          throw new Error('BAD_VALUE:' + value + ',model:' + name + ',field:' + key);
-        }
-        this.__ilorm__properties[key] = value;
-        this.__ilorm__editedFields.push(key);
-      }
-    });
   });
 }
 

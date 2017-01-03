@@ -3,33 +3,15 @@
  */
 
 const Id = require('./../Id');
-const initProperties = require('./initProperties');
+const initClassProperties = require('./initClassProperties');
+const initInstanceProperties = require('./initInstanceProperties');
 
 function injectDependencies({name, schema, Connector}) {
   const connector = new Connector({ name, schema });
 
   class Model {
     constructor(obj) {
-      Object.defineProperties(this, {
-        __ilorm__properties: {
-          enumerable: false,
-          writable: true,
-          configurable: false,
-          value: {}
-        },
-        __ilorm__isNewObject: {
-          enumerable: false,
-          writable: true,
-          configurable: false,
-          value: !obj
-        },
-        __ilorm__editedFields: {
-          enumerable: false,
-          writable: true,
-          configurable: false,
-          value: []
-        }
-      });
+      initInstanceProperties(this, obj, name, schema);
 
       if(!obj) {
         schema.initValues(this);
@@ -64,6 +46,10 @@ function injectDependencies({name, schema, Connector}) {
       }
     }
 
+    static query() {
+      return new this.__ilorm__Query();
+    }
+
     static find(params) {
       return connector.find(params)
         .then(results => (
@@ -81,7 +67,7 @@ function injectDependencies({name, schema, Connector}) {
     }
   }
 
-  initProperties({ Model, name, schema, connector });
+  initClassProperties({ Model, name, schema, connector });
 
   return Model;
 }

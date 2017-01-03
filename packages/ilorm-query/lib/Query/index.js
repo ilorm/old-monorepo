@@ -2,10 +2,9 @@
  * Created by guil_ on 30/12/2016.
  */
 
-const Id = require('ilorm-model').Id;
 const initQueryProperties = require('./initQueryProperties');
 
-function injectDependencies ({ model, schema, Connector }) {
+function injectDependencies ({ model, schema, Id, connector }) {
 
 
   class Query {
@@ -45,36 +44,36 @@ function injectDependencies ({ model, schema, Connector }) {
 
     find () {
       return Promise.all(this.query)
-        .then(Connector.find);
+        .then(connector.find);
     }
     findOne () {
       return Promise.all(this.query)
-        .then(Connector.findOne);
+        .then(connector.findOne);
     }
     count () {
       return Promise.all(this.query)
-        .then(Connector.count);
+        .then(connector.count);
     }
     remove () {
       return Promise.all(this.query)
-        .then(Connector.remove);
+        .then(connector.remove);
     }
     removeOne () {
       return Promise.all(this.query)
-        .then(Connector.removeOne);
+        .then(connector.removeOne);
     }
     update () {
       return Promise.all(this.query)
-        .then(Connector.update);
+        .then(connector.update);
     }
     updateOne () {
       return Promise.all(this.query)
-        .then(Connector.updateOne);
+        .then(connector.updateOne);
     }
     multiple () {}
     stream () {
       return Promise.all(this.query)
-        .then(Connector.stream);
+        .then(connector.stream);
     }
 
   }
