@@ -3,12 +3,15 @@
  */
 
 const schema = {
-  Schema: require('./types/Schema'),
+  //Global schema file :
+  Schema: require('./lib/Schema'),
 
-  Type: require('./types/SchemaType'),
+  //Parent class Type :
+  Type: require('./lib/SchemaType'),
 
-  Number: require('./types/SchemaNumber'),
-  String: require('./types/SchemaString'),
+  //Types :
+  Number: require('./lib/SchemaNumber'),
+  String: require('./lib/SchemaString'),
 
 };
 

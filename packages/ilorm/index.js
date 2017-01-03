@@ -8,4 +8,4 @@ const lib = {
   schema: ilormSchema
 };
 
-module.exports = libs;
+module.exports = lib;

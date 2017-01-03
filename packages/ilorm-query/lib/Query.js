@@ -31,7 +31,7 @@ function injectDependencies ({ model, schema, Connector }) {
             context,
             value
           })
-        )
+        );
       });
       return this;
     }
@@ -43,7 +43,7 @@ function injectDependencies ({ model, schema, Connector }) {
 
     associatedWith ( param ) {
       if(this.context === null) {
-
+        return this;
       }
       if(param instanceof Promise) {
         return this;

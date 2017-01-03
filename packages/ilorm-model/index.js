@@ -5,9 +5,9 @@
 const modelsMap = {};
 
 module.exports = {
-  Id: require('./libs/Id'),
+  Id: require('./lib/Id'),
   Model: function model(name, schema, Connector) {
-    const model = require('./libs/Model')({name, schema, Connector});
+    const model = require('./lib/Model')({name, schema, Connector});
     modelsMap[name] = model;
     return model;
   },

@@ -9,7 +9,9 @@ class Id {
   }
 
   getInstance() {
-    return model.findOne({id});
+    return this.model.findOne({
+      id: this.id
+    });
   }
 }
 

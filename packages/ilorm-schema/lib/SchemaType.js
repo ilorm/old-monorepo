@@ -4,12 +4,12 @@
 
 class SchemaType {
   constructor() {
-    this.required = false;
-    this.defaultValue = null;
+    this.isRequired = false;
+    this.defaultValue = undefined;
   }
 
   required() {
-    this.required = true;
+    this.isRequired = true;
     return this;
   }
 
@@ -19,7 +19,7 @@ class SchemaType {
   }
 
   isValid(value) {
-    return !this.required || value !== undefined;
+    return !this.isRequired || value !== undefined;
   }
 
   initValue() {
