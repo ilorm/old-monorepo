@@ -1,6 +1,7 @@
 'use strict';
 
-const handleOperator = require('./handleOperator');
+const handleQueryOperator = require('./handleQueryOperator');
+const handleUpdateOperator = require('./handleUpdateOperator');
 
 function initQueryProperties ({query, schema}) {
 
@@ -10,6 +11,7 @@ function initQueryProperties ({query, schema}) {
       writable: false,
       configurable: false,
       value: {
+        /** QUERY OPERATIONS **/
         associatedWith: (value) => {
           query.fields(key);
           return query.associatedWith(value);
@@ -20,23 +22,33 @@ function initQueryProperties ({query, schema}) {
         },
         is: (value) => {
           query.fields(key);
-          return handleOperator(query, 'EQUAL', value);
+          return handleQueryOperator(query, 'EQUAL', value);
         },
         isNot: (value) => {
           query.fields(key);
-          return handleOperator(query, 'NOT_EQUAL', value);
+          return handleQueryOperator(query, 'NOT_EQUAL', value);
         },
         min: (value) => {
           query.fields(key);
-          return handleOperator(query, 'MIN', value);
+          return handleQueryOperator(query, 'MIN', value);
         },
         max: (value) => {
           query.fields(key);
-          return handleOperator(query, 'MAX', value);
+          return handleQueryOperator(query, 'MAX', value);
         },
         between: (min, max) => {
           query.fields(key);
-          return handleOperator(query, 'BETWEEN', {min, max});
+          return handleQueryOperator(query, 'BETWEEN', {min, max});
+        },
+
+        /** UPDATE OPERATIONS **/
+        set: (value) => {
+          query.fields(key);
+          return handleUpdateOperator(query, 'SET', value);
+        },
+        inc: (value) => {
+          query.fields(key);
+          return handleUpdateOperator(query, 'INC', value);
         }
       }
     });

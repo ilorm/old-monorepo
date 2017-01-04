@@ -10,6 +10,7 @@ function injectDependencies ({ model, schema, Id, connector }) {
   class Query {
     constructor () {
       this.query = [];
+      this.update = [];
       this.context = null;
       initQueryProperties({
         schema,
@@ -63,12 +64,18 @@ function injectDependencies ({ model, schema, Id, connector }) {
         .then(connector.removeOne);
     }
     update () {
-      return Promise.all(this.query)
-        .then(connector.update);
+      return Promise.all([
+        this.query,
+        this.update
+      ])
+        .then(([query, update]) => connector.update({query, update}));
     }
     updateOne () {
-      return Promise.all(this.query)
-        .then(connector.updateOne);
+      return Promise.all([
+        this.query,
+        this.update
+      ])
+        .then(([query, update]) => connector.updateOne({query, update}));
     }
     multiple () {}
     stream () {

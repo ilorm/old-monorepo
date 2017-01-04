@@ -1,13 +1,13 @@
 'use strict';
 
-const handleOperator = require('../handleOperator');
+const handleQueryOperator = require('../handleQueryOperator');
 const expect = require('chai').expect;
 
 describe('ilorm-query - ', () => {
-  describe('handleOperator', () => {
+  describe('handleQueryOperator', () => {
 
     it('Shoud add operator to the query', (done) => {
-      const value = handleOperator({context: 'firstName', query: []}, 'EQUAL', 'Guillaume');
+      const value = handleQueryOperator({context: 'firstName', query: []}, 'EQUAL', 'Guillaume');
 
       expect(value.query).to.exists;
       expect(value.context).to.exists;
@@ -26,7 +26,7 @@ describe('ilorm-query - ', () => {
     });
 
     it('Shoud throw exception if not context provided', () => {
-      const fn = handleOperator.bind({}, {context: null, query: []}, 'EQUAL', 3);
+      const fn = handleQueryOperator.bind({}, {context: null, query: []}, 'EQUAL', 3);
 
       expect(fn).to.throw(Error);
     });
