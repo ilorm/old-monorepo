@@ -4,7 +4,7 @@
 
 const initQueryProperties = require('./initQueryProperties');
 
-function injectDependencies ({ model, schema, Id, connector }) {
+function injectDependencies ({ model, schema, modelsMap, Id, connector }) {
 
 
   class Query {
@@ -31,9 +31,23 @@ function injectDependencies ({ model, schema, Id, connector }) {
         return this;
       }
       if(param instanceof Id) {
+        param.model.__ilorm__name
+        param.id
+        this.query.push(Promise.resolve({
+          context: this.context,
+          operator: 'EQUAL',
+          value: param.id
+        }));
         return this;
       }
       if(param instanceof model.constructor) {
+        param.__ilorm__name
+        param.id
+        this.query.push(Promise.resolve({
+          context: this.context,
+          operator: 'EQUAL',
+          value: param.id
+        }));
         return this;
       }
       throw new Error('associatedWith does not work with value: ' + param);

@@ -4,7 +4,7 @@
 const queryInjector = require('ilorm-query');
 const Id = require('../Id');
 
-function initProperties({ Model, schema, name, connector }) {
+function initProperties({ Model, modelsMap, schema, name, connector }) {
   Object.defineProperties(Model.prototype, {
     __ilorm__name: {
       enumerable: false,
@@ -28,7 +28,7 @@ function initProperties({ Model, schema, name, connector }) {
       enumerable: false,
       writable: false,
       configurable: false,
-      value: queryInjector({ Model, Id, schema, connector})
+      value: queryInjector({ Model, Id, schema, modelsMap, connector})
     }
   });
 }

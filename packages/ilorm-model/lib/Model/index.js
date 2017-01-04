@@ -6,7 +6,7 @@ const Id = require('./../Id');
 const initClassProperties = require('./initClassProperties');
 const initInstanceProperties = require('./initInstanceProperties');
 
-function injectDependencies({name, schema, Connector}) {
+function injectDependencies({name, modelsMap, schema, Connector}) {
   const connector = new Connector({ name, schema });
 
   class Model {
@@ -67,7 +67,7 @@ function injectDependencies({name, schema, Connector}) {
     }
   }
 
-  initClassProperties({ Model, name, schema, connector });
+  initClassProperties({ Model, modelsMap, name, schema, connector });
 
   return Model;
 }
