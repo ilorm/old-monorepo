@@ -1,35 +1,41 @@
 'use strict';
 
+const fields = ['$set', '$inc'];
+const convert = {
+  'INC': '$inc',
+  'SET': '$set'
+};
 
 function convertIlormQueryToMongoQuery (ilormUpdate) {
   if(!ilormUpdate || ilormUpdate.length === 0) {
     return {};
   }
-  let set = 0;
-  let inc = 0;
-  const update = {
-    $set: {},
-    $inc: {}
-  };
+
+  const updated = {};
+  const updateMongo = {};
+  fields.forEach(field => {
+    updateMongo[field] = {};
+    updated[field] = 0;
+  });
 
   ilormUpdate.forEach(currentIlormUpdate => {
-    if(currentIlormUpdate.operator === 'INC') {
-      inc++;
-      update.$inc[currentIlormUpdate.context] = currentIlormUpdate.value;
+    const mongoOperator = convert[currentIlormUpdate.operator] || null;
+    if(!mongoOperator) {
+      throw new Error('Connector.MongoDB', 'UNDEFINED OPERATOR : ', currentIlormUpdate.operator);
     }
-    if(currentIlormUpdate.operator === 'SET') {
-      set++;
-      update.$set[currentIlormUpdate.context] = currentIlormUpdate.value;
+    updated[mongoOperator]++;
+    updateMongo[mongoOperator] = {
+      [currentIlormUpdate.context]: currentIlormUpdate.value
+    };
+  });
+
+  fields.forEach(field => {
+    if(updated[field] === 0) {
+      delete updateMongo[field];
     }
   });
 
-  if(set === 0) {
-    delete update.$sec;
-  }
-  if(inc === 0) {
-    delete update.$inc;
-  }
-  return update;
+  return updateMongo;
 }
 
 module.exports = convertIlormQueryToMongoQuery;

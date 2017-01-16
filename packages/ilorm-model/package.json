@@ -1,6 +1,6 @@
 {
   "name": "ilorm-model",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "description": "Package used by ilorm to instantiate, store, and read model",
   "main": "index.js",
   "scripts": {
@@ -12,7 +12,7 @@
     "ilorm"
   ],
   "dependencies": {
-    "ilorm-query": "^1.0.0"
+    "ilorm-query": "^0.1.0"
   },
   "author": "guillaume DAIX",
   "license": "ISC"

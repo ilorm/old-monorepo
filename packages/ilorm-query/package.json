@@ -1,6 +1,6 @@
 {
   "name": "ilorm-query",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "description": "Package used by ilorm to make query",
   "main": "index.js",
   "scripts": {
@@ -12,7 +12,7 @@
     "ilorm"
   ],
   "dependencies": {
-    "ilorm-schema": "^1.0.0"
+    "ilorm-schema": "^0.1.0"
   },
   "author": "guillaume DAIX",
   "license": "ISC"
