@@ -6,6 +6,11 @@ const SchemaType = require('./SchemaType');
 
 class SchemaNumber extends SchemaType {
 
+  /**
+   * Set the min value accepted by the schema
+   * @param {Number} minValue
+   * @returns {SchemaNumber}
+   */
   min(minValue) {
     this.minValue = minValue;
     return this;

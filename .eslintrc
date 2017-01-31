@@ -1,0 +1,24 @@
+{
+  "parserOptions": {
+    "ecmaVersion": 6
+  },
+  "extends": "eslint:recommended",
+  "env": {
+    "node": true
+  },
+  "rules": {
+    "complexity": ["error", 2],
+    "class-methods-use-this": "warn",
+    "block-scoped-var": "error",
+    "no-else-return": "error",
+    "no-await-in-loop": "error",
+    "valid-jsdoc": "error",
+    "no-extra-parens": "error",
+    "array-callback-return": "error",
+    "curly": ["error", "all"],
+    "dot-notation": "error",
+    "eqeqeq": "error",
+    "no-extend-native": "error",
+    "yoda":"error"
+  }
+}

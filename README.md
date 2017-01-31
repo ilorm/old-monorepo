@@ -102,6 +102,8 @@ userModel.query()
 ### Filters ###
 * [field].is(value) : The query have an : field === value
 * [field].isNot(value) : The query have an : field !== value
+* [field].isIn(arrayOfValue) : Check the value of the field is in the array
+* [field].isNotIn(arrayOfValue) : Check the value of the field is not in the array
 * [field].between(min, max) : The query have an : field >= min && field <= max
 * [field].min(value) : The query have an field >= min
 * [field].max(value) : The query have an field <= max

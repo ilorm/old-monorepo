@@ -31,6 +31,7 @@ function initProperties({ Model, modelsMap, schema, name, connector }) {
       value: queryInjector({ Model, Id, schema, modelsMap, connector})
     }
   });
+
 }
 
 module.exports = initProperties;
