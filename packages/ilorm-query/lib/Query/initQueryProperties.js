@@ -4,7 +4,6 @@ const handleQueryOperator = require('./handleQueryOperator');
 const handleUpdateOperator = require('./handleUpdateOperator');
 
 function initQueryProperties ({query, schema}) {
-
   schema.keys.forEach(key => {
     Object.defineProperty(query, key, {
       enumerable: true,
@@ -27,6 +26,14 @@ function initQueryProperties ({query, schema}) {
         isNot: (value) => {
           query.fields(key);
           return handleQueryOperator(query, 'NOT_EQUAL', value);
+        },
+        isIn: (value) => {
+          query.fields(key);
+          return handleQueryOperator(query, 'IN', value);
+        },
+        isNotIn: (value) => {
+          query.fields(key);
+          return handleQueryOperator(query, 'NOT_IN', value);
         },
         min: (value) => {
           query.fields(key);

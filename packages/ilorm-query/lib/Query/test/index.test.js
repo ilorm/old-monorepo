@@ -60,5 +60,49 @@ describe('ilorm-query - ', () => {
         .find();
 
     });
+
+    it('Should work with IN operator', (done) => {
+
+      const Query = buildQuery({
+        find: (query) => {
+          expect(query.length).to.be.equal(1);
+          expect(query[0]).to.deep.equal({
+            operator: 'IN',
+            context: 'weight',
+            value: [11, 22, 33]
+          });
+          done();
+        }
+      });
+
+      const currentQuery = new Query();
+
+      currentQuery
+        .weight.isIn([11, 22, 33])
+        .find();
+
+    });
+
+    it('Should work with NOT_IN operator', (done) => {
+
+      const Query = buildQuery({
+        find: (query) => {
+          expect(query.length).to.be.equal(1);
+          expect(query[0]).to.deep.equal({
+            operator: 'NOT_IN',
+            context: 'weight',
+            value: [11, 22, 33]
+          });
+          done();
+        }
+      });
+
+      const currentQuery = new Query();
+
+      currentQuery
+        .weight.isNotIn([11, 22, 33])
+        .find();
+
+    });
   });
 });

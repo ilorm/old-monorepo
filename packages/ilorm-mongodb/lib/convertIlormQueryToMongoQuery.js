@@ -3,6 +3,8 @@
 const operatorConversion = {
   'EQUAL': '$eq',
   'NOT_EQUAL': '$ne',
+  'IN': '$in',
+  'NOT_IN': '$nin',
   'MIN': '$gt',
   'MAX': '$lt'
 };

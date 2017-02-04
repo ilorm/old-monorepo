@@ -2,23 +2,204 @@
   "parserOptions": {
     "ecmaVersion": 6
   },
-  "extends": "eslint:recommended",
   "env": {
     "node": true
   },
   "rules": {
-    "complexity": ["error", 2],
-    "class-methods-use-this": "warn",
-    "block-scoped-var": "error",
-    "no-else-return": "error",
+    /* ===================== */
+    /* =  Possible Errors  = */
+    /* ===================== */
     "no-await-in-loop": "error",
-    "valid-jsdoc": "error",
+    "no-cond-assign": "error",
+    "no-console": "error",
+    "no-constant-condition": "error",
+    "no-control-regex": "error",
+    "no-debugger": "error",
+    "no-dupe-args": "error",
+    "no-dupe-keys": "error",
+    "no-duplicate-case": "error",
+    "no-empty-character-class": "error",
+    "no-empty": "error",
+    "no-ex-assign": "error",
+    "no-extra-boolean-cast": "error",
     "no-extra-parens": "error",
+    "no-extra-semi": "error",
+    "no-func-assign": "error",
+    "no-inner-declarations": "error",
+    "no-invalid-regexp": "error",
+    "no-irregular-whitespace": "error",
+    "no-obj-calls": "error",
+    "no-prototype-builtins": "error",
+    "no-regex-spaces": "error",
+    "no-sparse-arrays": "error",
+    "no-template-curly-in-string": "error",
+    "no-unexpected-multiline": "error",
+    "no-unreachable": "error",
+    "no-unsafe-finally": "error",
+    "no-unsafe-negation": "error",
+    "use-isnan": "error",
+    "valid-jsdoc": "error",
+    "valid-typeof": "error",
+
+
+    /* ===================== */
+    /* =   Best Practices  = */
+    /* ===================== */
+    "accessor-pairs": "error",
     "array-callback-return": "error",
+    "block-scoped-var": "error",
+    "class-methods-use-this": "warn",
+    "complexity": ["error", 3],
+    "consistent-return": "error",
     "curly": ["error", "all"],
+    "default-case": "error",
+    "dot-location": ["error", "object"],
     "dot-notation": "error",
     "eqeqeq": "error",
+    "guard-for-in": "error",
+    "no-alert": "error",
+    "no-caller": "error",
+    // no-case-declarations
+    "no-div-regex": "error",
+    "no-else-return": "error",
+    // no-empty-function
+    "no-empty-pattern": "error",
+    "no-eq-null": "error",
+    "no-eval": "error",
     "no-extend-native": "error",
-    "yoda":"error"
+    "no-extra-bind": "error",
+    // no-extra-label
+    "no-fallthrough": "error",
+    "no-floating-decimal": "error",
+    "no-global-assign": "error",
+    "no-implicit-coercion": "error",
+    "no-implicit-globals": "error",
+    "no-implied-eval": "error",
+    "no-invalid-this": "error",
+    "no-iterator": "error",
+    "no-labels": "error",
+    "no-lone-blocks": "error",
+    "no-loop-func": "error",
+    "no-magic-numbers": ["error", { "ignoreArrayIndexes": true, "ignore": [1], "enforceConst": true }],
+    "no-multi-spaces": "error",
+    "no-multi-str": "error",
+    "no-new-func": "error",
+    "no-new-wrappers": "error",
+    "no-new": "error",
+    "no-octal-escape": "error",
+    "no-octal": "error",
+    // no-param-reassign
+    "no-proto": "error",
+    "no-redeclare": "error",
+    // COULD BE USEFUL :
+    // no-restricted-properties
+    "no-return-assign": "error",
+    "no-return-await": "error",
+    "no-script-url": "error",
+    "no-self-assign": "error",
+    "no-self-compare": "error",
+    "no-sequences": "error",
+    "no-throw-literal": "error",
+    "no-unmodified-loop-condition": "error",
+    "no-unused-expressions": "error",
+    // no-unused-labels
+    "no-useless-call": "error",
+    "no-useless-concat": "error",
+    "no-useless-escape": "error",
+    "no-useless-return": "error",
+    "no-void": "error",
+    // no-warning-comments
+    "no-with": "error",
+    "prefer-promise-reject-errors": "error",
+    // radix
+    "require-await": "error",
+    "vars-on-top": "error",
+    // wrap-iife
+    "yoda":"error",
+
+    /* ===================== */
+    /* =     Variables     = */
+    /* ===================== */
+    // init-declarations
+    "no-catch-shadow": "error",
+    "no-delete-var": "error",
+    // no-label-var
+    // COULD BE USEFUL :
+    // no-restricted-globals
+    "no-shadow-restricted-names": "error",
+    "no-shadow": "error",
+    "no-undef-init": "error",
+    "no-undef": "error",
+    // no-undefined
+    "no-unused-vars": "error",
+    "no-use-before-define": ["error", { "function": false }],
+
+    /* ======================== */
+    /* = Node.js and CommonJS = */
+    /* ======================== */
+    "callback-return": ["error", ["callback", "cb", "next"]],
+    "global-require": "error",
+    "handle-callback-err": "error",
+    // no-mixed-requires
+    "no-new-require": "error",
+    "no-path-concat": "error",
+    "no-process-env": "error",
+    "no-process-exit": "error",
+    // no-restricted-modules
+    "no-sync": "error",
+
+    /* ======================== */
+    /* =   Stylistic Issues   = */
+    /* ======================== */
+    "array-bracket-spacing": ["error", {"objectsInArrays": false, "arraysInArrays": false}],
+    "block-spacing": "error",
+    "brace-style": ["error", "1tbs", { "allowSingleLine": true }],
+    "camelcase": "error",
+    // capitalized-comments
+    "comma-dangle": ["error", "never"],
+    "comma-spacing": "error",
+    "comma-style": "error",
+    "computed-property-spacing": "error",
+    "consistent-this": ["error", "self"],
+    "eol-last": "error",
+    "func-call-spacing": "error",
+    "func-name-matching": "error",
+    "func-names": "error",
+    "func-style": ["error", "declaration", { "allowArrowFunctions": true }],
+    // COULD BE USEFUL:
+    // id-blacklist
+    "id-length": "error",
+    // id-match
+    "indent": ["error", 2],
+    "jsx-quotes": "error",
+    "key-spacing": "error",
+    "keyword-spacing": "error",
+    // line-comment-position
+    "linebreak-style": "error",
+    "": "error",
+    "": "error",
+    "": "error",
+    "": "error",
+    "": "error",
+    "": "error",
+    "": "error",
+    "": "error",
+    "": "error",
+    "": "error",
+    "": "error",
+
+    /* ===================== */
+    /* =    ECMAScript 6   = */
+    /* ===================== */
+    "": "error",
+    "": "error",
+    "": "error",
+    "": "error",
+    "": "error",
+    "": "error",
+    "": "error",
+    "": "error"
+
+
   }
 }
