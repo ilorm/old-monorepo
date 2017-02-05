@@ -10,7 +10,7 @@ function initQueryProperties ({query, schema}) {
       writable: false,
       configurable: false,
       value: {
-        /** QUERY OPERATIONS **/
+        /* QUERY OPERATIONS */
         associatedWith: (value) => {
           query.fields(key);
           return query.associatedWith(value);
@@ -48,7 +48,7 @@ function initQueryProperties ({query, schema}) {
           return handleQueryOperator(query, 'BETWEEN', {min, max});
         },
 
-        /** UPDATE OPERATIONS **/
+        /* UPDATE OPERATIONS */
         set: (value) => {
           query.fields(key);
           return handleUpdateOperator(query, 'SET', value);

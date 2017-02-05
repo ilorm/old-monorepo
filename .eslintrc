@@ -176,30 +176,131 @@
     "keyword-spacing": "error",
     // line-comment-position
     "linebreak-style": "error",
-    "lines-around-comment": ["error", { "beforeLineComment": true }]/*,
-    "": "error",
-    "": "error",
-    "": "error",
-    "": "error",
-    "": "error",
-    "": "error",
-    "": "error",
-    "": "error",
-    "": "error",
-    "": "error",
-    "": "error",
+    "lines-around-comment": ["error", {
+      "beforeLineComment": true,
+      "allowBlockStart": true,
+      "allowObjectStart": true,
+      "allowArrayStart": true
+    }],
+    "lines-around-directive": "error",
+    "max": ["error", 4],
+    "max-len": "error",
+    "max-lines": "error",
+    "max-nested-callbacks": ["error", { "max": 2 }],
+    "max-params": ["error", 3],
+    "max-statements-per-line": ["error", { "max": 2 }],
+    // max-statements
+    // multiline-ternary
+    "new-cap": "error",
+    "new-parens": "error",
+    "newline-after-var": "error",
+    "newline-before-return": "error",
+    "newline-per-chained-call": "error",
+    "no-array-constructor": "error",
+    "no-bitwise": "error",
+    "no-continue": "error",
+    "no-inline-comments": "error",
+    "no-lonely-if": "error",
+    "no-mixed-operators": "error",
+    "no-mixed-spaces-and-tabs": "error",
+    "no-multi-assign": "error",
+    "no-multiple-empty-lines": ["error", {
+      "max": 3,
+      "maxEOF": 2,
+      "maxBOF": 1
+    }],
+    // no-negated-condition
+    "no-nested-ternary": "error",
+    "no-new-object": "error",
+    // no-plusplus
+    // no-restricted-syntax
+    "no-tabs": "error",
+    // no-ternary
+    "no-trailing-spaces": "error",
+    // no-underscore-dangle
+    "no-unneeded-ternary": "error",
+    "no-whitespace-before-property": "error",
+    "object-curly-newline": ["error", {
+      "ObjectExpression": { "minProperties": 2 },
+      "ObjectPattern": { "multiline": true }
+    }],
+    "object-curly-spacing": ["error", "always", {
+      "arraysInObjects": false,
+      "objectsInObjects": false
+    }],
+    "object-property-newline": "error",
+    "one-var-declaration-per-line": ["error", "always"],
+    "one-var": ["error", "never"],
+    // operator-assignment
+    "operator-linebreak": ["error", "after"],
+    // padded-blocks
+    "quote-props": ["error", "as-needed"],
+    "quotes": ["error", "single"],
+    "require-jsdoc": ["error", {
+        "require": {
+          "FunctionDeclaration": true,
+          "MethodDefinition": true,
+          "ClassDeclaration": true
+        }
+      }
+    ],
+    "semi-spacing": "error",
+    "semi": "error",
+    // sort-keys
+    // sort-vars
+    "space-before-blocks": "error",
+    "space-before-function-paren": ["error", {
+      "anonymous": "never",
+      "named": "never",
+      "asyncArrow": "always"
+    }],
+    "space-in-parens": ["error", "always", {
+      "exceptions": ["{}", "[]", "()", "empty"]
+    }],
+    "space-infix-ops": "error",
+    "space-unary-ops": [{
+        "words": true,
+        "nonwords": false
+    }],
+    "spaced-comment": ["error", "always"],
+    "template-tag-spacing": "error",
+    "unicode-bom": "error",
+    // wrap-regex
 
     /* ===================== */
     /* =    ECMAScript 6   = */
     /* ===================== */
-    /*"": "error",
+    "arrow-body-style": ["error", "as-needed"],
+    "arrow-parens": ["error", "as-needed"],
+    "arrow-spacing": "error",
+    "constructor-super": "error",
+    "generator-star-spacing": "error",
+    "no-class-assign": "error",
+    "no-confusing-arrow": ["error", {"allowParens": true}],
+    "no-const-assign": "error",
+    "no-dupe-class-members": "error",
+    "no-duplicate-imports": "error",
+    "no-new-symbol": "error",
+    // no-restricted-imports
+    "no-this-before-super": "error",
+    "no-useless-computed-key": "error",
+    "no-useless-constructor": "error",
+    "no-useless-rename": "error",
     "": "error",
     "": "error",
     "": "error",
     "": "error",
     "": "error",
     "": "error",
-    "": "error"/*/
+    "": "error",
+    "": "error",
+    "": "error",
+    "": "error",
+    "": "error",
+    "": "error",
+    "": "error",
+    "": "error",
+    "": "error"
 
 
   }

@@ -20,17 +20,18 @@ function injectDependencies ({ model, schema, modelsMap, Id, connector }) {
 
     fields ( fields ) {
       this.context = fields;
+
       return this;
     }
 
     associatedWith ( param ) {
-      if(this.context === null) {
+      if (this.context === null) {
         return this;
       }
-      if(param instanceof Promise) {
+      if (param instanceof Promise) {
         return this;
       }
-      if(param instanceof Id) {
+      if (param instanceof Id) {
         param.model.__ilorm__name
         param.id
         this.query.push(Promise.resolve({
@@ -38,9 +39,10 @@ function injectDependencies ({ model, schema, modelsMap, Id, connector }) {
           operator: 'EQUAL',
           value: param.id
         }));
+
         return this;
       }
-      if(param instanceof model.constructor) {
+      if (param instanceof model.constructor) {
         param.__ilorm__name
         param.id
         this.query.push(Promise.resolve({
@@ -48,6 +50,7 @@ function injectDependencies ({ model, schema, modelsMap, Id, connector }) {
           operator: 'EQUAL',
           value: param.id
         }));
+
         return this;
       }
       throw new Error('associatedWith does not work with value: ' + param);
