@@ -258,7 +258,7 @@
       "exceptions": ["{}", "[]", "()", "empty"]
     }],
     "space-infix-ops": "error",
-    "space-unary-ops": [{
+    "space-unary-ops": ["error", {
         "words": true,
         "nonwords": false
     }],
