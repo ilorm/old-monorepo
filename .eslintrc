@@ -132,7 +132,7 @@
     "no-undef": "error",
     // no-undefined
     "no-unused-vars": "error",
-    "no-use-before-define": ["error", { "function": false }],
+    "no-use-before-define": ["error", { "functions": false }],
 
     /* ======================== */
     /* = Node.js and CommonJS = */
@@ -151,7 +151,7 @@
     /* ======================== */
     /* =   Stylistic Issues   = */
     /* ======================== */
-    "array-bracket-spacing": ["error", {"objectsInArrays": false, "arraysInArrays": false}],
+    "array-bracket-spacing": ["error", "never", { "objectsInArrays": false, "arraysInArrays": false} ],
     "block-spacing": "error",
     "brace-style": ["error", "1tbs", { "allowSingleLine": true }],
     "camelcase": "error",
@@ -176,6 +176,7 @@
     "keyword-spacing": "error",
     // line-comment-position
     "linebreak-style": "error",
+    "lines-around-comment": ["error", { "beforeLineComment": true }]/*,
     "": "error",
     "": "error",
     "": "error",
@@ -191,14 +192,14 @@
     /* ===================== */
     /* =    ECMAScript 6   = */
     /* ===================== */
+    /*"": "error",
     "": "error",
     "": "error",
     "": "error",
     "": "error",
     "": "error",
     "": "error",
-    "": "error",
-    "": "error"
+    "": "error"/*/
 
 
   }
