@@ -2,7 +2,7 @@
   "scripts": {
     "docs": "jsdoc -r ./packages/*/lib -d docs",
     "watch": "watch 'npm run launchtest' ./ packages --wait 5",
-    "eslint": "eslint packages/ --ignore-pattern packages/*/node_modules/**",
+    "eslint": "eslint packages",
     "test": "npm run launchtest",
     "test-win": "set NODE_ENV=test&& mocha --recursive --reporter spec test/unit/ packages/**/*.test.js",
     "launchtest": "NODE_ENV=test mocha --recursive --reporter spec $(find packages -name '*.test.js'  -not -path '**/node_modules/**' )",
