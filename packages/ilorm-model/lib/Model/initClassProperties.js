@@ -4,34 +4,50 @@
 const queryInjector = require('ilorm-query');
 const Id = require('../Id');
 
-function initProperties({ Model, modelsMap, schema, name, connector }) {
+/**
+ * Init properties associated with your class
+ * @param {Model} Model Model you want to init
+ * @param {Object} modelsMap The current map of all your model associated with your project
+ * @param {Object} schema The schema associated with your current model
+ * @param {Object} name The name of your model
+ * @param {Connector} connector The connector used to connect to the database
+ * @returns {Model} Return the initialized model
+ */
+function initProperties({ Model, modelsMap, schema, name, connector, }) {
   Object.defineProperties(Model.prototype, {
-    __ilorm__name: {
+    __ilormName: {
       enumerable: false,
       writable: false,
       configurable: false,
-      value: name
+      value: name,
     },
-    __ilorm__schema: {
+    __ilormSchema: {
       enumerable: false,
       writable: false,
       configurable: false,
-      value: schema
+      value: schema,
     },
-    __ilorm__connector: {
+    __ilormConnector: {
       enumerable: false,
       writable: false,
       configurable: false,
-      value: connector
+      value: connector,
     },
-    __ilorm__Query: {
+    __ilormQuery: {
       enumerable: false,
       writable: false,
       configurable: false,
-      value: queryInjector({ Model, Id, schema, modelsMap, connector})
-    }
+      value: queryInjector({
+        Model,
+        Id,
+        schema,
+        modelsMap,
+        connector,
+      }),
+    },
   });
 
+  return Model;
 }
 
 module.exports = initProperties;

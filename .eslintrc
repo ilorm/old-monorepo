@@ -82,7 +82,7 @@
     "no-labels": "error",
     "no-lone-blocks": "error",
     "no-loop-func": "error",
-    "no-magic-numbers": ["error", { "ignoreArrayIndexes": true, "ignore": [1], "enforceConst": true }],
+    "no-magic-numbers": ["error", { "ignoreArrayIndexes": true, "ignore": [0, 1], "enforceConst": true }],
     "no-multi-spaces": "error",
     "no-multi-str": "error",
     "no-new-func": "error",
