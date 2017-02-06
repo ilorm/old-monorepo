@@ -1,16 +1,17 @@
+/* eslint-disable */
 'use strict';
 
-const SchemaNumber = require('../SchemaNumber');
-const expect = require('chai').expect;
+const FieldNumber = require('../FieldNumber');
+const { expect, } = require('chai');
 
 describe('ilorm-schema - ', () => {
 
-  describe('SchemaNumber', () => {
+  describe('FieldNumber', () => {
 
     it('Should instantiate', () => {
-      const schema = new SchemaNumber();
+      const schema = new FieldNumber();
 
-      expect(schema instanceof SchemaNumber).to.be.true;
+      expect(schema instanceof FieldNumber).to.be.true;
       expect(schema.required).to.be.a('function');
       expect(schema.default).to.be.a('function');
       expect(schema.isValid).to.be.a('function');
@@ -20,7 +21,7 @@ describe('ilorm-schema - ', () => {
     });
 
     it('Shoud check validity of a number', () => {
-      const schema = new SchemaNumber();
+      const schema = new FieldNumber();
 
       //A string return true :
       expect(schema.isValid(undefined)).to.be.true;
@@ -34,7 +35,7 @@ describe('ilorm-schema - ', () => {
     });
 
     it('Should add constraint min and max', () => {
-      const schema = new SchemaNumber();
+      const schema = new FieldNumber();
 
       schema.min(3).max(33);
       expect(schema.isValid(undefined)).to.be.true;

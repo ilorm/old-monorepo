@@ -4,7 +4,8 @@
   },
   "env": {
     "es6": true,
-    "node": true
+    "node": true,
+    "mocha": true
   },
   "rules": {
     /* ===================== */
@@ -23,7 +24,7 @@
     "no-empty": "error",
     "no-ex-assign": "error",
     "no-extra-boolean-cast": "error",
-    "no-extra-parens": "error",
+    //"no-extra-parens": "error",
     "no-extra-semi": "error",
     "no-func-assign": "error",
     "no-inner-declarations": "error",
@@ -50,11 +51,11 @@
     "array-callback-return": "error",
     "block-scoped-var": "error",
     "class-methods-use-this": "warn",
-    "complexity": ["error", 3],
+    "complexity": ["error", 20],
     "consistent-return": "error",
     "curly": ["error", "all"],
     "default-case": "error",
-    "dot-location": ["error", "object"],
+    "dot-location": ["error", "property"],
     "dot-notation": "error",
     "eqeqeq": "error",
     "guard-for-in": "error",
@@ -157,7 +158,7 @@
     "brace-style": ["error", "1tbs", { "allowSingleLine": true }],
     "camelcase": "error",
     // capitalized-comments
-    "comma-dangle": ["error", "never"],
+    "comma-dangle": ["error", "always"],
     "comma-spacing": "error",
     "comma-style": "error",
     "computed-property-spacing": "error",
@@ -184,8 +185,8 @@
       "allowArrayStart": true
     }],
     "lines-around-directive": "error",
-    "max": ["error", 4],
-    "max-len": "error",
+    "max-depth": ["error", 4],
+    "max-len": ["error", 120],
     "max-lines": "error",
     "max-nested-callbacks": ["error", { "max": 2 }],
     "max-params": ["error", 3],
@@ -217,7 +218,7 @@
     // no-restricted-syntax
     "no-tabs": "error",
     // no-ternary
-    "no-trailing-spaces": "error",
+    "no-trailing-spaces": ["error", { "skipBlankLines": true }],
     // no-underscore-dangle
     "no-unneeded-ternary": "error",
     "no-whitespace-before-property": "error",
@@ -255,9 +256,7 @@
       "named": "never",
       "asyncArrow": "always"
     }],
-    "space-in-parens": ["error", "always", {
-      "exceptions": ["{}", "[]", "()", "empty"]
-    }],
+    "space-in-parens": "error",
     "space-infix-ops": "error",
     "space-unary-ops": ["error", {
         "words": true,

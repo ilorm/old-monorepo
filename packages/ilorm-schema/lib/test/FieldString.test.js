@@ -1,16 +1,17 @@
+/* eslint-disable */
 'use strict';
 
-const SchemaString = require('../SchemaString');
+const FieldString = require('../FieldString');
 const expect = require('chai').expect;
 
 describe('ilorm-schema - ', () => {
 
-  describe('SchemaString', () => {
+  describe('FieldString', () => {
 
     it('Should instantiate', () => {
-      const schema = new SchemaString();
+      const schema = new FieldString();
 
-      expect(schema instanceof SchemaString).to.be.true;
+      expect(schema instanceof FieldString).to.be.true;
       expect(schema.required).to.be.a('function');
       expect(schema.default).to.be.a('function');
       expect(schema.isValid).to.be.a('function');
@@ -21,7 +22,7 @@ describe('ilorm-schema - ', () => {
 
     it('Shoud check validity of a string', () => {
 
-      const schema = new SchemaString();
+      const schema = new FieldString();
       //A string return true :
       expect(schema.isValid(undefined)).to.be.true;
       expect(schema.isValid('a string')).to.be.true;

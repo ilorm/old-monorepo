@@ -2,13 +2,13 @@
   "scripts": {
     "docs": "jsdoc -r ./packages/*/lib -d docs",
     "watch": "watch 'npm run launchtest' ./ packages --wait 5",
-    "jshint": "jshint packages/ --exclude 'packages/*/node_modules/**'",
+    "eslint": "eslint packages/ --ignore-pattern packages/*/node_modules/**",
     "test": "npm run launchtest",
     "test-win": "set NODE_ENV=test&& mocha --recursive --reporter spec test/unit/ packages/**/*.test.js",
     "launchtest": "NODE_ENV=test mocha --recursive --reporter spec $(find packages -name '*.test.js'  -not -path '**/node_modules/**' )",
-    "cover": "npm run docs && npm run jshint && NODE_ENV=test istanbul --include-all-sources cover -x '**/docs/**' -x '**/node_modules/**' _mocha -- --recursive --reporter spec $(find packages -name '*.test.js'  -not -path '**/node_modules/**' )",
+    "cover": "npm run docs && npm run eslint && NODE_ENV=test istanbul --include-all-sources cover -x '**/docs/**' -x '**/node_modules/**' _mocha -- --recursive --reporter spec $(find packages -name '*.test.js'  -not -path '**/node_modules/**' )",
     "cover-win": "set NODE_ENV=test&& istanbul --include-all-sources cover -x public/** -x config/** -x index.js -x packages/**/*.test.js node_modules/mocha/bin/_mocha test/unit/ packages/**/*.test.js",
-    "circle_ci_test": "lerna bootstrap && npm run jshint && istanbul --include-all-sources cover  -x '**/docs/**' --dir $CIRCLE_ARTIFACTS _mocha -- --recursive $(find packages -name '*.test.js'  -not -path '**/node_modules/**' )"
+    "circle_ci_test": "lerna bootstrap && npm run eslint && istanbul --include-all-sources cover  -x '**/docs/**' --dir $CIRCLE_ARTIFACTS _mocha -- --recursive $(find packages -name '*.test.js'  -not -path '**/node_modules/**' )"
   },
   "devDependencies": {
     "chai": "^3.5.0",
@@ -20,7 +20,6 @@
     "eslint-plugin-react": "^6.9.0",
     "istanbul": "^0.4.3",
     "jsdoc": "^3.4.0",
-    "jshint": "^2.9.1",
     "lerna": "2.0.0-beta.30",
     "mocha": "^3.1.2",
     "nock": "^9.0.2",

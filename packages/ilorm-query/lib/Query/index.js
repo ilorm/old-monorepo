@@ -4,11 +4,22 @@
 
 const initQueryProperties = require('./initQueryProperties');
 
-function injectDependencies ({ model, schema, modelsMap, Id, connector }) {
+/**
+ * Inject dependencies in Query class
+ * @param {Object} model The model used by the Query
+ * @param {Object} schema The schema used by the Query
+ * @param {Object} modelsMap The models map used by the Query
+ * @param {Object} Id The Id Object used by the Query
+ * @param {Object} connector The DbConnector
+ * @returns {Query} Query Class
+ */
+function injectDependencies({ model, schema, modelsMap, Id, connector }) {
 
-
+  /**
+   * Represent a Query at the database
+   */
   class Query {
-    constructor () {
+    constructor() {
       this.query = [];
       this.update = [];
       this.context = null;
@@ -18,13 +29,13 @@ function injectDependencies ({ model, schema, modelsMap, Id, connector }) {
       });
     }
 
-    fields ( fields ) {
+    fields( fields ) {
       this.context = fields;
 
       return this;
     }
 
-    associatedWith ( param ) {
+    associatedWith(param) {
       if (this.context === null) {
         return this;
       }
@@ -53,49 +64,49 @@ function injectDependencies ({ model, schema, modelsMap, Id, connector }) {
 
         return this;
       }
-      throw new Error('associatedWith does not work with value: ' + param);
+      throw new Error(`associatedWith does not work with value: ${param}`);
     }
 
-    notAssociatedWith () {
+    notAssociatedWith() {
 
     }
 
-    find () {
+    find() {
       return Promise.all(this.query)
         .then(connector.find);
     }
-    findOne () {
+    findOne() {
       return Promise.all(this.query)
         .then(connector.findOne);
     }
-    count () {
+    count() {
       return Promise.all(this.query)
         .then(connector.count);
     }
-    remove () {
+    remove() {
       return Promise.all(this.query)
         .then(connector.remove);
     }
-    removeOne () {
+    removeOne() {
       return Promise.all(this.query)
         .then(connector.removeOne);
     }
-    update () {
+    update() {
       return Promise.all([
         this.query,
         this.update
       ])
         .then(([query, update]) => connector.update({query, update}));
     }
-    updateOne () {
+    updateOne() {
       return Promise.all([
         this.query,
         this.update
       ])
         .then(([query, update]) => connector.updateOne({query, update}));
     }
-    multiple () {}
-    stream () {
+    multiple() {}
+    stream() {
       return Promise.all(this.query)
         .then(connector.stream);
     }
