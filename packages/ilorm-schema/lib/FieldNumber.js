@@ -50,11 +50,12 @@ class FieldNumber extends FieldType {
    * @returns {boolean} Return true if the value is valid or false if it's not.
    */
   isValid(value) {
-    const isTypeValid = (!this.isRequired && value === undefined) || typeof value === 'number';
+    const isTypeUndefined = (!this.isRequired && value === undefined);
+    const isNumber = typeof value === 'number';
     const isConditionMaxValid = (!this.maxValue || this.maxValue > value);
     const isConditionMinValid = (!this.minValue || this.minValue < value);
 
-    return isTypeValid && isConditionMaxValid && isConditionMinValid;
+    return isTypeUndefined || (isNumber && isConditionMaxValid && isConditionMinValid);
   }
 
 }
