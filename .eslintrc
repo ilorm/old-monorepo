@@ -153,7 +153,7 @@
     /* ======================== */
     /* =   Stylistic Issues   = */
     /* ======================== */
-    "array-bracket-spacing": ["error", "never", { "objectsInArrays": false, "arraysInArrays": false} ],
+    "array-bracket-spacing": ["error", "always", { "objectsInArrays": false, "arraysInArrays": false} ],
     "block-spacing": "error",
     "brace-style": ["error", "1tbs", { "allowSingleLine": true }],
     "camelcase": "error",
