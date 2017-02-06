@@ -85,7 +85,7 @@ function injectDependencies({ name, modelsMap, schema, Connector, }) {
 
     /**
      * Create an ilorm-query. The object is used to build query to found model
-     * @returns {__ilorm__Query|{enumerable, writable, configurable, value}} The query object associated with your model
+     * @returns {Query|{enumerable, writable, configurable, value}} The query object associated with your model
      */
     static query() {
       return new this.__ilorm__Query();
@@ -94,7 +94,7 @@ function injectDependencies({ name, modelsMap, schema, Connector, }) {
     /**
      * Apply an operation for find one or more instance of this model in the database.
      * @param {Object} params The param used to filter the query.
-     * @returns {Promise.<Model>|*} Return every model will match the query
+     * @returns {Promise.<Model[]>|*} Return every model will match the query
      */
     static find(params) {
       return connector.find(params)

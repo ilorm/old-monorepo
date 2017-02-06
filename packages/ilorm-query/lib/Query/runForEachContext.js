@@ -1,7 +1,13 @@
 'use strict';
 
-function runForEachContext (context, handler) {
-  if(context === null) {
+/**
+ * Run an handler for each context
+ * @param {Array|*} context The context you want to run
+ * @param {Function} handler The handler you want to use
+ * @returns {undefined} The function return nothing
+ */
+function runForEachContext(context, handler) {
+  if (context === null) {
     throw new Error('Context missing');
   }
 

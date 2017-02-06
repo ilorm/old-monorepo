@@ -3,7 +3,13 @@
 const handleQueryOperator = require('./handleQueryOperator');
 const handleUpdateOperator = require('./handleUpdateOperator');
 
-function initQueryProperties ({query, schema}) {
+/**
+ * Initialize every fields of the given schema in the current query. It could be used after to create query.
+ * @param {Query} query The query you want to add the fields
+ * @param {Schema} schema The fields you want to add to the query
+ * @returns {Query} The overload query
+ */
+function initQueryProperties({ query, schema, }) {
   schema.keys.forEach(key => {
     Object.defineProperty(query, key, {
       enumerable: true,
@@ -11,55 +17,71 @@ function initQueryProperties ({query, schema}) {
       configurable: false,
       value: {
         /* QUERY OPERATIONS */
-        associatedWith: (value) => {
+        associatedWith: value => {
           query.fields(key);
+
           return query.associatedWith(value);
         },
-        notAssociatedWith: (value) => {
+        notAssociatedWith: value => {
           query.fields(key);
+
           return query.notAssociatedWith(value);
         },
-        is: (value) => {
+        is: value => {
           query.fields(key);
+
           return handleQueryOperator(query, 'EQUAL', value);
         },
-        isNot: (value) => {
+        isNot: value => {
           query.fields(key);
+
           return handleQueryOperator(query, 'NOT_EQUAL', value);
         },
-        isIn: (value) => {
+        isIn: value => {
           query.fields(key);
+
           return handleQueryOperator(query, 'IN', value);
         },
-        isNotIn: (value) => {
+        isNotIn: value => {
           query.fields(key);
+
           return handleQueryOperator(query, 'NOT_IN', value);
         },
-        min: (value) => {
+        min: value => {
           query.fields(key);
+
           return handleQueryOperator(query, 'MIN', value);
         },
-        max: (value) => {
+        max: value => {
           query.fields(key);
+
           return handleQueryOperator(query, 'MAX', value);
         },
         between: (min, max) => {
           query.fields(key);
-          return handleQueryOperator(query, 'BETWEEN', {min, max});
+
+          return handleQueryOperator(query, 'BETWEEN', {
+            min,
+            max,
+          });
         },
 
         /* UPDATE OPERATIONS */
-        set: (value) => {
+        set: value => {
           query.fields(key);
+
           return handleUpdateOperator(query, 'SET', value);
         },
-        inc: (value) => {
+        inc: value => {
           query.fields(key);
+
           return handleUpdateOperator(query, 'INC', value);
-        }
-      }
+        },
+      },
     });
   });
+
+  return query;
 }
 
 module.exports = initQueryProperties;
