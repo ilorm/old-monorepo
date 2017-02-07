@@ -20,10 +20,11 @@ function injectDependencies({ model, schema, Id, connector, }) {
   class Query {
     /**
      * Instantiate a new query object
+     * @param {Query} modelQuery Could build a query from another query
      */
-    constructor() {
-      this.query = [];
-      this.update = [];
+    constructor({ modelQuery, }) {
+      this.query = modelQuery && modelQuery.query ? modelQuery.query : [];
+      this.updateQuery = modelQuery && modelQuery.updateQuery ? modelQuery.updateQuery : [];
       this.context = null;
       initQueryProperties({
         schema,
@@ -142,7 +143,7 @@ function injectDependencies({ model, schema, Id, connector, }) {
     update() {
       return Promise.all([
         this.query,
-        this.update,
+        this.updateQuery,
       ])
         .then(([ query, update, ]) => connector.update({
           query,
@@ -157,7 +158,7 @@ function injectDependencies({ model, schema, Id, connector, }) {
     updateOne() {
       return Promise.all([
         this.query,
-        this.update,
+        this.updateQuery,
       ])
         .then(([ query, update, ]) => connector.updateOne({
           query,

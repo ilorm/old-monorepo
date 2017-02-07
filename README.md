@@ -69,7 +69,7 @@ const schema = schema.new({
 ## Models
 ```javascript
 const ilorm = require('ilorm');
-const ilormMongo = require('ilorm-connector-mongodb');
+const ilormMongo = require(ilorm-connector-mongo);
 const model = require('ilorm').model;
 
 const userSchema = require('./schema');

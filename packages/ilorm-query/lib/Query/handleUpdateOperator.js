@@ -11,7 +11,7 @@ const runForEachContext = require('./runForEachContext');
  */
 function handleUpdateOperator(query, operator, value) {
   runForEachContext(query.context, context => {
-    query.update.push(
+    query.updateQuery.push(
       Promise.resolve({
         operator,
         context,

@@ -14,6 +14,23 @@ const Id = require('../Id');
  * @returns {Model} Return the initialized model
  */
 function initProperties({ Model, modelsMap, schema, name, connector, }) {
+
+  let ModelQuery = queryInjector({
+    Model,
+    Id,
+    schema,
+    modelsMap,
+    connector,
+  });
+
+  // If the connector have an query overload:
+  if (connector.query) {
+    ModelQuery = connector.query({
+      schema,
+      Query: ModelQuery,
+    });
+  }
+
   Object.defineProperties(Model, {
     __ilormName: {
       enumerable: false,
@@ -37,13 +54,7 @@ function initProperties({ Model, modelsMap, schema, name, connector, }) {
       enumerable: false,
       writable: false,
       configurable: false,
-      value: queryInjector({
-        Model,
-        Id,
-        schema,
-        modelsMap,
-        connector,
-      }),
+      value: ModelQuery,
     },
   });
 

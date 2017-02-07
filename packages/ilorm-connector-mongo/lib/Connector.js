@@ -2,6 +2,7 @@
  * Created by guil_ on 29/12/2016.
  */
 
+const MongoQuery = require('./MongoQuery/index');
 const convertIlormQueryToMongoQuery = require('./convertIlormQueryToMongoQuery');
 const convertIlormUpdateToMongoUpdate = require('./convertIlormUpdateToMongoUpdate');
 
@@ -126,6 +127,15 @@ function injectDependencies({ db, }) {
       const mongoQuery = convertIlormQueryToMongoQuery(query);
 
       return collection.find(mongoQuery).stream();
+    }
+
+    /**
+     *
+     * @return {*}
+     * @constructor
+     */
+    static Query() {
+      return MongoQuery;
     }
   }
 

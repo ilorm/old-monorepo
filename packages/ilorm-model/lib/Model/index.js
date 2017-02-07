@@ -43,6 +43,25 @@ function injectDependencies({ name, modelsMap, schema, Connector, }) {
     }
 
     /**
+     * TODO: Handle new Model & save for default value
+     * TODO: Handle custom constraint (overload isValid on schema)
+     * Define constraint on a child class
+     * @return {Query} The constraint applied to the child class
+     */
+    static defineConstraint() {
+      if (!this.__ilormConstraint) {
+        Object.defineProperty(this, '__ilormConstraint', {
+          enumerable: false,
+          writable: true,
+          configurable: false,
+          value: this.query(),
+        });
+      }
+
+      return this.__ilormConstraint;
+    }
+
+    /**
      * Save the current instance of your model in your database.
      * This action could update if the instance already exists.
      * This action could insert if the instance does not exists.
@@ -88,7 +107,7 @@ function injectDependencies({ name, modelsMap, schema, Connector, }) {
      * @returns {Query|{enumerable, writable, configurable, value}} The query object associated with your model
      */
     static query() {
-      return new this.__ilormQuery();
+      return new this.__ilormQuery({ modelQuery: this.__ilormConstraint, });
     }
 
     /**
