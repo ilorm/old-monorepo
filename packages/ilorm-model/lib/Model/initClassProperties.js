@@ -3,6 +3,7 @@
  */
 const queryInjector = require('ilorm-query');
 const Id = require('../Id');
+const initHook = require('./initHook');
 
 /**
  * Init properties associated with your class
@@ -56,6 +57,12 @@ function initProperties({ Model, modelsMap, schema, name, connector, }) {
       configurable: false,
       value: ModelQuery,
     },
+    hook: {
+      enumerable: false,
+      writable: false,
+      configurable: false,
+      value: initHook(),
+    }
   });
 
   return Model;
