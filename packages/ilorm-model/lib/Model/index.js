@@ -76,7 +76,7 @@ function injectDependencies({ name, modelsMap, schema, Connector, }) {
      * @returns {*} Return a Promise with the result of the operation.
      */
     remove() {
-      if (!this.__ilorm__isNewObject) {
+      if (!this.__ilormIsNewObject) {
         return connector.removeOne({ obj: this, });
       }
 
@@ -88,7 +88,7 @@ function injectDependencies({ name, modelsMap, schema, Connector, }) {
      * @returns {Query|{enumerable, writable, configurable, value}} The query object associated with your model
      */
     static query() {
-      return new this.__ilorm__Query();
+      return new this.__ilormQuery();
     }
 
     /**

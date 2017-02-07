@@ -14,7 +14,7 @@ const Id = require('../Id');
  * @returns {Model} Return the initialized model
  */
 function initProperties({ Model, modelsMap, schema, name, connector, }) {
-  Object.defineProperties(Model.prototype, {
+  Object.defineProperties(Model, {
     __ilormName: {
       enumerable: false,
       writable: false,

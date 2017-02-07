@@ -3,7 +3,11 @@
  */
 
 const schema = require('ilorm-schema');
+const model = require('ilorm-model');
 
-const lib = { schema, };
+const lib = {
+  schema,
+  model,
+};
 
 module.exports = lib;

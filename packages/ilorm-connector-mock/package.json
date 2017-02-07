@@ -1,18 +1,20 @@
 {
-  "name": "ilorm",
+  "name": "ilorm-connector-mock",
   "version": "0.1.0",
-  "description": "Main package of ilorm ORM",
+  "description": "Fake connector to ilorm ORM",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [
+    "connector",
+    "mock",
+    "test",
     "orm",
     "ilorm"
   ],
   "dependencies": {
-    "ilorm-schema": "^0.1.0",
-    "ilorm-model": "^0.1.0"
+    "mongodb": "^2.2.19"
   },
   "author": "guillaume DAIX",
   "license": "ISC"

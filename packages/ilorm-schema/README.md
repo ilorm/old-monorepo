@@ -15,6 +15,19 @@ The FieldType is an abstract class. You need use one of the child or define your
 ## Create your own field
 A field is a child class of the class FieldType. You can overload the following functions :
 
+### Internal properties
+* {Boolean} [default=false] isRequired : Enforce than the property exists at save.
+* {*} [default=undefined] defaultValue : Default value for the property.
+
+### default(value)
+Define the default value of your field
+
+### required()
+Set the boolean isRequired at true.
+
+### initValue()
+Init the field with it's defaultValue
+
 ### isValid(value)
 isValid will check if the given value is valid for the target field.
 You can add typeof check, or many more conditions (regex per example).

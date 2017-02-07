@@ -57,7 +57,7 @@ function injectDependencies({ model, schema, Id, connector, }) {
         return this;
       }
       if (param instanceof Id) {
-        // param.model.__ilorm__name
+        // param.model.__ilormName
         // param.id
         this.query.push(Promise.resolve({
           context: this.context,
@@ -68,7 +68,7 @@ function injectDependencies({ model, schema, Id, connector, }) {
         return this;
       }
       if (param instanceof model.constructor) {
-        // param.__ilorm__name
+        // param.__ilormName
         // param.id
         this.query.push(Promise.resolve({
           context: this.context,

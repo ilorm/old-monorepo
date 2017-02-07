@@ -1,5 +1,5 @@
 {
-  "name": "ilorm-mongodb",
+  "name": "ilorm-connector-mongodb",
   "version": "0.1.0",
   "description": "Connector to MongoDB for ilorm ORM",
   "main": "index.js",

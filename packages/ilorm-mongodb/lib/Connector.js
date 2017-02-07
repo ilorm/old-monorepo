@@ -8,15 +8,15 @@ const convertIlormUpdateToMongoUpdate = require('./convertIlormUpdateToMongoUpda
 /**
  * Inject your mongo db in the Mongo connector
  * @param {Object} db A valid mongo connection
- * @returns {Connector} Return a mongo connector
+ * @returns {MongoConnector} Return a mongo connector
  */
 function injectDependencies({ db, }) {
   const collection = db.collection('target');
 
   /**
-   * The Mongo Connector class
+   * The Mongo MongoConnector class
    */
-  class Connector {
+  class MongoConnector {
     /**
      * Create one or more docs into the database.
      * @param {Object|Object[]} docs The object you want to create in the database
@@ -129,7 +129,7 @@ function injectDependencies({ db, }) {
     }
   }
 
-  return Connector;
+  return MongoConnector;
 }
 
 module.exports = injectDependencies;
