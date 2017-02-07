@@ -17,48 +17,27 @@ function initHook() {
   const hook = {};
 
   OPERATIONS.forEach(OPERATION => {
-    hook[OPERATION] = initBeforeAfterList();
+    hook[OPERATION] = initBeforeAfterList(hook, OPERATION);
   });
 
   hook.addBefore = addFactory(hook, 'before');
   hook.addAfter = addFactory(hook, 'after');
-  hook.run = run;
-
-  /**
-   * Run all hook functions
-   * @param {String} operation The current operation (insert, find, remove, update)
-   * @param {String} position If it's a before or a after hook
-   * @param {Object} params The system parameters, who go thought the hook
-   * @param {Number} index index for recursive call
-   * @return {Promise.<TResult>|*} Return the transformed params
-   */
-  function run({ operation, position, params, index = 0, }) {
-    if (hook[operation][position].length <= index) {
-      return Promise.resolve(params);
-    }
-
-    const result = hook[operation][position](params);
-
-    return (result instanceof Promise ? result : Promise.resolve(result))
-      .then(transformedParams => run({
-        operation,
-        position,
-        transformedParams,
-        index: index + 1,
-      }));
-  }
 
   return hook;
 }
 
 /**
- * Init two array
- * @return {{before: Array, after: Array}} The two array of function
+ * Generate for each operation two hook store, and two hook run.
+ * @param {Object} hook The target hook store
+ * @param {String} operation before or after
+ * @return {{before: Array, after: Array, runBefore: run, runAfter: run}} Handler to use hook per operation
  */
-function initBeforeAfterList() {
+function initBeforeAfterList(hook, operation) {
   return {
     before: [],
     after: [],
+    runBefore: runFactory(hook, operation, 'before'),
+    runAfter: runFactory(hook, operation, 'after'),
   };
 }
 
@@ -76,6 +55,37 @@ function addFactory(hook, positionOfHook) {
       }
     });
   };
+}
+
+/**
+ * Generate a run function
+ * @param {Object} hook The target hook store
+ * @param {String} operation The operation to run (find, update, remove, insert)
+ * @param {String} position before or after
+ * @return {run} Return a run Function
+ */
+function runFactory(hook, operation, position) {
+  /**
+   * Run all hook functions
+   * @param {Object} params The system parameters, who go thought the hook
+   * @param {Number} index index for recursive call
+   * @return {Promise.<TResult>|*} Return the transformed params
+   */
+  return function run({ params, index = 0, }) {
+    if (hook[operation][position].length <= index) {
+      return Promise.resolve(params);
+    }
+
+    const result = hook[operation][position](params);
+
+    return (result instanceof Promise ? result : Promise.resolve(result))
+      .then(transformedParams => run({
+        operation,
+        position,
+        transformedParams,
+        index: index + 1,
+      }));
+  }
 }
 
 module.exports = initHook;
