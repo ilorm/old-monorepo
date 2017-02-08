@@ -12,19 +12,26 @@ const convertIlormUpdateToMongoUpdate = require('./convertIlormUpdateToMongoUpda
  * @returns {MongoConnector} Return a mongo connector
  */
 function injectDependencies({ db, }) {
-  const collection = db.collection('target');
-
   /**
    * The Mongo MongoConnector class
    */
   class MongoConnector {
+    /**
+     * Instantiate a new MongoConnector
+     * @param {String} collection : The target collection name to use
+     */
+    constructor({ collection, }) {
+      this.collection = db.collection(collection);
+    }
+
+
     /**
      * Create one or more docs into the database.
      * @param {Object|Object[]} docs The object you want to create in the database
      * @returns {*} The result of the operation
      */
     create(docs) {
-      return collection.insertMany(docs);
+      return this.collection.insertMany(docs);
     }
 
     /**
@@ -36,7 +43,7 @@ function injectDependencies({ db, }) {
       return new Promise((resolve, reject) => {
         const mongoQuery = convertIlormQueryToMongoQuery(query);
 
-        collection.find(mongoQuery)
+        this.collection.find(mongoQuery)
           .toArray((err, docs) => {
             if (err) {
               return reject(err);
@@ -55,7 +62,7 @@ function injectDependencies({ db, }) {
     findOne(query) {
       const mongoQuery = convertIlormQueryToMongoQuery(query);
 
-      return collection.findOne(mongoQuery);
+      return this.collection.findOne(mongoQuery);
     }
 
     /**
@@ -66,7 +73,7 @@ function injectDependencies({ db, }) {
     count(query) {
       const mongoQuery = convertIlormQueryToMongoQuery(query);
 
-      return collection.count(mongoQuery);
+      return this.collection.count(mongoQuery);
     }
 
     /**
@@ -79,7 +86,7 @@ function injectDependencies({ db, }) {
       const mongoQuery = convertIlormQueryToMongoQuery(query);
       const mongoUpdate = convertIlormUpdateToMongoUpdate(update);
 
-      return collection.updateMany(mongoQuery, mongoUpdate);
+      return this.collection.updateMany(mongoQuery, mongoUpdate);
     }
 
     /**
@@ -92,7 +99,7 @@ function injectDependencies({ db, }) {
       const mongoQuery = convertIlormQueryToMongoQuery(query);
       const mongoUpdate = convertIlormUpdateToMongoUpdate(update);
 
-      return collection.findOneAndUpdate(mongoQuery, mongoUpdate);
+      return this.collection.findOneAndUpdate(mongoQuery, mongoUpdate);
     }
 
     /**
@@ -103,7 +110,7 @@ function injectDependencies({ db, }) {
     remove(query) {
       const mongoQuery = convertIlormQueryToMongoQuery(query);
 
-      return collection.deleteMany(mongoQuery);
+      return this.collection.deleteMany(mongoQuery);
     }
 
     /**
@@ -114,8 +121,7 @@ function injectDependencies({ db, }) {
     removeOne(query) {
       const mongoQuery = convertIlormQueryToMongoQuery(query);
 
-      return collection.findOneAndDelete(mongoQuery);
-
+      return this.collection.findOneAndDelete(mongoQuery);
     }
 
     /**
@@ -126,12 +132,12 @@ function injectDependencies({ db, }) {
     stream(query) {
       const mongoQuery = convertIlormQueryToMongoQuery(query);
 
-      return collection.find(mongoQuery).stream();
+      return this.collection.find(mongoQuery).stream();
     }
 
     /**
-     *
-     * @return {*}
+     * Return a MongoQuery
+     * @return {MongoQuery} The MongoQuery object
      * @constructor
      */
     static Query() {
