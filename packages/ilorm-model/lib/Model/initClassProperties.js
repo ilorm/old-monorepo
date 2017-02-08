@@ -62,7 +62,7 @@ function initProperties({ Model, modelsMap, schema, name, connector, }) {
       writable: false,
       configurable: false,
       value: initHook(),
-    }
+    },
   });
 
   return Model;

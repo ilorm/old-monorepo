@@ -97,7 +97,12 @@ function injectDependencies({ model, schema, Id, connector, }) {
      */
     find() {
       return Promise.all(this.query)
-        .then(connector.find);
+        .then(params => model.hook.find.run({
+          params,
+          operation: 'find',
+          handler: connector.find,
+          multiple: true,
+        }));
     }
 
     /**
@@ -106,7 +111,11 @@ function injectDependencies({ model, schema, Id, connector, }) {
      */
     findOne() {
       return Promise.all(this.query)
-        .then(connector.findOne);
+        .then(params => model.hook.find.run({
+          params,
+          operation: 'findOne',
+          handler: connector.findOne,
+        }));
     }
 
     /**
@@ -115,7 +124,11 @@ function injectDependencies({ model, schema, Id, connector, }) {
      */
     count() {
       return Promise.all(this.query)
-        .then(connector.count);
+        .then(params => model.hook.find.run({
+          params,
+          operation: 'count',
+          handler: connector.count,
+        }));
     }
 
     /**
@@ -124,7 +137,11 @@ function injectDependencies({ model, schema, Id, connector, }) {
      */
     remove() {
       return Promise.all(this.query)
-        .then(connector.remove);
+        .then(params => model.hook.remove.run({
+          params,
+          operation: 'remove',
+          handler: connector.remove,
+        }));
     }
 
     /**
@@ -133,7 +150,11 @@ function injectDependencies({ model, schema, Id, connector, }) {
      */
     removeOne() {
       return Promise.all(this.query)
-        .then(connector.removeOne);
+        .then(params => model.hook.remove.run({
+          params,
+          operation: 'removeOne',
+          handler: connector.removeOne,
+        }));
     }
 
     /**
@@ -145,9 +166,13 @@ function injectDependencies({ model, schema, Id, connector, }) {
         this.query,
         this.updateQuery,
       ])
-        .then(([ query, update, ]) => connector.update({
-          query,
-          update,
+        .then(([ query, update, ]) => model.hook.update.run({
+          params: {
+            query,
+            update,
+          },
+          operation: 'update',
+          handler: connector.update,
         }));
     }
 
@@ -160,9 +185,13 @@ function injectDependencies({ model, schema, Id, connector, }) {
         this.query,
         this.updateQuery,
       ])
-        .then(([ query, update, ]) => connector.updateOne({
-          query,
-          update,
+        .then(([ query, update, ]) => model.hook.update.run({
+          params: {
+            query,
+            update,
+          },
+          operation: 'updateOne',
+          handler: connector.updateOne,
         }));
     }
 

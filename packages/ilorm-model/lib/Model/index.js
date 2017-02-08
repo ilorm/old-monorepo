@@ -73,16 +73,24 @@ function injectDependencies({ name, modelsMap, schema, Connector, }) {
       if (this.__ilormIsNewObject) {
         this.__ilormIsNewObject = false;
 
-        return connector.create({ obj: this, });
+        return this.hook.insert.run({
+          params: { obj: this, },
+          operation: 'create',
+          handler: connector.create,
+        });
       }
 
       if (this.__ilormEditedFields.length === 0) {
         return Promise.resolve(this);
       }
 
-      const result = connector.updateOne({
-        obj: this,
-        editedFields: this.__ilormEditedFields,
+      const result = this.hook.update.run({
+        params: {
+          obj: this,
+          editedFields: this.__ilormEditedFields,
+        },
+        operation: 'updateOne',
+        handler: connector.updateOne,
       });
 
       this.__ilormEditedFields = [];
@@ -96,7 +104,11 @@ function injectDependencies({ name, modelsMap, schema, Connector, }) {
      */
     remove() {
       if (!this.__ilormIsNewObject) {
-        return connector.removeOne({ obj: this, });
+        return this.hook.remove.run({
+          params: { obj: this, },
+          operation: 'remove',
+          handler: connector.removeOne,
+        });
       }
 
       return Promise.resolve(true);
@@ -116,10 +128,14 @@ function injectDependencies({ name, modelsMap, schema, Connector, }) {
      * @returns {Promise.<Model[]>|*} Return every model will match the query
      */
     static find(params) {
-      return connector.find(params)
-        .then(results => (
-          results.map(rawObj => new Model(rawObj))
-        ));
+      return this.hook.find.run({
+        params,
+        operation: 'find',
+        handler: connector.find,
+        multiple: true,
+      }).then(results => (
+        results.map(rawObj => new Model(rawObj))
+      ));
     }
 
     /**
@@ -128,8 +144,11 @@ function injectDependencies({ name, modelsMap, schema, Connector, }) {
      * @returns {Promise.<Model>|*} Return the model found by the query
      */
     static findOne(params) {
-      return connector.findOne(params)
-        .then(result => new Model(result));
+      return this.hook.find.run({
+        params,
+        operation: 'findOne',
+        handler: connector.findOne,
+      }).then(result => new Model(result));
     }
 
     /**

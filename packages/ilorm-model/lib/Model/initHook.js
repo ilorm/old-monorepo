@@ -33,12 +33,28 @@ function initHook() {
  * @return {{before: Array, after: Array, runBefore: run, runAfter: run}} Handler to use hook per operation
  */
 function initBeforeAfterList(hook, operation) {
-  return {
+  const beforeAfter = {
     before: [],
     after: [],
     runBefore: runFactory(hook, operation, 'before'),
     runAfter: runFactory(hook, operation, 'after'),
   };
+
+  beforeAfter.run = options => (
+    beforeAfter.runBefore(options)
+      .then(convertedOptions => (
+        convertedOptions.handler(convertedOptions.params)
+          .then(result => {
+            if (convertedOptions.multiple) {
+              return result.map(resultElem => beforeAfter.runAfter(resultElem));
+            }
+
+            return beforeAfter.runAfter(result);
+          })
+      ))
+  );
+
+  return beforeAfter;
 }
 
 /**
