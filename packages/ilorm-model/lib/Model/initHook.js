@@ -40,16 +40,16 @@ function initBeforeAfterList(hook, operation) {
     runAfter: runFactory(hook, operation, 'after'),
   };
 
-  beforeAfter.run = options => (
-    beforeAfter.runBefore(options)
+  beforeAfter.run = params => (
+    beforeAfter.runBefore({ params, })
       .then(convertedOptions => (
         convertedOptions.handler(convertedOptions.params)
           .then(result => {
             if (convertedOptions.multiple) {
-              return result.map(resultElem => beforeAfter.runAfter(resultElem));
+              return Promise.all(result.map(resultElem => beforeAfter.runAfter({ params: resultElem, })));
             }
 
-            return beforeAfter.runAfter(result);
+            return beforeAfter.runAfter({ params: result, });
           })
       ))
   );

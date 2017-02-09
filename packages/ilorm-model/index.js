@@ -8,12 +8,12 @@ const modelsMap = {};
 
 module.exports = {
   Id,
-  Model: function Model(name, schema, Connector) {
+  Model: function Model(name, schema, connector) {
     const param = {
       name,
       modelsMap,
       schema,
-      Connector,
+      connector,
     };
     const model = modelFactory(param);
 

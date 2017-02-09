@@ -14,11 +14,7 @@ const initInstanceProperties = require('./initInstanceProperties');
  * @param {Connector} Connector The connector used to store the data linked with your model
  * @returns {Model} Return the class you can instantiate for create new instance of your model
  */
-function injectDependencies({ name, modelsMap, schema, Connector, }) {
-  const connector = new Connector({
-    name,
-    schema,
-  });
+function injectDependencies({ name, modelsMap, schema, connector, }) {
 
   /**
    * A Model class represent a data of your project

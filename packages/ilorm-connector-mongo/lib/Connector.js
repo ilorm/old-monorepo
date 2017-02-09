@@ -1,7 +1,7 @@
 /**
  * Created by guil_ on 29/12/2016.
  */
-
+const EventEmitter = require('events');
 const MongoQuery = require('./MongoQuery/index');
 const convertIlormQueryToMongoQuery = require('./convertIlormQueryToMongoQuery');
 const convertIlormUpdateToMongoUpdate = require('./convertIlormUpdateToMongoUpdate');
@@ -21,9 +21,30 @@ function injectDependencies({ db, }) {
      * @param {String} collection : The target collection name to use
      */
     constructor({ collection, }) {
-      this.collection = db.collection(collection);
+      this.connectorEvent = new EventEmitter();
+
+      db.collection(collection, (err, mongoCollection) => {
+        if (err) {
+          throw err;
+        }
+        this.collection = mongoCollection;
+        this.connectorEvent.emit('collectionLoaded', collection);
+      });
     }
 
+    /**
+     * Get a promise for the current collection.
+     * @returns {Promise.<Collection>} The mongo collection
+     */
+    getCollection() {
+      if (this.collection) {
+        return Promise.resolve(this.collection);
+      }
+
+      return new Promise(resolve => {
+        this.connectorEvent.on('collectionLoaded', resolve);
+      });
+    }
 
     /**
      * Create one or more docs into the database.
@@ -31,7 +52,7 @@ function injectDependencies({ db, }) {
      * @returns {*} The result of the operation
      */
     create(docs) {
-      return this.collection.insertMany(docs);
+      return this.getCollection().then(collection => collection.insertMany(docs));
     }
 
     /**
@@ -40,17 +61,17 @@ function injectDependencies({ db, }) {
      * @returns {Promise} Every documents who match the query
      */
     find(query) {
-      return new Promise((resolve, reject) => {
-        const mongoQuery = convertIlormQueryToMongoQuery(query);
+      const mongoQuery = convertIlormQueryToMongoQuery(query);
 
-        this.collection.find(mongoQuery)
+      return new Promise((resolve, reject) => {
+        this.getCollection().then(collection => collection.find(mongoQuery)
           .toArray((err, docs) => {
             if (err) {
               return reject(err);
             }
 
             return resolve(docs);
-          });
+          }));
       });
     }
 
@@ -62,7 +83,7 @@ function injectDependencies({ db, }) {
     findOne(query) {
       const mongoQuery = convertIlormQueryToMongoQuery(query);
 
-      return this.collection.findOne(mongoQuery);
+      return this.getCollection().then(collection => collection.findOne(mongoQuery));
     }
 
     /**
@@ -73,7 +94,7 @@ function injectDependencies({ db, }) {
     count(query) {
       const mongoQuery = convertIlormQueryToMongoQuery(query);
 
-      return this.collection.count(mongoQuery);
+      return this.getCollection().then(collection => collection.count(mongoQuery));
     }
 
     /**
@@ -86,7 +107,7 @@ function injectDependencies({ db, }) {
       const mongoQuery = convertIlormQueryToMongoQuery(query);
       const mongoUpdate = convertIlormUpdateToMongoUpdate(update);
 
-      return this.collection.updateMany(mongoQuery, mongoUpdate);
+      return this.getCollection().then(collection => collection.updateMany(mongoQuery, mongoUpdate));
     }
 
     /**
@@ -99,7 +120,7 @@ function injectDependencies({ db, }) {
       const mongoQuery = convertIlormQueryToMongoQuery(query);
       const mongoUpdate = convertIlormUpdateToMongoUpdate(update);
 
-      return this.collection.findOneAndUpdate(mongoQuery, mongoUpdate);
+      return this.getCollection().then(collection => collection.findOneAndUpdate(mongoQuery, mongoUpdate));
     }
 
     /**
@@ -110,7 +131,7 @@ function injectDependencies({ db, }) {
     remove(query) {
       const mongoQuery = convertIlormQueryToMongoQuery(query);
 
-      return this.collection.deleteMany(mongoQuery);
+      return this.getCollection().then(collection => collection.deleteMany(mongoQuery));
     }
 
     /**
@@ -121,7 +142,7 @@ function injectDependencies({ db, }) {
     removeOne(query) {
       const mongoQuery = convertIlormQueryToMongoQuery(query);
 
-      return this.collection.findOneAndDelete(mongoQuery);
+      return this.getCollection().then(collection => collection.findOneAndDelete(mongoQuery));
     }
 
     /**
@@ -132,7 +153,7 @@ function injectDependencies({ db, }) {
     stream(query) {
       const mongoQuery = convertIlormQueryToMongoQuery(query);
 
-      return this.collection.find(mongoQuery).stream();
+      return this.getCollection().then(collection => collection.find(mongoQuery).stream());
     }
 
     /**

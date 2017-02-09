@@ -13,7 +13,9 @@
   ],
   "dependencies": {
     "ilorm": "^0.1.0",
-    "ilorm-connector-mock": "^0.1.0"
+    "ilorm-connector-mock": "^0.1.0",
+    "ilorm-connector-mongo": "^0.1.0",
+    "mongodb": "^2.2.22"
   },
   "author": "guillaume DAIX",
   "license": "ISC"

@@ -6,13 +6,13 @@ const initQueryProperties = require('./initQueryProperties');
 
 /**
  * Inject dependencies in Query class
- * @param {Object} model The model used by the Query
+ * @param {Object} Model The Model used by the Query
  * @param {Object} schema The schema used by the Query
  * @param {Object} Id The Id Object used by the Query
  * @param {Object} connector The DbConnector
  * @returns {Query} Query Class
  */
-function injectDependencies({ model, schema, Id, connector, }) {
+function injectDependencies({ Model, schema, Id, connector, }) {
 
   /**
    * Represent a Query at the database
@@ -58,7 +58,7 @@ function injectDependencies({ model, schema, Id, connector, }) {
         return this;
       }
       if (param instanceof Id) {
-        // param.model.__ilormName
+        // param.Model.__ilormName
         // param.id
         this.query.push(Promise.resolve({
           context: this.context,
@@ -68,7 +68,7 @@ function injectDependencies({ model, schema, Id, connector, }) {
 
         return this;
       }
-      if (param instanceof model.constructor) {
+      if (param instanceof Model.constructor) {
         // param.__ilormName
         // param.id
         this.query.push(Promise.resolve({
@@ -97,10 +97,10 @@ function injectDependencies({ model, schema, Id, connector, }) {
      */
     find() {
       return Promise.all(this.query)
-        .then(params => model.hook.find.run({
+        .then(params => Model.hook.find.run({
           params,
           operation: 'find',
-          handler: connector.find,
+          handler: connector.find.bind(connector),
           multiple: true,
         }));
     }
@@ -111,10 +111,10 @@ function injectDependencies({ model, schema, Id, connector, }) {
      */
     findOne() {
       return Promise.all(this.query)
-        .then(params => model.hook.find.run({
+        .then(params => Model.hook.find.run({
           params,
           operation: 'findOne',
-          handler: connector.findOne,
+          handler: connector.findOne.bind(connector),
         }));
     }
 
@@ -124,7 +124,7 @@ function injectDependencies({ model, schema, Id, connector, }) {
      */
     count() {
       return Promise.all(this.query)
-        .then(params => model.hook.find.run({
+        .then(params => Model.hook.find.run({
           params,
           operation: 'count',
           handler: connector.count,
@@ -137,7 +137,7 @@ function injectDependencies({ model, schema, Id, connector, }) {
      */
     remove() {
       return Promise.all(this.query)
-        .then(params => model.hook.remove.run({
+        .then(params => Model.hook.remove.run({
           params,
           operation: 'remove',
           handler: connector.remove,
@@ -150,7 +150,7 @@ function injectDependencies({ model, schema, Id, connector, }) {
      */
     removeOne() {
       return Promise.all(this.query)
-        .then(params => model.hook.remove.run({
+        .then(params => Model.hook.remove.run({
           params,
           operation: 'removeOne',
           handler: connector.removeOne,
@@ -166,7 +166,7 @@ function injectDependencies({ model, schema, Id, connector, }) {
         this.query,
         this.updateQuery,
       ])
-        .then(([ query, update, ]) => model.hook.update.run({
+        .then(([ query, update, ]) => Model.hook.update.run({
           params: {
             query,
             update,
@@ -185,7 +185,7 @@ function injectDependencies({ model, schema, Id, connector, }) {
         this.query,
         this.updateQuery,
       ])
-        .then(([ query, update, ]) => model.hook.update.run({
+        .then(([ query, update, ]) => Model.hook.update.run({
           params: {
             query,
             update,
