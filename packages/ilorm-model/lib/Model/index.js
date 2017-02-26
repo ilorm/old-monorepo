@@ -2,6 +2,7 @@
  * Created by guil_ on 27/12/2016.
  */
 
+const ilormPlugins = require('ilorm-plugins');
 const Id = require('./../Id');
 const initClassProperties = require('./initClassProperties');
 const initInstanceProperties = require('./initInstanceProperties');
@@ -34,7 +35,10 @@ function injectDependencies({ name, modelsMap, schema, connector, }) {
       });
 
       if (!obj) {
-        schema.initValues(this);
+        ilormPlugins.run('model.init', { schema, })
+          .then(({ schema, }) => {
+            schema.initValues(this);
+          });
       }
     }
 
@@ -58,6 +62,28 @@ function injectDependencies({ name, modelsMap, schema, connector, }) {
     }
 
     /**
+     * An internal function used to run the specific hook with the specitic parameter
+     * @param {String} [actionPluginName] The action plugin called before and after running the hook
+     * @param {String} hookName The hook to run before running the action
+     * @param {Object} hookParameters Parameters given to the hook and the running action
+     * @return {Promise.<TResult>|*} Final result of the action
+     */
+    runHook({ actionPluginName, hookName, hookParameters, }) {
+      const actionName = actionPluginName || `model.${hookName}`;
+      const pluginsParameters = {
+        hookName,
+        hookParameters,
+      };
+
+      return ilormPlugins.run(`${actionName}.before`, pluginsParameters)
+        .then(({ hookName, hookParameters, }) => this.hook[hookName].run(hookParameters))
+        .then(result => ilormPlugins.run(`${actionName}.after`, {
+          result,
+          model: this,
+        }));
+    }
+
+    /**
      * Save the current instance of your model in your database.
      * This action could update if the instance already exists.
      * This action could insert if the instance does not exists.
@@ -69,25 +95,35 @@ function injectDependencies({ name, modelsMap, schema, connector, }) {
       if (this.__ilormIsNewObject) {
         this.__ilormIsNewObject = false;
 
-        return this.hook.insert.run({
-          params: { obj: this, },
-          operation: 'create',
-          handler: connector.create,
-        });
+        const hookParameters = {
+          hookName: 'insert',
+          hookParameters: {
+            params: { obj: this, },
+            operation: 'create',
+            handler: connector.create,
+          },
+        };
+
+        return this.runHook(hookParameters);
       }
 
       if (this.__ilormEditedFields.length === 0) {
         return Promise.resolve(this);
       }
 
-      const result = this.hook.update.run({
-        params: {
-          obj: this,
-          editedFields: this.__ilormEditedFields,
+      const hookParameters = {
+        hookName: 'update',
+        hookParameters: {
+          params: {
+            obj: this,
+            editedFields: this.__ilormEditedFields,
+          },
+          operation: 'updateOne',
+          handler: connector.updateOne,
         },
-        operation: 'updateOne',
-        handler: connector.updateOne,
-      });
+      };
+
+      const result = this.runHook(hookParameters);
 
       this.__ilormEditedFields = [];
 
@@ -100,11 +136,16 @@ function injectDependencies({ name, modelsMap, schema, connector, }) {
      */
     remove() {
       if (!this.__ilormIsNewObject) {
-        return this.hook.remove.run({
-          params: { obj: this, },
-          operation: 'remove',
-          handler: connector.removeOne,
-        });
+        const hookParameters = {
+          hookName: 'remove',
+          hookParameters: {
+            params: { obj: this, },
+            operation: 'remove',
+            handler: connector.removeOne,
+          },
+        };
+
+        return this.runHook(hookParameters);
       }
 
       return Promise.resolve(true);
@@ -124,12 +165,17 @@ function injectDependencies({ name, modelsMap, schema, connector, }) {
      * @returns {Promise.<Model[]>|*} Return every model will match the query
      */
     static find(params) {
-      return this.hook.find.run({
-        params,
-        operation: 'find',
-        handler: connector.find,
-        multiple: true,
-      }).then(results => (
+      const hookParameters = {
+        hookName: 'find',
+        hookParameters: {
+          params,
+          operation: 'find',
+          handler: connector.find,
+          multiple: true,
+        },
+      };
+
+      return this.runHook(hookParameters).then(results => (
         results.map(rawObj => new Model(rawObj))
       ));
     }
@@ -140,11 +186,16 @@ function injectDependencies({ name, modelsMap, schema, connector, }) {
      * @returns {Promise.<Model>|*} Return the model found by the query
      */
     static findOne(params) {
-      return this.hook.find.run({
-        params,
-        operation: 'findOne',
-        handler: connector.findOne,
-      }).then(result => new Model(result));
+      const hookParameters = {
+        hookName: 'find',
+        hookParameters: {
+          params,
+          operation: 'findOne',
+          handler: connector.findOne,
+        },
+      };
+
+      return this.runHook(hookParameters).then(result => new Model(result));
     }
 
     /**

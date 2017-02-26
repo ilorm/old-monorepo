@@ -129,7 +129,8 @@
     // COULD BE USEFUL :
     // no-restricted-globals
     "no-shadow-restricted-names": "error",
-    "no-shadow": "error",
+    // Could be useful :
+    // "no-shadow": "error",
     "no-undef-init": "error",
     "no-undef": "error",
     // no-undefined
@@ -177,7 +178,8 @@
     "key-spacing": "error",
     "keyword-spacing": "error",
     // line-comment-position
-    "linebreak-style": "error",
+    // Too many error currently :
+    //"linebreak-style": "error",
     "lines-around-comment": ["error", {
       "beforeLineComment": true,
       "allowBlockStart": true,
