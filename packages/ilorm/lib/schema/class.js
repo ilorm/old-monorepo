@@ -1,0 +1,54 @@
+'use strict';
+
+const UNDEFINED_PROPERTIES_POLICY = {
+  KEEP: 'keep',
+  ERROR: 'error',
+  ERASE: 'erase',
+};
+
+const DEFAULT_OPTIONS = {
+  undefinedProperties: UNDEFINED_PROPERTIES_POLICY.ERASE
+};
+
+class Schema {
+  constructor(schemaDefinition, options = DEFAULT_OPTIONS) {
+    this.definition = schemaDefinition;
+    this.properties = Object.keys(this.definition);
+    this.properties.forEach(property => {
+      this.definition[property]._name = property;
+    });
+    this.undefinedPropertyPolicy = options.undefinedPropertyPolicy;
+  }
+
+  async init(rawObject = {}) {
+    const rawProperties = Object.keys(rawObject);
+
+    await this.properties.forEach(async property => {
+      await this.definition[property].init(rawObject, property);
+
+      const rawPropertyIndex = rawProperties.indexOf(property);
+      if(rawPropertyIndex > -1) {
+        rawProperties.splice(rawPropertyIndex, 1);
+      }
+    });
+
+    if(rawProperties.length > 0 && this.undefinedPropertyPolicy !== UNDEFINED_PROPERTIES_POLICY.KEEP) {
+      if(this.undefinedPropertyPolicy === UNDEFINED_PROPERTIES_POLICY.ERROR) {
+        throw new Error(`Undefined property declared in the raw object : ${rawProperties[0]}`)
+      }
+
+      // UNDEFINED_PROPERTIES_POLICY.ERASE
+      rawProperties.forEach(rawProperty => {
+        delete rawObject[rawProperty];
+      });
+    }
+
+    return rawObject;
+  }
+
+  async isValid(rawObject) {
+
+  }
+}
+
+module.exports = Schema;
