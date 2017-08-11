@@ -1,7 +1,7 @@
 'use strict';
 
 const classIndex = require('./classIndex');
-const Query = require('../query/class');
+const Query = require('../query').class;
 
 class Model {
   static getSchema() {
