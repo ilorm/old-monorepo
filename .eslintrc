@@ -225,10 +225,6 @@
     // no-underscore-dangle
     "no-unneeded-ternary": "error",
     "no-whitespace-before-property": "error",
-    "object-curly-newline": ["error", {
-      "ObjectExpression": { "minProperties": 2 },
-      "ObjectPattern": { "multiline": true }
-    }],
     "object-curly-spacing": ["error", "always", {
       "arraysInObjects": false,
       "objectsInObjects": false
