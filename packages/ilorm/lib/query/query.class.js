@@ -1,23 +1,27 @@
 'use strict';
 
+const declareValue = item => ({ value: item, });
+
+/**
+ * Class representing a queryBuilder
+ * It's used by the framework to build query
+ */
 class Query {
+  /**
+   * Create a new queryBuilder
+   * @param {Model} modelObject The model used to create the query
+   */
   constructor(modelObject) {
     Object.defineProperties(this, {
-      _ilormSchema: {
-        value: modelObject.getSchema()
-      },
-      _ilormConnector: {
-        value: modelObject.getConnector()
-      },
-      _ilormQuery: {
-        value: {}
-      },
+      _ilormSchema: declareValue(modelObject.getSchema()),
+      _ilormConnector: declareValue(modelObject.getConnector()),
+      _ilormQuery: declareValue({}),
     });
 
     this._ilormSchema.properties.forEach(property => {
-      Object.defineProperty(this, property, {
-        value: this._ilormSchema.definition[property].getQueryOperations(this)
-      });
+      const propertyDefinition = this._ilormSchema.definition[property];
+
+      Object.defineProperty(this, property, declareValue(propertyDefinition.getQueryOperations(this)));
     });
 
   }
