@@ -10,6 +10,8 @@ const DEFAULT_OPTIONS = {
   undefinedProperties: UNDEFINED_PROPERTIES_POLICY.ERASE,
 };
 
+const UNDEFINED_INDEX = -1;
+
 /**
  * Class representing schema of data
  */
@@ -41,7 +43,7 @@ class Schema {
 
       const rawPropertyIndex = rawProperties.indexOf(property);
 
-      if (rawPropertyIndex > -1) {
+      if (rawPropertyIndex > UNDEFINED_INDEX) {
         rawProperties.splice(rawPropertyIndex, 1);
       }
     });
