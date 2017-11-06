@@ -1,9 +1,15 @@
 'use strict';
 
+const Date = require('./date.class');
+const Number = require('./number.class');
+const Reference = require('./reference.class');
+const SchemaField = require('./schemaField.class');
+const String = require('./string.class');
+
 module.exports = {
-  Date: require('./date.class'),
-  Number: require('./number.class'),
-  Reference: require('./reference.class'),
-  SchemaField: require('./schemaField.class'),
-  string: require('./string.class'),
+  Date,
+  Number,
+  Reference,
+  SchemaField,
+  String,
 };

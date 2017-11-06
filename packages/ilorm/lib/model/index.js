@@ -1,5 +1,3 @@
 'use strict';
 
-module.exports = {
-  class: require('./class'),
-};
+module.exports = require('./model.class');
