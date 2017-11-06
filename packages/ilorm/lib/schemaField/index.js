@@ -1,15 +1,24 @@
 'use strict';
 
-const Date = require('./date.class');
-const Number = require('./number.class');
-const Reference = require('./reference.class');
+const DateField = require('./date.class');
+const NumberField = require('./number.class');
+const ReferenceField = require('./reference.class');
 const SchemaField = require('./schemaField.class');
-const String = require('./string.class');
+const StringField = require('./string.class');
 
-module.exports = {
-  Date,
-  Number,
-  Reference,
-  SchemaField,
-  String,
+const factory = {
+  date: () => new DateField(),
+  number: () => new NumberField(),
+  reference: () => new ReferenceField(),
+  string: () => new StringField(),
 };
+
+factory.Types = {
+  Date: DateField,
+  Number: NumberField,
+  Reference: ReferenceField,
+  SchemaField,
+  String: StringField,
+};
+
+module.exports = factory;
