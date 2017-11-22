@@ -1,10 +1,10 @@
 'use strict';
 
-const classIndex = {};
+const classIndex = new Map();
 
 module.exports = {
   declare: (className, Class) => {
-    classIndex[className] = Class;
+    classIndex.set(className, Class);
   },
-  get: className => classIndex[className],
+  get: className => classIndex.get(className),
 };

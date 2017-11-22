@@ -49,7 +49,7 @@ class Model {
    * @Returns {Model} The model instance
    */
   static instantiate(rawObject = {}) {
-    return new classIndex[this.getName()](rawObject);
+    return classIndex.get(this.getName())(rawObject);
   }
 
   /**
@@ -58,7 +58,9 @@ class Model {
    * @return {Model} A model instance
    */
   static async getById(id) {
-    return this.instantiate(await this.getConnector().getById(id));
+    const rawInstance = await this.getConnector().getById(id);
+
+    return this.instantiate(rawInstance);
   }
 
   /**
