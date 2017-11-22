@@ -1,6 +1,7 @@
 'use strict';
 
 const declareValue = item => ({ value: item, });
+const fields = require('./fields');
 
 /**
  * Class representing a queryBuilder
@@ -13,13 +14,13 @@ class Query {
    */
   constructor(modelObject) {
     Object.defineProperties(this, {
-      _ilormSchema: declareValue(modelObject.getSchema()),
-      _ilormConnector: declareValue(modelObject.getConnector()),
-      _ilormQuery: declareValue({}),
+      [fields.schema]: declareValue(modelObject.getSchema()),
+      [fields.connector]: declareValue(modelObject.getConnector()),
+      [fields.query]: declareValue({}),
     });
 
-    this._ilormSchema.properties.forEach(property => {
-      const propertyDefinition = this._ilormSchema.definition[property];
+    this[fields.schema].properties.forEach(property => {
+      const propertyDefinition = this[fields.schema].definition[property];
 
       Object.defineProperty(this, property, declareValue(propertyDefinition.getQueryOperations(this)));
     });

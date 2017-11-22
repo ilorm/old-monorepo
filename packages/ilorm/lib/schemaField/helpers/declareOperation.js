@@ -1,7 +1,9 @@
 'use strict';
 
+const queryFields = require('../../query/fields');
+
 const declareOperationFactory = (query = {}, key, operation) => params => {
-  query._ilormQuery[key][operation] = params;
+  query[queryFields.query][key][operation] = params;
 
   return query;
 };
