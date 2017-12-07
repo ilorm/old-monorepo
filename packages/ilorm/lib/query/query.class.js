@@ -2,6 +2,7 @@
 
 const declareValue = item => ({ value: item, });
 const fields = require('./fields');
+const operations = require('./operations');
 
 /**
  * Class representing a queryBuilder
@@ -27,5 +28,8 @@ class Query {
 
   }
 }
+
+Query.FIELDS = fields;
+Query.OPERATIONS = operations;
 
 module.exports = Query;

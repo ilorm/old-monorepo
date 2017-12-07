@@ -1,17 +1,16 @@
 /**
  * Created by guil_ on 29/12/2016.
  */
-const EventEmitter = require('events');
 const MongoQuery = require('./MongoQuery/index');
-const convertIlormQueryToMongoQuery = require('./convertIlormQueryToMongoQuery');
-const convertIlormUpdateToMongoUpdate = require('./convertIlormUpdateToMongoUpdate');
+const convertQueryToMongoQuery = require('./convertQueryToMongoQuery');
+const convertUpdateToMongoUpdate = require('./convertUpdateToMongoUpdate');
 
 /**
  * Inject your mongo db in the Mongo connector
  * @param {Object} db A valid mongo connection
  * @returns {MongoConnector} Return a mongo connector
  */
-function injectDependencies({ db, }) {
+const injectDependencies = ({ db, }) => {
   /**
    * The Mongo MongoConnector class
    */
@@ -20,16 +19,8 @@ function injectDependencies({ db, }) {
      * Instantiate a new MongoConnector
      * @param {String} collection : The target collection name to use
      */
-    constructor({ collection, }) {
-      this.connectorEvent = new EventEmitter();
-
-      db.collection(collection, (err, mongoCollection) => {
-        if (err) {
-          throw err;
-        }
-        this.collection = mongoCollection;
-        this.connectorEvent.emit('collectionLoaded', collection);
-      });
+    constructor({ collectionName, }) {
+      this.collectionName = collectionName;
     }
 
     /**
@@ -38,12 +29,20 @@ function injectDependencies({ db, }) {
      */
     getCollection() {
       if (this.collection) {
-        return Promise.resolve(this.collection);
+        return this.collection;
       }
 
-      return new Promise(resolve => {
-        this.connectorEvent.on('collectionLoaded', resolve);
+      this.collection = new Promise((resolve, reject) => {
+        db.collection(this.collectionName, (err, mongoCollection) => {
+          if (err) {
+            return reject(err);
+          }
+
+          resolve(mongoCollection);
+        });
       });
+
+      return this.collection;
     }
 
     /**
@@ -51,8 +50,10 @@ function injectDependencies({ db, }) {
      * @param {Object|Object[]} docs The object you want to create in the database
      * @returns {*} The result of the operation
      */
-    create(docs) {
-      return this.getCollection().then(collection => collection.insertMany(docs));
+    async create(docs) {
+      const collection = await this.getCollection();
+
+      return collection.insertMany(docs);
     }
 
     /**
@@ -60,19 +61,12 @@ function injectDependencies({ db, }) {
      * @param {Object} query The ilorm query you want to run on your Database.
      * @returns {Promise} Every documents who match the query
      */
-    find(query) {
-      const mongoQuery = convertIlormQueryToMongoQuery(query);
+    async find(query) {
+      const mongoQuery = convertQueryToMongoQuery(query);
+      const collection = await this.getCollection();
+      const findResult = collection.find(mongoQuery);
 
-      return new Promise((resolve, reject) => {
-        this.getCollection().then(collection => collection.find(mongoQuery)
-          .toArray((err, docs) => {
-            if (err) {
-              return reject(err);
-            }
-
-            return resolve(docs);
-          }));
-      });
+      return findResult.toArray();
     }
 
     /**
@@ -80,10 +74,11 @@ function injectDependencies({ db, }) {
      * @param {Object} query The ilorm query you want to run on your Database.
      * @returns {*|Promise.<Model>|*} The document first found
      */
-    findOne(query) {
-      const mongoQuery = convertIlormQueryToMongoQuery(query);
+    async findOne(query) {
+      const mongoQuery = convertQueryToMongoQuery(query);
+      const collection = await this.getCollection();
 
-      return this.getCollection().then(collection => collection.findOne(mongoQuery));
+      return collection.findOne(mongoQuery);
     }
 
     /**
@@ -91,10 +86,11 @@ function injectDependencies({ db, }) {
      * @param {Object} query The ilorm query you want to run on your Database.
      * @returns {Promise.<Number>} The number of document found
      */
-    count(query) {
-      const mongoQuery = convertIlormQueryToMongoQuery(query);
+    async count(query) {
+      const mongoQuery = convertQueryToMongoQuery(query);
+      const collection = await this.getCollection();
 
-      return this.getCollection().then(collection => collection.count(mongoQuery));
+      return collection.count(mongoQuery);
     }
 
     /**
@@ -103,11 +99,12 @@ function injectDependencies({ db, }) {
      * @param {Object} update The ilorm update you want to run on your Database.
      * @returns {*} The number of document updated
      */
-    update({ query, update, }) {
-      const mongoQuery = convertIlormQueryToMongoQuery(query);
-      const mongoUpdate = convertIlormUpdateToMongoUpdate(update);
+    async update({ query, update, }) {
+      const mongoQuery = convertQueryToMongoQuery(query);
+      const mongoUpdate = convertUpdateToMongoUpdate(update);
+      const collection = await this.getCollection();
 
-      return this.getCollection().then(collection => collection.updateMany(mongoQuery, mongoUpdate));
+      return collection.updateMany(mongoQuery, mongoUpdate);
     }
 
     /**
@@ -116,11 +113,12 @@ function injectDependencies({ db, }) {
      * @param {Object} update The ilorm update you want to run on your Database.
      * @returns {*} Return true if a document was updated
      */
-    updateOne({ query, update, }) {
-      const mongoQuery = convertIlormQueryToMongoQuery(query);
-      const mongoUpdate = convertIlormUpdateToMongoUpdate(update);
+    async updateOne({ query, update, }) {
+      const mongoQuery = convertQueryToMongoQuery(query);
+      const mongoUpdate = convertUpdateToMongoUpdate(update);
+      const collection = await this.getCollection();
 
-      return this.getCollection().then(collection => collection.findOneAndUpdate(mongoQuery, mongoUpdate));
+      return collection.findOneAndUpdate(mongoQuery, mongoUpdate);
     }
 
     /**
@@ -128,10 +126,11 @@ function injectDependencies({ db, }) {
      * @param {Object} query The ilorm query you want to run on your Database.
      * @returns {Promise.<Number>} The number of document removed
      */
-    remove(query) {
-      const mongoQuery = convertIlormQueryToMongoQuery(query);
+    async remove(query) {
+      const mongoQuery = convertQueryToMongoQuery(query);
+      const collection = await this.getCollection();
 
-      return this.getCollection().then(collection => collection.deleteMany(mongoQuery));
+      return collection.deleteMany(mongoQuery);
     }
 
     /**
@@ -139,10 +138,11 @@ function injectDependencies({ db, }) {
      * @param {Object} query The ilorm query you want to run on your Database.
      * @returns {Promise.<Boolean>} Return true if a document was removed
      */
-    removeOne(query) {
-      const mongoQuery = convertIlormQueryToMongoQuery(query);
+    async removeOne(query) {
+      const mongoQuery = convertQueryToMongoQuery(query);
+      const collection = await this.getCollection();
 
-      return this.getCollection().then(collection => collection.findOneAndDelete(mongoQuery));
+      return collection.findOneAndDelete(mongoQuery);
     }
 
     /**
@@ -150,10 +150,11 @@ function injectDependencies({ db, }) {
      * @param {Object} query The ilorm query you want to use to generate the stream
      * @returns {Stream} The stream associated with the query/
      */
-    stream(query) {
-      const mongoQuery = convertIlormQueryToMongoQuery(query);
+    async stream(query) {
+      const mongoQuery = convertQueryToMongoQuery(query);
+      const collection = await this.getCollection();
 
-      return this.getCollection().then(collection => collection.find(mongoQuery).stream());
+      return collection.find(mongoQuery).stream();
     }
 
     /**
@@ -167,6 +168,6 @@ function injectDependencies({ db, }) {
   }
 
   return MongoConnector;
-}
+};
 
 module.exports = injectDependencies;

@@ -11,7 +11,7 @@ const convert = {
  * @param {Object} ilormUpdate The ilorm query you want to convert
  * @returns {Object} The result mongo Query.
  */
-function convertIlormQueryToMongoQuery(ilormUpdate) {
+function convertQueryToMongoQuery(ilormUpdate) {
   if (!ilormUpdate || ilormUpdate.length === 0) {
     return {};
   }
@@ -43,4 +43,4 @@ function convertIlormQueryToMongoQuery(ilormUpdate) {
   return updateMongo;
 }
 
-module.exports = convertIlormQueryToMongoQuery;
+module.exports = convertQueryToMongoQuery;
