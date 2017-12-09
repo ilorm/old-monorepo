@@ -13,6 +13,7 @@
     "ilorm"
   ],
   "dependencies": {
+    "ilorm": "0.1.0",
     "mongodb": "^2.2.19"
   },
   "author": "guillaume DAIX",

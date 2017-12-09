@@ -1,8 +1,9 @@
 'use strict';
 
-const declareValue = item => ({ value: item, });
 const fields = require('./fields');
 const operations = require('./operations');
+
+const declareValue = item => ({ value: item, });
 
 /**
  * Class representing a queryBuilder

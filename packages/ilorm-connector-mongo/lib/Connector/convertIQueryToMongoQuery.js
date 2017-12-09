@@ -12,7 +12,7 @@ const operatorConversion = {
 };
 
 /**
- * Convert a valid inputQuery to a MongoQuery
+ * Convert a valid inputQuery to a query
  * @param {Object} inputQuery The ilorm query you want to convert
  * @returns {Object} The mongo query
  */
@@ -39,7 +39,7 @@ function convertQueryToMongoQuery(inputQuery) {
       return { [inputQueryElement.context]: context, };
     }
 
-    throw new Error('Connector.MongoDB', 'UNDEFINED OPERATOR : ', inputQueryElement.operator);
+    throw new Error('connector.MongoDB', 'UNDEFINED OPERATOR : ', inputQueryElement.operator);
   });
 
   return { $and, };

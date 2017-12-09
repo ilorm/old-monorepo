@@ -5,14 +5,14 @@
 const initQueryProperties = require('./initQueryProperties');
 
 /**
- * Inject dependencies to MongoQuery
+ * Inject dependencies to query
  * @param {Query} Query class Query to overload
- * @returns {MongoQuery} The MongoQuery returned by a mongo model
+ * @returns {MongoQuery} The query returned by a mongo model
  */
-function injectDependencies({ Query, schema, }) {
+const injectDependencies = ({ Query, schema, }) => {
 
   /**
-   * The MongoQuery overload Query object
+   * The query overload Query object
    */
   class MongoQuery extends Query {
     /**
@@ -29,6 +29,6 @@ function injectDependencies({ Query, schema, }) {
   }
 
   return MongoQuery;
-}
+};
 
 module.exports = injectDependencies;

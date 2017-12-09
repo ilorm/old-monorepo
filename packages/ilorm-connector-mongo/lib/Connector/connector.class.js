@@ -1,7 +1,7 @@
 /**
  * Created by guil_ on 29/12/2016.
  */
-const MongoQuery = require('./MongoQuery/index');
+const MongoQuery = require('./query/index');
 const convertQueryToMongoQuery = require('./convertQueryToMongoQuery');
 const convertUpdateToMongoUpdate = require('./convertUpdateToMongoUpdate');
 
@@ -158,8 +158,8 @@ const injectDependencies = ({ db, }) => {
     }
 
     /**
-     * Return a MongoQuery
-     * @return {MongoQuery} The MongoQuery object
+     * Return a query
+     * @return {MongoQuery} The query object
      * @constructor
      */
     static Query() {

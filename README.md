@@ -75,13 +75,6 @@ const model = require('ilorm').model;
 const userSchema = require('./schema');
 const userModel = model('User', userModel, ilormMongo({ db }));
 
-userModel.hooks.addBefore({
-  find: function findHook(params) {
-    //Do something
-    return Promise.resolve(params);
-  }
-});
-
 userModel.query()
   .firstName.is('Smith')
   .findOne()

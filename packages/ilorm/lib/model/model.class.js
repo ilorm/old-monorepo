@@ -11,36 +11,36 @@ class Model {
    * Return the schema associated with the current model
    * @return {Schema} the schema associate with the model
    */
-  static getSchema() {
-    if (!this.SCHEMA) {
+  static getSchema(schema) {
+    if (!schema) {
       throw new Error('Missing Schema binding with the Model');
     }
 
-    return this.SCHEMA;
+    return schema;
   }
 
   /**
    * Return the unique name of the model
    * @return {String} The model name
    */
-  static getName() {
-    if (!this.NAME) {
+  static getName(name) {
+    if (!name) {
       throw new Error('Missing Name binding with the Model');
     }
 
-    return this.NAME;
+    return name;
   }
 
   /**
    * Get the connector associate with the model
    * @return {Connector} The connector associate with the current model
    */
-  static getConnector() {
-    if (!this.CONNECTOR) {
-      throw new Error('Missing Connector binding with the Model');
+  static getConnector(connector) {
+    if (!connector) {
+      throw new Error('Missing connector binding with the Model');
     }
 
-    return this.CONNECTOR;
+    return connector;
   }
 
   /**
@@ -48,8 +48,10 @@ class Model {
    * @param {Object} rawObject the raw object to instantiate
    * @Returns {Model} The model instance
    */
-  static instantiate(rawObject = {}) {
-    return classIndex.get(this.getName())(rawObject);
+  static instantiate(className, rawObject = {}) {
+    const Class = classIndex.get(this.getName(className));
+
+    return new Class(rawObject);
   }
 
   /**
@@ -57,8 +59,8 @@ class Model {
    * @param {ID} id The id of the target model
    * @return {Model} A model instance
    */
-  static async getById(id) {
-    const rawInstance = await this.getConnector().getById(id);
+  static async getById(connector, id) {
+    const rawInstance = await this.getConnector(connector).getById(id);
 
     return this.instantiate(rawInstance);
   }

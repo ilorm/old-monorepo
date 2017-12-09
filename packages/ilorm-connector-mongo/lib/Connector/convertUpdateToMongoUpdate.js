@@ -28,7 +28,7 @@ function convertQueryToMongoQuery(ilormUpdate) {
     const mongoOperator = convert[currentIlormUpdate.operator] || null;
 
     if (!mongoOperator) {
-      throw new Error('Connector.MongoDB', 'UNDEFINED OPERATOR : ', currentIlormUpdate.operator);
+      throw new Error('connector.MongoDB', 'UNDEFINED OPERATOR : ', currentIlormUpdate.operator);
     }
     updated[mongoOperator]++;
     updateMongo[mongoOperator] = { [currentIlormUpdate.context]: currentIlormUpdate.value, };
