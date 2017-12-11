@@ -9,6 +9,7 @@ const Query = require('../query');
 class Model {
   /**
    * Return the schema associated with the current model
+   * @param {Schema} schema the schema returned by the function
    * @return {Schema} the schema associate with the model
    */
   static getSchema(schema) {
@@ -21,6 +22,7 @@ class Model {
 
   /**
    * Return the unique name of the model
+   * @param {String} name The name returned by the function
    * @return {String} The model name
    */
   static getName(name) {
@@ -33,6 +35,7 @@ class Model {
 
   /**
    * Get the connector associate with the model
+   * @param {Connector} connector The connector returned by the function
    * @return {Connector} The connector associate with the current model
    */
   static getConnector(connector) {
@@ -45,6 +48,7 @@ class Model {
 
   /**
    * Instantiate a raw json object to an instance representing the data model
+   * @param {String} className The name of the class to instantiate
    * @param {Object} rawObject the raw object to instantiate
    * @Returns {Model} The model instance
    */
@@ -56,6 +60,7 @@ class Model {
 
   /**
    * Get the instance of the model linked with the given id
+   * @param {Connector} connector The connector to use to query the model instance
    * @param {ID} id The id of the target model
    * @return {Model} A model instance
    */

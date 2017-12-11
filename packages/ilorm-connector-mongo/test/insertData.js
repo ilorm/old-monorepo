@@ -2,6 +2,7 @@
  * Created by guil_ on 07/12/2017.
  */
 
+/*
 const ilorm = require('ilorm');
 const ilormMongo = require('./lib');
 const { Schema, declareModel, ModelFactory, } = ilorm;
@@ -29,3 +30,4 @@ const benjamin = new User({
 });
 benjamin.save();
 
+*/
