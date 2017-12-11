@@ -1,6 +1,12 @@
 # ilorm (I Love ORM)
 New kind of NodeJS ORM.
 
+
+## Why a new ORM ?
+- Use newest feature of ECMAScript (modern javascript). 
+- Universal database connector (MongoDB, SQL, Redis, REST...).  
+- Could create powerful plugin using the "class" inheritance.
+
 ## Features
 
 ## Initialize
@@ -20,15 +26,15 @@ const schema = schema.new({
 
 ```
 ### ilorm.schema ###
-* new( schema ) : Create a new ilorm schema
-* String() : Declare a string field
-* Number() : Declare a number field
-* Boolean() : Declare a boolean field.
-* Object( subSchema ) : Declare a subobject schema
-* Array( subSchema ) : Declare an array schema
-* Map( subSchema ) : Declare a map
+* new( schema ) : Create a new ilorm schema.
+* string() : Declare a string field. Work as a factory for SchemaType/String.
+* number() : Declare a number field. Work as a factory for SchemaType/Number.
+* boolean() : Declare a boolean field. Work as a factory for SchemaType/Boolean.
+* object( subSchema ) : Declare a subobject schema. Work as a factory for SchemaType/Object.
+* array( subSchema ) : Declare an array schema. Work as a factory for SchemaType/Array.
+* map( subSchema ) : Declare a map. Work as a factory for SchemaType/Map.
 
-### allSchemaType ###
+### All SchemaType ###
 * required() : The field is required for create an object (per default not required).
 * default(value) : Set a precise value for default (if you do not set a value at creation).
 * deprecated() : Declare the field at deprecated
@@ -62,9 +68,11 @@ const schema = schema.new({
 });
 ```
 
-### Number() ###
+### SchemaType/Number ###
+Represent a javascript number.
 
-### String() ###
+### SchemaType/String ###
+Represent a javascript string.
 
 ## Models
 ```javascript
