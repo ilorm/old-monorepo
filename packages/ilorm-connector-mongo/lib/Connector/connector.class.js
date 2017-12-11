@@ -2,6 +2,7 @@
  * Created by guil_ on 29/12/2016.
  */
 const MongoQuery = require('./query/index');
+const modelFactory = require('../model/model.factory');
 const convertQueryToMongoQuery = require('./convertQueryToMongoQuery');
 const convertUpdateToMongoUpdate = require('./convertUpdateToMongoUpdate');
 
@@ -164,6 +165,15 @@ const injectDependencies = ({ db, }) => {
      */
     static Query() {
       return MongoQuery;
+    }
+
+    /**
+     * Create a new MongoModel from the given params
+     * @param {Object} params The input parameters to create the model
+     * @returns {MongoModel} The result MongoModel
+     */
+    modelFactory(params) {
+      return modelFactory(params);
     }
   }
 

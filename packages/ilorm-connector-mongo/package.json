@@ -14,7 +14,7 @@
   ],
   "dependencies": {
     "ilorm": "0.1.0",
-    "mongodb": "^2.2.19"
+    "mongodb": "^3.0.0-rc0"
   },
   "author": "guillaume DAIX",
   "license": "ISC"
