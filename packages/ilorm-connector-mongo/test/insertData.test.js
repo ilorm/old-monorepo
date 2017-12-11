@@ -4,7 +4,7 @@ const { expect, } = require('chai');
 const { MongoClient, } = require('mongodb');
 const ilorm = require('ilorm');
 
-const ilormMongo = require('./lib');
+const ilormMongo = require('../lib');
 
 const DB_URL = 'mongodb://localhost:27017/ilorm';
 
