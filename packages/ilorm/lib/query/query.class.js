@@ -3,7 +3,17 @@
 const fields = require('./fields');
 const operations = require('./operations');
 
-const declareValue = item => ({ value: item, });
+/**
+ * Create a property option object (Object.defineProperty)
+ * With a value field only ;
+ * configurable: false,
+ * writable: false,
+ * enumerable : false,
+ * @param {Mixed} variable The variable to associate with the value
+ * @returns {Object} The param object
+ */
+const declareValue = variable => ({ value: variable, });
+
 
 /**
  * Class representing a queryBuilder

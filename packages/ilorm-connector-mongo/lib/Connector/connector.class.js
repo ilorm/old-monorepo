@@ -38,7 +38,7 @@ const injectDependencies = ({ db, }) => {
             return reject(err);
           }
 
-          resolve(mongoCollection);
+          return resolve(mongoCollection);
         });
       });
 
