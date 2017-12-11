@@ -8,7 +8,7 @@ const ilormMongo = require('../lib');
 
 const DB_URL = 'mongodb://localhost:27017/ilorm';
 
-const { Schema, declareModel, ModelFactory, } = ilorm;
+const { Schema, declareModel, modelFactory, } = ilorm;
 
 describe('ilorm-connector-mongodb', () => {
   describe('test/insertData', () => {
@@ -16,7 +16,8 @@ describe('ilorm-connector-mongodb', () => {
     let database;
 
     before(async () => {
-      database = await MongoClient.connect(DB_URL);
+      const mongoClient = await MongoClient.connect(DB_URL);
+      database = await mongoClient.db('ilorm');
 
       ilorm.use(ilormMongo);
 
@@ -27,7 +28,13 @@ describe('ilorm-connector-mongodb', () => {
 
       const MongoConnector = ilormMongo.fromClient(database);
 
-      class User extends ModelFactory('users', userSchema, new MongoConnector('users')) {}
+      const modelFactoryParams = {
+        name: 'users',
+        schema: userSchema,
+        connector: new MongoConnector('users'),
+      };
+
+      class User extends modelFactory(modelFactoryParams) {}
 
       declareModel('user', User);
 

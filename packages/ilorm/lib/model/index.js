@@ -1,3 +1,10 @@
 'use strict';
 
-module.exports = require('./model.class');
+const Class = require('./model.class');
+const factory = require('./model.factory');
+
+module.exports = {
+  Class,
+  factory,
+};
+

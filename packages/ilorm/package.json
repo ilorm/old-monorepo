@@ -10,8 +10,7 @@
     "orm",
     "ilorm"
   ],
-  "dependencies": {
-  },
+  "dependencies": {},
   "author": "guillaume DAIX",
   "license": "ISC"
 }

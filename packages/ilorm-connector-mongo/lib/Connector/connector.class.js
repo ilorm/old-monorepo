@@ -1,7 +1,7 @@
 /**
  * Created by guil_ on 29/12/2016.
  */
-const MongoQuery = require('./query/index');
+const MongoQuery = require('../query');
 const modelFactory = require('../model/model.factory');
 const convertQueryToMongoQuery = require('./convertQueryToMongoQuery');
 const convertUpdateToMongoUpdate = require('./convertUpdateToMongoUpdate');
