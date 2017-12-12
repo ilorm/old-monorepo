@@ -3,10 +3,30 @@
 const classIndex = require('./classIndex');
 const Query = require('../query');
 
+const isNew = Symbol('isNew');
+
 /**
  * Class representing a Model
  */
 class Model {
+  /**
+   * Construct a new instance of the model
+   */
+  constructor(rawJson) {
+    Object.defineProperties(this, {
+      [isNew]: {
+        value: true,
+        writable: true,
+      },
+    });
+
+    if (rawJson) {
+      for (const property of Object.keys(rawJson)) {
+        this[property] = rawJson[property];
+      }
+    }
+  }
+
   /**
    * Return the schema associated with the current model
    * @param {Schema} schema the schema returned by the function
@@ -65,9 +85,13 @@ class Model {
    * @return {Model} A model instance
    */
   static async getById(connector, id) {
-    const rawInstance = await this.getConnector(connector).getById(id);
+    const rawInstance = await Model.getConnector(connector).getById(id);
 
-    return this.instantiate(rawInstance);
+    const instance = this.instantiate(rawInstance);
+
+    instance[isNew] = false;
+
+    return instance;
   }
 
   /**
@@ -89,11 +113,32 @@ class Model {
 
   /**
    * Save the current instance in db
-   * TODO
+   * @param {Connector} connector inject connector in function
    * @return {null} null
    */
-  save() {
-    return null;
+  async save(connector) {
+    if (this[isNew]) {
+      const rawJson = await this.getJson();
+
+      await Model.getConnector(connector).create(rawJson);
+
+      this[isNew] = false;
+
+      return this;
+    }
+
+    return this;
+  }
+
+  /**
+   * Return json associated with the curent instance
+   * @param {Schema} paramSchema inject the schema associated with the model
+   * @return {Object} The json associated with the instance
+   */
+  getJson(paramSchema) {
+    const schema = Model.getSchema(paramSchema);
+
+    return schema.initInstance(this);
   }
 }
 

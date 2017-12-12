@@ -59,6 +59,24 @@ const modelFactory = ({ name, schema, connector, }) => {
     static getById(id) {
       return super.getById(connector, id);
     }
+
+    /**
+     * Save instance in database
+     * Create it, if it's not exists
+     * else, save it in database.
+     * @returns {Model} Return instance.
+     */
+    save() {
+      return super.save(connector);
+    }
+
+    /**
+     * Return instance object
+     * @return {Object} Return the object raw
+     */
+    getJson() {
+      return super.getJson(schema);
+    }
   }
 
   const connectorModelParams = {

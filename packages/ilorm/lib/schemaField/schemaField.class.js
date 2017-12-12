@@ -36,8 +36,12 @@ class SchemaField {
   async init(instance, field) {
     const value = instance[field];
 
-    if (value !== undefined && !await this.isValid(value)) {
-      throw new Error(`Invalid ${value} for field ${this._name}`);
+    if (value !== undefined) {
+      if (!await this.isValid(value)) {
+        throw new Error(`Invalid ${value} for field ${this._name}`);
+      }
+
+      return value;
     }
 
     if (this._deprecated) {

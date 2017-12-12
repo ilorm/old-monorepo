@@ -13,10 +13,11 @@ const { Schema, declareModel, modelFactory, } = ilorm;
 describe('ilorm-connector-mongodb', () => {
   describe('test/insertData', () => {
 
+    let mongoClient;
     let database;
 
     before(async () => {
-      const mongoClient = await MongoClient.connect(DB_URL);
+      mongoClient = await MongoClient.connect(DB_URL);
       database = await mongoClient.db('ilorm');
 
       ilorm.use(ilormMongo);
@@ -31,7 +32,9 @@ describe('ilorm-connector-mongodb', () => {
       const modelFactoryParams = {
         name: 'users',
         schema: userSchema,
-        connector: new MongoConnector('users'),
+        connector: new MongoConnector({
+          collectionName: 'users',
+        }),
       };
 
       class User extends modelFactory(modelFactoryParams) {}
@@ -53,6 +56,12 @@ describe('ilorm-connector-mongodb', () => {
       });
 
       await benjamin.save();
+    });
+
+    after(async () => {
+      await database.dropCollection('users');
+
+      await mongoClient.close();
     });
 
     it('Guillaume exists', async() => {

@@ -63,6 +63,23 @@ class Schema {
   }
 
   /**
+   * Create a new instance from a model, respecting the given schema
+   * @param {Object} modelInstance the object to use as a model
+   * @returns {Object} Create a new object respecting the schema
+   */
+  async initInstance(modelInstance = {}) {
+    const instance = {};
+
+    const initAllFields = this.properties.map(async property =>
+      instance[property] = await this.definition[property].init(modelInstance, property)
+    );
+
+    await Promise.all(initAllFields);
+
+    return instance;
+  }
+
+  /**
    * Check if a json object valid the given schema
    * TODO
    * @return {null} null;
