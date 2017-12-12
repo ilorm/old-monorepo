@@ -54,7 +54,7 @@ const injectDependencies = ({ db, }) => {
     async create(docs) {
       const collection = await this.getCollection();
 
-      return collection.insertMany(docs);
+      return collection.insertMany([].concat(docs));
     }
 
     /**

@@ -11,6 +11,7 @@ const isNew = Symbol('isNew');
 class Model {
   /**
    * Construct a new instance of the model
+   * @param {Object} rawJson object to instantiate directly the data
    */
   constructor(rawJson) {
     Object.defineProperties(this, {
