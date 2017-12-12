@@ -72,6 +72,7 @@ class Schema {
 
     const initAllFields = this.properties.map(async property => {
       instance[property] = await this.definition[property].init(modelInstance, property);
+
       return null;
     });
 
