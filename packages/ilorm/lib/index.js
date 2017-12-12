@@ -8,12 +8,11 @@ const { use, } = require('./plugins');
  * Noop function
  * @return {void} Return nothing
  */
-const declareModel = () => {};
 
 const finalLib = {
   Model: model.Class,
   modelFactory: model.factory,
-  declareModel,
+  declareModel: model.declareModel,
   Query,
   Schema: Object.assign(Schema, Fields),
   use,

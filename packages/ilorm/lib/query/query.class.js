@@ -26,17 +26,16 @@ class Query {
    */
   constructor(modelObject) {
     Object.defineProperties(this, {
-      [fields.schema]: declareValue(modelObject.getSchema()),
-      [fields.connector]: declareValue(modelObject.getConnector()),
-      [fields.query]: declareValue({}),
+      [fields.SCHEMA]: declareValue(modelObject.getSchema()),
+      [fields.CONNECTOR]: declareValue(modelObject.getConnector()),
+      [fields.QUERY]: declareValue({}),
     });
 
-    this[fields.schema].properties.forEach(property => {
-      const propertyDefinition = this[fields.schema].definition[property];
+    this[fields.SCHEMA].properties.forEach(property => {
+      const propertyDefinition = this[fields.SCHEMA].definition[property];
 
       Object.defineProperty(this, property, declareValue(propertyDefinition.getQueryOperations(this)));
     });
-
   }
 }
 

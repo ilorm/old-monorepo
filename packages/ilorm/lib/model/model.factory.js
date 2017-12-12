@@ -3,6 +3,8 @@
  */
 
 const Model = require('./model.class');
+const modelMap = require('./models.map');
+const queryFactory = require('../query/query.factory');
 
 /**
  * Create a new Model class with the given parameter
@@ -58,6 +60,16 @@ const modelFactory = ({ name, schema, connector, }) => {
      */
     static getById(id) {
       return super.getById(connector, id);
+    }
+
+    /**
+     * Get a query linked with the model to build request
+     * @returns {Query} The query instance associated with the given model
+     */
+    static query() {
+      return super.query(queryFactory({
+        model: modelMap.get(name),
+      }));
     }
 
     /**

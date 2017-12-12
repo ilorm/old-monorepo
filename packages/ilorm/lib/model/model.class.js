@@ -1,7 +1,6 @@
 'use strict';
 
-const classIndex = require('./classIndex');
-const Query = require('../query');
+const modelsMap = require('./models.map');
 
 const isNew = Symbol('isNew');
 
@@ -74,7 +73,7 @@ class Model {
    * @Returns {Model} The model instance
    */
   static instantiate(className, rawObject = {}) {
-    const Class = classIndex.get(this.getName(className));
+    const Class = modelsMap.get(this.getName(className));
 
     return new Class(rawObject);
   }
@@ -97,9 +96,10 @@ class Model {
 
   /**
    * Create a query targeting the model
+   * @param {Query} Query inject the resulting query
    * @return {Query} return the query binded with the model
    */
-  static query() {
+  static query(Query) {
     return new Query(this);
   }
 

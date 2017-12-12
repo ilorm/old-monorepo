@@ -3,6 +3,7 @@
  */
 const MongoQuery = require('../query');
 const modelFactory = require('../model/model.factory');
+const queryFactory = require('../query/query.factory');
 const convertQueryToMongoQuery = require('./convertQueryToMongoQuery');
 const convertUpdateToMongoUpdate = require('./convertUpdateToMongoUpdate');
 
@@ -174,6 +175,15 @@ const injectDependencies = ({ db, }) => {
      */
     modelFactory(params) {
       return modelFactory(params);
+    }
+
+    /**
+     * Create a new MongoQuery from the given params
+     * @param {Object} params The input parameters to create the Query
+     * @returns {MongoQuery} The result MongoQuery
+     */
+    queryFactory(params) {
+      return queryFactory(params);
     }
   }
 
