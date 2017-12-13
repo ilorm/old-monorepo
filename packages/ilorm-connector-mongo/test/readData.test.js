@@ -28,6 +28,7 @@ describe('ilorm-connector-mongodb', () => {
       const userSchema = new Schema({
         firstName: Schema.string().required(),
         lastName: Schema.string().required(),
+        gender: Schema.string().required()
       });
 
       const MongoConnector = ilormMongo.fromClient(database);

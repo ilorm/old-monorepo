@@ -48,7 +48,7 @@ function convertQueryToMongoQuery(inputQuery) {
     $and.push(currentKey);
   }
 
-  if($and.length === 1) {
+  if ($and.length === 1) {
     return $and[0];
   }
 

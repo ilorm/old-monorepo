@@ -37,6 +37,17 @@ class Query {
 
     return this[fields.MODEL].instantiate(rawResult);
   }
+
+  /**
+   * Find one or more instance
+   * @returns {Array<Model>} Return an array of instance linked with the model
+   */
+  async find() {
+    const Model = this[fields.MODEL];
+    const rawResultList = await this[fields.CONNECTOR].find(this[fields.QUERY]);
+
+    return rawResultList.map(rawResult => Model.instantiate(rawResult));
+  }
 }
 
 Query.FIELDS = fields;
