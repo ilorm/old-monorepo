@@ -3,17 +3,6 @@
 const fields = require('./fields');
 const operations = require('./operations');
 
-/**
- * Create a property option object (Object.defineProperty)
- * With a value field only ;
- * configurable: false,
- * writable: false,
- * enumerable : false,
- * @param {Mixed} variable The variable to associate with the value
- * @returns {Object} The param object
- */
-const declareValue = variable => ({ value: variable, });
-
 
 /**
  * Class representing a queryBuilder
@@ -21,20 +10,21 @@ const declareValue = variable => ({ value: variable, });
  */
 class Query {
   /**
-   * Create a new queryBuilder
-   * @param {Model} modelObject The model used to create the query
+   * Init the query object
    */
-  constructor(modelObject) {
-    Object.defineProperties(this, {
-      [fields.SCHEMA]: declareValue(modelObject.getSchema()),
-      [fields.CONNECTOR]: declareValue(modelObject.getConnector()),
-      [fields.QUERY]: declareValue({}),
-    });
+  constructor() {
+    this.declareQueryFields();
+  }
 
+  /**
+   * Init query fields
+   * @returns {void} return nothing
+   */
+  declareQueryFields() {
     this[fields.SCHEMA].properties.forEach(property => {
       const propertyDefinition = this[fields.SCHEMA].definition[property];
 
-      Object.defineProperty(this, property, declareValue(propertyDefinition.getQueryOperations(this)));
+      Object.defineProperty(this, property, { value: propertyDefinition.getQueryOperations(this), });
     });
   }
 }

@@ -2,17 +2,17 @@
 
 module.exports = {
   // Basic operations :
-  IS: Symbol('IS'),
-  IS_NOT: Symbol('IS_NOT'),
-  IS_IN: Symbol('IS_IN'),
-  IS_NOT_IN: Symbol('IS_NOT_IN'),
+  IS: 'is',
+  IS_NOT: 'isNot',
+  IS_IN: 'isIn',
+  IS_NOT_IN: 'isNotIn',
 
   // Date or number :
-  BETWEEN: Symbol('BETWEEN'),
-  MIN: Symbol('MIN'),
-  MAX: Symbol('MAX'),
+  BETWEEN: 'between',
+  MIN: 'min',
+  MAX: 'max',
 
   // Reference :
-  LINKED_WITH: Symbol('LINKED_WITH'),
+  LINKED_WITH: 'linkedWith',
 };
 

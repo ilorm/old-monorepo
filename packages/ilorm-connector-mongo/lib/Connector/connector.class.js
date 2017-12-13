@@ -1,7 +1,6 @@
 /**
  * Created by guil_ on 29/12/2016.
  */
-const MongoQuery = require('../query');
 const modelFactory = require('../model/model.factory');
 const queryFactory = require('../query/query.factory');
 const convertQueryToMongoQuery = require('./convertQueryToMongoQuery');
@@ -157,15 +156,6 @@ const injectDependencies = ({ db, }) => {
       const collection = await this.getCollection();
 
       return collection.find(mongoQuery).stream();
-    }
-
-    /**
-     * Return a query
-     * @return {MongoQuery} The query object
-     * @constructor
-     */
-    static Query() {
-      return MongoQuery;
     }
 
     /**

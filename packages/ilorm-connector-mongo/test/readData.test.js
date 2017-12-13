@@ -69,7 +69,10 @@ describe('ilorm-connector-mongodb', () => {
 
       declareModel('users', User);
 
-      const user = await User.query()
+      const query = User.query();
+      console.log('ici', query, query.firstName);
+
+      const user = query
         .firstName.is('Guillaume')
         .findOne();
 

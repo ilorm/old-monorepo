@@ -100,7 +100,7 @@ class Model {
    * @return {Query} return the query binded with the model
    */
   static query(Query) {
-    return new Query(this);
+    return new Query();
   }
 
   /**

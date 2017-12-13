@@ -37,9 +37,11 @@ const queryFactory = ({ model, }) => {
   });
 
   const connectorQueryOptions = {
-    ParentQuery: InternalQuery,
+    schema,
+    Query: InternalQuery,
   };
   const ConnectorQuery = connector.queryFactory(connectorQueryOptions);
+
 
   return ConnectorQuery;
 };
