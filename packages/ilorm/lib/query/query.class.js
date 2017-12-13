@@ -27,6 +27,16 @@ class Query {
       Object.defineProperty(this, property, { value: propertyDefinition.getQueryOperations(this), });
     });
   }
+
+  /**
+   * Find one instance from the query
+   * @returns {Model} Return an instance of the linked model
+   */
+  async findOne() {
+    const rawResult = await this[fields.CONNECTOR].findOne(this[fields.QUERY]);
+
+    return this[fields.MODEL].instantiate(rawResult);
+  }
 }
 
 Query.FIELDS = fields;

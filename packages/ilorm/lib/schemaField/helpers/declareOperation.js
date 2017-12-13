@@ -1,6 +1,6 @@
 'use strict';
 
-const queryFields = require('../../query/fields');
+const { QUERY, } = require('../../query/fields');
 
 /**
  * Declare an operation linked with the query
@@ -17,7 +17,11 @@ const declareOperationFactory = (query = {}, key, operation) => (
  * @returns {Object} Return the query item with the applied params
  */
   params => {
-    query[queryFields.query][key][operation] = params;
+    if (!query[QUERY][key]) {
+      query[QUERY][key] = {};
+    }
+
+    query[QUERY][key][operation] = params;
 
     return query;
   }

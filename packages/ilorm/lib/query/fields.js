@@ -13,4 +13,7 @@ module.exports = {
 
   // The schema associated with the query :
   SCHEMA: Symbol('schema'),
+
+  // The linked model :
+  MODEL: Symbol('model'),
 };

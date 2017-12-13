@@ -34,6 +34,7 @@ const queryFactory = ({ model, }) => {
     [FIELDS.SCHEMA]: defineProperty(schema),
     [FIELDS.CONNECTOR]: defineProperty(connector),
     [FIELDS.QUERY]: defineProperty({}),
+    [FIELDS.MODEL]: defineProperty(model),
   });
 
   const connectorQueryOptions = {

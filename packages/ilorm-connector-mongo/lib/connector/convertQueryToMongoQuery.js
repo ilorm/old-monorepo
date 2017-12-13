@@ -1,6 +1,6 @@
 'use strict';
 
-const OPERATIONS = require('ilorm').Query;
+const { OPERATIONS, } = require('ilorm').Query;
 
 const operatorConversion = {
   [OPERATIONS.IS]: '$eq',
@@ -17,30 +17,40 @@ const operatorConversion = {
  * @returns {Object} The mongo query
  */
 function convertQueryToMongoQuery(inputQuery) {
-  if (!inputQuery || inputQuery.length === 0) {
+  if (!inputQuery) {
     return {};
   }
 
-  const $and = inputQuery.map(inputQueryElement => {
-    if (operatorConversion[inputQueryElement.operator]) {
-      const operator = operatorConversion[inputQueryElement.operator];
+  const $and = [];
 
-      const context = { [operator]: inputQueryElement.value, };
+  for (const key of Object.keys(inputQuery)) {
+    const currentKey = {
+      [key]: {},
+    };
 
-      return { [inputQueryElement.context]: context, };
+    for (const operator of Object.keys(inputQuery[key])) {
+      const value = inputQuery[key][operator];
+
+      if (operatorConversion[operator]) {
+        const mongoOperator = operatorConversion[operator];
+
+        currentKey[key][mongoOperator] = value;
+
+      } else if (operator === OPERATIONS.BETWEEN) {
+        currentKey[key].$gt = value.min;
+        currentKey[key].$lt = value.max;
+
+      } else {
+        throw new Error(`connector.MongoDB: UNDEFINED OPERATOR : ${operator}`);
+      }
     }
 
-    if (inputQueryElement === OPERATIONS.BETWEEN) {
-      const context = {
-        $gt: inputQueryElement.value.min,
-        $lt: inputQueryElement.value.max,
-      };
+    $and.push(currentKey);
+  }
 
-      return { [inputQueryElement.context]: context, };
-    }
-
-    throw new Error('connector.MongoDB', 'UNDEFINED OPERATOR : ', inputQueryElement.operator);
-  });
+  if($and.length === 1) {
+    return $and[0];
+  }
 
   return { $and, };
 }
