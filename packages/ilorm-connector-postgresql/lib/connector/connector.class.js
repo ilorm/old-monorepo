@@ -27,8 +27,10 @@ const injectDependencies = ({ client, }) => {
      * @param {Object} docs The object you want to create in the database
      * @returns {*} The result of the operation
      */
-    async create(docs) {
+    create(docs) {
+      // TODO implement
 
+      return docs;
     }
 
     /**
@@ -54,7 +56,7 @@ const injectDependencies = ({ client, }) => {
     async findOne(ilormQuery) {
       const { query, values, } = convertQueryToSQLWhere(ilormQuery);
 
-      const sqlQuery = prepareSelect(this.tableName) + query + prepareLimitOffset({ limit: 1 });
+      const sqlQuery = prepareSelect(this.tableName) + query + prepareLimitOffset({ limit: 1, });
 
       const results = await client.query(sqlQuery, values);
 
@@ -82,8 +84,13 @@ const injectDependencies = ({ client, }) => {
      * @param {Object} update The ilorm update you want to run on your Database.
      * @returns {*} The number of document updated
      */
-    async update({ query, update, }) {
+    update({ query, update, }) {
+      // TODO implement
 
+      return {
+        query,
+        update,
+      };
     }
 
     /**
@@ -92,8 +99,13 @@ const injectDependencies = ({ client, }) => {
      * @param {Object} update The ilorm update you want to run on your Database.
      * @returns {*} Return true if a document was updated
      */
-    async updateOne({ query, update, }) {
+    updateOne({ query, update, }) {
+      // TODO implement
 
+      return {
+        query,
+        update,
+      };
     }
 
     /**
@@ -101,8 +113,10 @@ const injectDependencies = ({ client, }) => {
      * @param {Object} query The ilorm query you want to run on your Database.
      * @returns {Promise.<Number>} The number of document removed
      */
-    async remove(query) {
+    remove(query) {
+      // TODO implement
 
+      return query;
     }
 
     /**
@@ -110,8 +124,10 @@ const injectDependencies = ({ client, }) => {
      * @param {Object} query The ilorm query you want to run on your Database.
      * @returns {Promise.<Boolean>} Return true if a document was removed
      */
-    async removeOne(query) {
+    removeOne(query) {
+      // TODO implement
 
+      return query;
     }
 
     /**
@@ -119,8 +135,10 @@ const injectDependencies = ({ client, }) => {
      * @param {Object} query The ilorm query you want to use to generate the stream
      * @returns {Stream} The stream associated with the query/
      */
-    async stream(query) {
+    stream(query) {
+      // TODO implement
 
+      return query;
     }
 
     /**
