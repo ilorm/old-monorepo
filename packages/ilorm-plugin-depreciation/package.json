@@ -1,0 +1,21 @@
+{
+  "name": "ilorm-plugin-depreciation",
+  "version": "0.1.0",
+  "description": "Plugin to handle depreciation of field with ilorm",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "plugin",
+    "delete",
+    "mongodb",
+    "orm",
+    "ilorm"
+  ],
+  "dependencies": {
+    "ilorm": "0.1.0"
+  },
+  "author": "guillaume DAIX",
+  "license": "ISC"
+}

@@ -1,0 +1,21 @@
+{
+  "name": "ilorm-connector-postgresql",
+  "version": "0.1.0",
+  "description": "Connector to PostgreSQL for ilorm ORM",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "connector",
+    "PostgreSQL",
+    "sql",
+    "orm",
+    "ilorm"
+  ],
+  "dependencies": {
+    "pg": "^7.4.1"
+  },
+  "author": "guillaume DAIX",
+  "license": "ISC"
+}
