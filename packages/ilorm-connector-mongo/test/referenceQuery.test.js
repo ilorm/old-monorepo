@@ -11,7 +11,7 @@ const DB_URL = 'mongodb://localhost:27017/ilorm';
 const { Schema, declareModel, modelFactory, } = ilorm;
 
 describe('ilorm-connector-mongodb', () => {
-  describe('test/referenceQuery', () => {
+  describe.skip('test/referenceQuery', () => {
 
     let mongoClient;
     let database;
