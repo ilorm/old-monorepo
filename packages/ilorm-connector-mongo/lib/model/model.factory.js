@@ -9,6 +9,15 @@
  */
 const mongoModelFactory = ({ ParentModel, }) => (
   class MongoModel extends ParentModel {
+    /**
+     * Generate a query targeting the primary key of the instance
+     * @returns {Object} Return the query to use to target the current instance
+     */
+    getQueryPrimary() {
+      return {
+        _id: this._id,
+      };
+    }
   }
 );
 
