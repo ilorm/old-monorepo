@@ -97,12 +97,17 @@ let Model = class Model {
   }
 
   /**
-   * Remove an instance
-   * TODO
+   * Remove the current instance from the database
    * @return {null} null
    */
   remove() {
-    return null;
+    if (this[isNew]) {
+      throw new Error('Can not remove an unsaved instance');
+    }
+
+    const query = this.getQueryPrimary();
+
+    return Model.getConnector(this.connector).removeOne(query);
   }
 
   /**
@@ -121,7 +126,21 @@ let Model = class Model {
       return this;
     }
 
+    const query = this.getQueryPrimary();
+
+    const update = {};
+
+    await Model.getConnector(connector).updateOne(query, update);
+
     return this;
+  }
+
+  /**
+   * Generate a query targeting the primary key of the instance
+   * @returns {Object} Return the query to use to target the current instance
+   */
+  getQueryPrimary() {
+    throw new Error('Missing overload by the connector model');
   }
 
   /**
