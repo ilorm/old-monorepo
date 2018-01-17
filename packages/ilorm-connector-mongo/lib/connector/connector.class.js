@@ -168,20 +168,20 @@ const injectDependencies = ({ db, }) => {
 
     /**
      * Create a new MongoModel from the given params
-     * @param {Object} params The input parameters to create the model
+     * @param {Model} ParentModel The ilorm global Model used as parent of ModelConnector
      * @returns {MongoModel} The result MongoModel
      */
-    modelFactory(params) {
-      return modelFactory(params);
+    modelFactory({ ParentModel, }) {
+      return modelFactory({ ParentModel, });
     }
 
     /**
      * Create a new MongoQuery from the given params
-     * @param {Object} params The input parameters to create the Query
+     * @param {Query} ParentQuery The ilorm global Query used as parent of QueryConnector
      * @returns {MongoQuery} The result MongoQuery
      */
-    queryFactory(params) {
-      return queryFactory(params);
+    queryFactory({ ParentQuery, }) {
+      return queryFactory({ ParentQuery, });
     }
   }
 
