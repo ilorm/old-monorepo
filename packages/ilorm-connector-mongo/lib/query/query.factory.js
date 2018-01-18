@@ -1,14 +1,14 @@
 /**
  * Inject dependencies to query
- * @param {Query} Query class Query to overload
+ * @param {Query} ParentQuery class Query to overload
  * @returns {MongoQuery} The query returned by a mongo model
  */
-const injectDependencies = ({ Query, }) => {
+const injectDependencies = ({ ParentQuery, }) => {
 
   /**
    * The query overload Query object
    */
-  class MongoQuery extends Query {}
+  class MongoQuery extends ParentQuery {}
 
   return MongoQuery;
 };
