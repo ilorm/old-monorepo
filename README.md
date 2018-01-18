@@ -1,6 +1,10 @@
 # ilorm (I Love ORM)
 New kind of NodeJS ORM.
 
+<img src="https://img.shields.io/circleci/project/github/stombre/ilorm.svg"/>
+<img src="https://img.shields.io/github/issues/stombre/ilorm.svg"/>
+<img src="https://img.shields.io/github/license/stombre/ilorm.svg"/>
+
 
 ## Why a new ORM ?
 - Use newest feature of ECMAScript (modern javascript). 
