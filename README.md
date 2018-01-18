@@ -40,8 +40,10 @@ const schema = schema.new({
 | *static* reference() | Instantiate a SchemaField/Reference |
 
 ### All SchemaField ###
-All SchemaField are children of the class SchemaField. This class contains this method ;
+All SchemaField are children of the class SchemaField. This class contains this method :
+
 | Function | Description |
+|:--------:|-------------|
 | required() | The field is required for create an object (per default not required). |
 | default(`value`) |  Set a precise value for default (if you do not set a value at creation). |
 
