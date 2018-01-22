@@ -11,7 +11,7 @@ const { use, } = require('./plugins');
 
 const finalLib = {
   Model: model.Class,
-  modelFactory: model.factory,
+  newModel: model.factory,
   declareModel: model.declareModel,
   Query,
   Schema: Object.assign(Schema, Fields),

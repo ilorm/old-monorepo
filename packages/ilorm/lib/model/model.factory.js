@@ -8,12 +8,12 @@ const queryFactory = require('../query/query.factory');
 
 /**
  * Create a new Model class with the given parameter
- * @param {String} name The name of the model
+ * @param {String|Symbol} name The name of the model
  * @param {Schema} schema The schema used by the model
  * @param {Connector} connector The connector used by the model
  * @returns {Model} The new model to use in project
  */
-const modelFactory = ({ name, schema, connector, }) => {
+const modelFactory = ({ name = Symbol('Model'), schema, connector, }) => {
 
   /**
    * The InternalModel it's a class created dynamically in function of the schema, the connector and the name
@@ -115,6 +115,8 @@ const modelFactory = ({ name, schema, connector, }) => {
     ParentModel: InternalModel,
   };
   const ConnectorModel = connector.modelFactory(connectorModelParams);
+
+  modelMap.set(name, ConnectorModel);
 
   return ConnectorModel;
 };
