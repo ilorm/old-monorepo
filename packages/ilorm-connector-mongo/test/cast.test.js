@@ -8,7 +8,7 @@ const ilormMongo = require('../index');
 
 const DB_URL = 'mongodb://localhost:27017/ilorm';
 
-const { Schema, declareModel, modelFactory, } = ilorm;
+const { Schema, declareModel, newModel, } = ilorm;
 
 describe('ilorm-connector-mongodb', () => {
   describe('test/cast', () => {
@@ -53,7 +53,7 @@ describe('ilorm-connector-mongodb', () => {
       ]);
 
 
-      User = class User extends modelFactory(modelFactoryParams) {}
+      User = class User extends newModel(modelFactoryParams) {}
 
       declareModel('users', User);
     });

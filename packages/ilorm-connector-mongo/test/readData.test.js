@@ -8,7 +8,7 @@ const ilormMongo = require('../index');
 
 const DB_URL = 'mongodb://localhost:27017/ilorm';
 
-const { Schema, declareModel, modelFactory, } = ilorm;
+const { Schema, declareModel, newModel, } = ilorm;
 
 describe('ilorm-connector-mongodb', () => {
   describe('test/readData', () => {
@@ -66,7 +66,7 @@ describe('ilorm-connector-mongodb', () => {
     });
 
     it('Could query Guillaume', async() => {
-      class User extends modelFactory(modelFactoryParams) {}
+      class User extends newModel(modelFactoryParams) {}
 
       declareModel('users', User);
 
@@ -80,7 +80,7 @@ describe('ilorm-connector-mongodb', () => {
     });
 
     it('Could query two users', async() => {
-      class User extends modelFactory(modelFactoryParams) {}
+      class User extends newModel(modelFactoryParams) {}
 
       declareModel('users', User);
 

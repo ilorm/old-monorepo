@@ -7,8 +7,10 @@ const SchemaField = require('./schemaField.class');
 
 const NUMBER_OPERATIONS = [
   operations.BETWEEN,
-  operations.MAX,
-  operations.MIN,
+  operations.GREATER_THAN,
+  operations.GREATER_OR_EQUAL_THAN,
+  operations.LOWER_THAN,
+  operations.LOWER_OR_EQUAL_THAN,
 ];
 
 /**

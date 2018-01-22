@@ -9,8 +9,10 @@ module.exports = {
 
   // Date or number :
   BETWEEN: 'between',
-  MIN: 'min',
-  MAX: 'max',
+  GREATER_OR_EQUAL_THAN: 'greaterOrEqualThan',
+  LOWER_OR_EQUAL_THAN: 'lowerOrEqualThan',
+  GREATER_THAN: 'greaterThan',
+  LOWER_THAN: 'lowerThan',
 
   // Reference :
   LINKED_WITH: 'linkedWith',

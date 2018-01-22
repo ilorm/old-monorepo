@@ -7,8 +7,10 @@ const operatorConversion = {
   [OPERATIONS.IS_NOT]: '$ne',
   [OPERATIONS.IS_IN]: '$in',
   [OPERATIONS.IS_NOT_IN]: '$nin',
-  [OPERATIONS.MIN]: '$gt',
-  [OPERATIONS.MAX]: '$lt',
+  [OPERATIONS.GREATER_THAN]: '$gt',
+  [OPERATIONS.LOWER_THAN]: '$lt',
+  [OPERATIONS.GREATER_OR_EQUAL_THAN]: '$gte',
+  [OPERATIONS.LOWER_OR_EQUAL_THAN]: '$lte',
 };
 
 /**

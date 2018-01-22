@@ -7,8 +7,10 @@ const operatorConversion = {
   [OPERATIONS.IS_NOT]: '!=',
   [OPERATIONS.IS_IN]: 'IN',
   [OPERATIONS.IS_NOT_IN]: 'NOT IN',
-  [OPERATIONS.MIN]: '>=',
-  [OPERATIONS.MAX]: '<=',
+  [OPERATIONS.LOWER_OR_EQUAL_THAN]: '<=',
+  [OPERATIONS.GREATER_OR_EQUAL_THAN]: '>=',
+  [OPERATIONS.LOWER_THAN]: '<',
+  [OPERATIONS.GREATER_THAN]: '>',
 };
 
 /**
