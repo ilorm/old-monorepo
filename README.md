@@ -1,12 +1,14 @@
 # ilorm (I Love ORM)
 New kind of NodeJS ORM.
 
-<img style="float:left;" src="https://img.shields.io/circleci/project/github/stombre/ilorm.svg"/>
-<img style="float:left;" src="https://img.shields.io/github/issues/stombre/ilorm.svg"/>
-<img style="float:left;" src="https://img.shields.io/github/license/stombre/ilorm.svg"/>
-<img style="float:left;" src="https://img.shields.io/codeclimate/maintainability/stombre/ilorm.svg"/>
-<img style="float:left;" src="https://img.shields.io/codeclimate/c/stombre/ilorm.svg"/>
+[![Circle status](https://img.shields.io/circleci/project/github/stombre/ilorm.svg)]()
+[![Circle status](https://img.shields.io/github/issues/stombre/ilorm.svg)]()
+[![Circle status](https://img.shields.io/github/license/stombre/ilorm.svg)]()
+[![Circle status](https://img.shields.io/codeclimate/maintainability/stombre/ilorm.svg)]()
+[![Circle status](https://img.shields.io/codeclimate/c/stombre/ilorm.svg)]()
 
+
+[Official website](https://stombre.github.io/ilorm-site/)
 
 ## Why a new ORM ?
 - Use newest feature of ECMAScript (modern javascript). 
