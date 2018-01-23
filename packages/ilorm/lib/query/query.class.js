@@ -99,14 +99,7 @@ let Query = class Query {
    * @returns {*} TODO
    */
   async update() {
-    const [ query, update, ] = await Promise.all([
-      await this.prepareQuery(this[fields.QUERY]),
-      await this.prepareUpdate(this[fields.UPDATE]),
-    ]);
-    const updateParams = {
-      query,
-      update,
-    };
+    const updateParams = await this.prepareUpdate(this[fields.QUERY], this[fields.UPDATE]);
 
     return this[fields.CONNECTOR].update(updateParams);
   }
@@ -116,14 +109,7 @@ let Query = class Query {
    * @returns {*} TODO
    */
   async updateOne() {
-    const [ query, update, ] = await Promise.all([
-      await this.prepareQuery(this[fields.QUERY]),
-      await this.prepareUpdate(this[fields.UPDATE]),
-    ]);
-    const updateParams = {
-      query,
-      update,
-    };
+    const updateParams = await this.prepareUpdate(this[fields.QUERY], this[fields.UPDATE]);
 
     return this[fields.CONNECTOR].updateOne(updateParams);
   }
@@ -139,11 +125,15 @@ let Query = class Query {
 
   /**
    * Utility method called before each update, could be used to change update bahevior
+   * @param {Object} query the input query
    * @param {Object} update the input update
    * @returns {Object} The converted update
    */
-  prepareUpdate(update) {
-    return update;
+  prepareUpdate(query, update) {
+    return {
+      query: this.prepareQuery(query),
+      update,
+    };
   }
 
   /**
