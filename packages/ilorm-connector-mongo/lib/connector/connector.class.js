@@ -99,7 +99,7 @@ const injectDependencies = ({ db, }) => {
      * @param {Object} update The ilorm update you want to run on your Database.
      * @returns {{query: ({}|{$and}|*), update: ({}|*)}} The query and update you want to run
      */
-    prepareUpdate({ query, update }) {
+    prepareUpdate({ query, update, }) {
       return {
         mongoQuery: convertQueryToMongoQuery(query),
         mongoUpdate: convertUpdateToMongoUpdate(update),
