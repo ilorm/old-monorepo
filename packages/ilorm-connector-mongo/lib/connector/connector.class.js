@@ -103,14 +103,29 @@ const injectDependencies = ({ db, }) => {
     }
 
     /**
+     * Prepare update by converting raw query to mongo query, and raw update to mongo update
+     * @param {Object} query The ilorm query you want to run on your Database.
+     * @param {Object} update The ilorm update you want to run on your Database.
+     * @returns {{query: ({}|{$and}|*), update: ({}|*)}} The query and update you want to run
+     */
+    prepareUpdate({ query, update }) {
+      return {
+        mongoQuery: convertQueryToMongoQuery(query),
+        mongoUpdate: convertUpdateToMongoUpdate(update),
+      };
+    }
+
+    /**
      * Update one or more document who match query
      * @param {Object} query The ilorm query you want to run on your Database.
      * @param {Object} update The ilorm update you want to run on your Database.
      * @returns {*} The number of document updated
      */
     async update({ query, update, }) {
-      const mongoQuery = convertQueryToMongoQuery(query);
-      const mongoUpdate = convertUpdateToMongoUpdate(update);
+      const { mongoQuery, mongoUpdate, } = this.prepareUpdate({
+        query,
+        update,
+      });
       const collection = await this.getCollection();
 
       return collection.updateMany(mongoQuery, mongoUpdate);
@@ -123,8 +138,10 @@ const injectDependencies = ({ db, }) => {
      * @returns {*} Return true if a document was updated
      */
     async updateOne({ query, update, }) {
-      const mongoQuery = convertQueryToMongoQuery(query);
-      const mongoUpdate = convertUpdateToMongoUpdate(update);
+      const { mongoQuery, mongoUpdate, } = this.prepareUpdate({
+        query,
+        update,
+      });
       const collection = await this.getCollection();
 
       return collection.findOneAndUpdate(mongoQuery, mongoUpdate);
