@@ -112,14 +112,11 @@ const injectDependencies = ({ db, }) => {
      * @param {Object} update The ilorm update you want to run on your Database.
      * @returns {*} The number of document updated
      */
-    async update({ query, update, }) {
-      const { mongoQuery, mongoUpdate, } = this.prepareUpdate({
+    update({ query, update, }) {
+      return this.runUpdate('updateMany', {
         query,
         update,
       });
-      const collection = await this.getCollection();
-
-      return collection.updateMany(mongoQuery, mongoUpdate);
     }
 
     /**
@@ -128,14 +125,28 @@ const injectDependencies = ({ db, }) => {
      * @param {Object} update The ilorm update you want to run on your Database.
      * @returns {*} Return true if a document was updated
      */
-    async updateOne({ query, update, }) {
+    updateOne({ query, update, }) {
+      return this.runUpdate('findOneAndUpdate', {
+        query,
+        update,
+      });
+    }
+
+    /**
+     * Run specific update operator on linked collection
+     * @param {String} operator function to run on the collection
+     * @param {Object} query The ilorm query you want to run on your Database.
+     * @param {Object} update The ilorm update you want to run on your Database.
+     * @returns {Promise.<*>} Return operator result
+     */
+    async runUpdate(operator, { query, update, }) {
       const { mongoQuery, mongoUpdate, } = this.prepareUpdate({
         query,
         update,
       });
       const collection = await this.getCollection();
 
-      return collection.findOneAndUpdate(mongoQuery, mongoUpdate);
+      return collection[operator](mongoQuery, mongoUpdate);
     }
 
     /**

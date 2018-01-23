@@ -20,20 +20,11 @@ class Date extends SchemaField {
   /**
    * Return the query operation associated with the given schema field
    * @param {Query} query the instance of query to use
+   * @param {Array.<String>} additionalOperations Add operations to the field builder
    * @return {Object} The query operations
    */
-  getQueryOperations(query) {
-    const queryOperations = super.getQueryOperations(query);
-
-    DATE_OPERATIONS.forEach(operation => {
-      queryOperations[operation] = declareOperation({
-        query,
-        operation,
-        key: this._name,
-      });
-    });
-
-    return queryOperations;
+  getQueryOperations(query, additionalOperations = []) {
+    return super.getQueryOperations(query, DATE_OPERATIONS.concat(additionalOperations));
   }
 
   /**

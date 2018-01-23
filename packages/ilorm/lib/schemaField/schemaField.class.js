@@ -87,9 +87,10 @@ let SchemaField = class SchemaField {
   /**
    * Return the query operation associated with the given schema field
    * @param {Query} query the instance of query to use
+   * @param {Array.<String>} additionalOperations Add operations to the field builder
    * @return {Object} The query operations
    */
-  getQueryOperations(query) {
+  getQueryOperations(query, additionalOperations = []) {
     const resultQueryOperations = {
       [operations.SET]: declareOperation({
         query,
@@ -99,13 +100,15 @@ let SchemaField = class SchemaField {
       }),
     };
 
-    SCHEMA_FIELDS_OPERATIONS.forEach(operation => {
-      resultQueryOperations[operation] = declareOperation({
-        query,
-        operation,
-        key: this._name,
+    SCHEMA_FIELDS_OPERATIONS
+      .concat(additionalOperations)
+      .forEach(operation => {
+        resultQueryOperations[operation] = declareOperation({
+          query,
+          operation,
+          key: this._name,
+        });
       });
-    });
 
     return resultQueryOperations;
   }

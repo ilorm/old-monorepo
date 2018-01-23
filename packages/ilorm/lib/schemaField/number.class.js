@@ -21,24 +21,17 @@ class Number extends SchemaField {
   /**
    * Return the query operation associated with the given schema field
    * @param {Query} query the instance of query to use
+   * @param {Array.<String>} additionalOperations Add operations to the field builder
    * @return {Object} The query operations
    */
-  getQueryOperations(query) {
-    const queryOperations = super.getQueryOperations(query);
+  getQueryOperations(query, additionalOperations = []) {
+    const queryOperations = super.getQueryOperations(query, NUMBER_OPERATIONS.concat(additionalOperations));
 
     queryOperations[operations.ADD] = declareOperation({
       query,
       operation: operations.ADD,
       key: this._name,
       field: fields.UPDATE,
-    });
-
-    NUMBER_OPERATIONS.forEach(operation => {
-      queryOperations[operation] = declareOperation({
-        query,
-        operation,
-        key: this._name,
-      });
     });
 
     return queryOperations;

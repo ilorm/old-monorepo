@@ -34,7 +34,6 @@ let Query = class Query {
    * @returns {Query} Return the query to make additional link or filters
    */
   linkedWith(relatedElement) { // eslint-disable-line
-
     return this;
   }
 
@@ -66,52 +65,64 @@ let Query = class Query {
 
   /**
    * Count instance which match the query
-   * @returns {Number} The number of instance which match the query
+   * @returns {Promise.<Number>} The number of instance which match the query
    */
-  async count() {
-    const query = await this.prepareQuery(this[fields.QUERY]);
-
-    return this[fields.CONNECTOR].count(query);
+  count() {
+    return this.runQuery('count');
   }
 
   /**
    * Remove instance which match the query
    * @returns {*} TODO
    */
-  async remove() {
-    const query = await this.prepareQuery(this[fields.QUERY]);
-
-    return this[fields.CONNECTOR].remove(query);
+  remove() {
+    return this.runQuery('remove');
   }
 
   /**
    * Remove one instance which match the query
    * @returns {*} TODO
    */
-  async removeOne() {
-    const query = await this.prepareQuery(this[fields.QUERY]);
-
-    return this[fields.CONNECTOR].removeOne(query);
+  removeOne() {
+    return this.runQuery('removeOne');
   }
 
   /**
    * Update one or more element which match the query, with the current update state
    * @returns {*} TODO
    */
-  async update() {
-    const updateParams = await this.prepareUpdate(this[fields.QUERY], this[fields.UPDATE]);
-
-    return this[fields.CONNECTOR].update(updateParams);
+  update() {
+    return this.runUpdate('update');
   }
 
   /**
    * Update one element which match the query, with the current update state
    * @returns {*} TODO
    */
-  async updateOne() {
+  updateOne() {
+    return this.runUpdate('updateOne');
+  }
+
+  /**
+   * Run specific query operation on the current query
+   * @param {String} connectorOperation The operation to run
+   * @returns {Promise.<*>} The result of the operation
+   */
+  async runQuery(connectorOperation) {
+    const query = await this.prepareQuery(this[fields.QUERY]);
+
+    return this[fields.CONNECTOR][connectorOperation](query);
+  }
+
+  /**
+   * Run specific update operation on the current query
+   * @param {String} connectorOperation The operation to run
+   * @returns {Promise.<*>} The result of the operation
+   */
+  async runUpdate(connectorOperation) {
     const updateParams = await this.prepareUpdate(this[fields.QUERY], this[fields.UPDATE]);
 
-    return this[fields.CONNECTOR].updateOne(updateParams);
+    return this[fields.CONNECTOR][connectorOperation](updateParams);
   }
 
   /**
