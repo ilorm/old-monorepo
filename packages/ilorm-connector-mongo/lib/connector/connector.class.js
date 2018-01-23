@@ -71,11 +71,8 @@ const injectDependencies = ({ db, }) => {
      * @returns {Promise} Every documents who match the query
      */
     async find(query) {
-      const mongoQuery = convertQueryToMongoQuery(query);
-      const collection = await this.getCollection();
-      const findResult = collection.find(mongoQuery);
-
-      return findResult.toArray();
+      return (await this.applyBasicQuery('find', query))
+        .toArray();
     }
 
     /**
@@ -83,11 +80,8 @@ const injectDependencies = ({ db, }) => {
      * @param {Object} query The ilorm query you want to run on your Database.
      * @returns {*|Promise.<Model>|*} The document first found
      */
-    async findOne(query) {
-      const mongoQuery = convertQueryToMongoQuery(query);
-      const collection = await this.getCollection();
-
-      return collection.findOne(mongoQuery);
+    findOne(query) {
+      return this.applyBasicQuery('findOne', query);
     }
 
     /**
@@ -95,11 +89,8 @@ const injectDependencies = ({ db, }) => {
      * @param {Object} query The ilorm query you want to run on your Database.
      * @returns {Promise.<Number>} The number of document found
      */
-    async count(query) {
-      const mongoQuery = convertQueryToMongoQuery(query);
-      const collection = await this.getCollection();
-
-      return collection.count(mongoQuery);
+    count(query) {
+      return this.applyBasicQuery('count', query);
     }
 
     /**
@@ -148,15 +139,25 @@ const injectDependencies = ({ db, }) => {
     }
 
     /**
+     * Apply basic query with the given mongo function
+     * @param {String} mongoOperation The name of the operation to invoke on the mongo collection
+     * @param {Object} query The ilorm query you want to run on your Database.
+     * @returns {Promise} Return mixed result based on the Mongo operation
+     */
+    async applyBasicQuery(mongoOperation, query) {
+      const mongoQuery = convertQueryToMongoQuery(query);
+      const collection = await this.getCollection();
+
+      return collection[mongoOperation](mongoQuery);
+    }
+
+    /**
      * Remove one or document who match the query
      * @param {Object} query The ilorm query you want to run on your Database.
      * @returns {Promise.<Number>} The number of document removed
      */
-    async remove(query) {
-      const mongoQuery = convertQueryToMongoQuery(query);
-      const collection = await this.getCollection();
-
-      return collection.deleteMany(mongoQuery);
+    remove(query) {
+      return this.applyBasicQuery('deleteMany', query);
     }
 
     /**
@@ -164,11 +165,8 @@ const injectDependencies = ({ db, }) => {
      * @param {Object} query The ilorm query you want to run on your Database.
      * @returns {Promise.<Boolean>} Return true if a document was removed
      */
-    async removeOne(query) {
-      const mongoQuery = convertQueryToMongoQuery(query);
-      const collection = await this.getCollection();
-
-      return collection.findOneAndDelete(mongoQuery);
+    removeOne(query) {
+      return this.applyBasicQuery('findOneAndDelete', query);
     }
 
     /**
