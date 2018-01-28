@@ -2,7 +2,7 @@
 
 const modelsMap = require('./models.map');
 
-const isNew = Symbol('isNew');
+const { IS_NEW, } = require('./fields');
 
 /**
  * Class representing a Model
@@ -13,7 +13,7 @@ let Model = class Model {
 *   */
   constructor() {
     Object.defineProperties(this, {
-      [isNew]: {
+      [IS_NEW]: {
         value: true,
         writable: true,
       },
@@ -25,38 +25,32 @@ let Model = class Model {
    * @param {Schema} schema the schema returned by the function
    * @return {Schema} the schema associate with the model
    */
-  static getSchema(schema) {
-    if (!schema) {
-      throw new Error('Missing Schema binding with the Model');
-    }
-
-    return schema;
+  static getSchema() {
+    throw new Error('Missing Schema binding with the Model');
   }
 
   /**
    * Return the unique name of the model
-   * @param {String} name The name returned by the function
    * @return {String} The model name
    */
-  static getName(name) {
-    if (!name) {
-      throw new Error('Missing Name binding with the Model');
-    }
-
-    return name;
+  static getName() {
+    throw new Error('Missing Name binding with the Model');
   }
 
   /**
    * Get the connector associate with the model
-   * @param {Connector} connector The connector returned by the function
    * @return {Connector} The connector associate with the current model
    */
-  static getConnector(connector) {
-    if (!connector) {
-      throw new Error('Missing connector binding with the Model');
-    }
+  static getConnector() {
+    throw new Error('Missing connector binding with the Model');
+  }
 
-    return connector;
+  /**
+   * Get the connector associate with the model
+   * @return {Object} The plugins options associate with the current model
+   */
+  static getPluginsOptions() {
+    throw new Error('Missing plugins options binding with the Model');
   }
 
   /**
@@ -82,7 +76,7 @@ let Model = class Model {
 
     const instance = this.instantiate(rawInstance);
 
-    instance[isNew] = false;
+    instance[IS_NEW] = false;
 
     return instance;
   }
@@ -101,7 +95,7 @@ let Model = class Model {
    * @return {null} null
    */
   remove() {
-    if (this[isNew]) {
+    if (this[IS_NEW]) {
       throw new Error('Can not remove an unsaved instance');
     }
 
@@ -116,12 +110,12 @@ let Model = class Model {
    * @return {null} null
    */
   async save(connector) {
-    if (this[isNew]) {
+    if (this[IS_NEW]) {
       const rawJson = await this.getJson();
 
       await Model.getConnector(connector).create(rawJson);
 
-      this[isNew] = false;
+      this[IS_NEW] = false;
 
       return this;
     }

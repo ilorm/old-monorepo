@@ -11,9 +11,10 @@ const queryFactory = require('../query/query.factory');
  * @param {String|Symbol} name The name of the model
  * @param {Schema} schema The schema used by the model
  * @param {Connector} connector The connector used by the model
+ * @param {Object} pluginsOptions Add special plugin configuration
  * @returns {Model} The new model to use in project
  */
-const modelFactory = ({ name = Symbol('Model'), schema, connector, }) => {
+const modelFactory = ({ name = Symbol('Model'), schema, connector, pluginsOptions = {}, }) => {
 
   /**
    * The InternalModel it's a class created dynamically in function of the schema, the connector and the name
@@ -43,7 +44,7 @@ const modelFactory = ({ name = Symbol('Model'), schema, connector, }) => {
      * @returns {String} The name of the model
      */
     static getName() {
-      return super.getName(name);
+      return name;
     }
 
     /**
@@ -51,7 +52,7 @@ const modelFactory = ({ name = Symbol('Model'), schema, connector, }) => {
      * @returns {Schema} The schema of the model
      */
     static getSchema() {
-      return super.getSchema(schema);
+      return schema;
     }
 
     /**
@@ -59,7 +60,16 @@ const modelFactory = ({ name = Symbol('Model'), schema, connector, }) => {
      * @returns {Connector} The connector of the model
      */
     static getConnector() {
-      return super.getConnector(connector);
+      return connector;
+    }
+
+
+    /**
+     * Return the plugins configuration associated with the model
+     * @returns {Object} The plugin options
+     */
+    static getPluginsOptions() {
+      return pluginsOptions;
     }
 
     /**
