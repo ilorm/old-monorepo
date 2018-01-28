@@ -1,7 +1,6 @@
 'use strict';
 
 const operations = require('../query/operations');
-const declareOperation = require('./helpers/declareOperation');
 const SchemaField = require('./schemaField.class');
 
 const DATE_OPERATIONS = [
