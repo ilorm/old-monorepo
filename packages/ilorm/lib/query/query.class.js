@@ -148,6 +148,33 @@ let Query = class Query {
   }
 
   /**
+   * Declare or field
+   * @param {Function} handler be called back with a branch parameter using to create new branch
+   * @returns {Query} Return current query to chain call
+   */
+  or(handler) {
+    const orClause = [];
+
+    /**
+     * The branch function could be invoked to each OR branch you want to describe
+     * @returns {Query} The query to use to explain what your branch do
+     */
+    const branch = () => {
+      const branchQuery = new this.constructor();
+
+      orClause.push(branchQuery);
+
+      return branchQuery;
+    };
+
+    handler(branch);
+
+    this[fields.QUERY][operations.OR] = orClause;
+
+    return this;
+  }
+
+  /**
    * Create a stream of data returned by the query on the database
    * @returns {Stream} A readable stream to manipulate resulting data
    */

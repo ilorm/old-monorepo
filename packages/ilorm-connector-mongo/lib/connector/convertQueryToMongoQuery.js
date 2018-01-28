@@ -26,28 +26,39 @@ function convertQueryToMongoQuery(inputQuery) {
   const $and = [];
 
   for (const key of Object.keys(inputQuery)) {
-    const currentKey = {
-      [key]: {},
-    };
+    if (key === OPERATIONS.OR) {
+      const orClauses = inputQuery[key];
 
-    for (const operator of Object.keys(inputQuery[key])) {
-      const value = inputQuery[key][operator];
+      $and.push({
+        $or: orClauses.map(query => convertQueryToMongoQuery(query)),
+      });
 
-      if (operatorConversion[operator]) {
-        const mongoOperator = operatorConversion[operator];
+    } else {
 
-        currentKey[key][mongoOperator] = value;
+      const currentKey = {
+        [key]: {},
+      };
 
-      } else if (operator === OPERATIONS.BETWEEN) {
-        currentKey[key].$gt = value.min;
-        currentKey[key].$lt = value.max;
+      for (const operator of Object.keys(inputQuery[key])) {
+        const value = inputQuery[key][operator];
 
-      } else {
-        throw new Error(`connector.MongoDB: UNDEFINED OPERATOR : ${operator}`);
+        if (operatorConversion[operator]) {
+          const mongoOperator = operatorConversion[operator];
+
+          currentKey[key][mongoOperator] = value;
+
+        } else if (operator === OPERATIONS.BETWEEN) {
+          currentKey[key].$gt = value.min;
+          currentKey[key].$lt = value.max;
+
+        } else {
+          throw new Error(`connector.MongoDB: UNDEFINED OPERATOR : ${operator}`);
+        }
       }
-    }
 
-    $and.push(currentKey);
+      $and.push(currentKey);
+
+    }
   }
 
   if ($and.length === 1) {
