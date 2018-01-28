@@ -20,8 +20,5 @@ module.exports = {
   // Update :
   SET: 'set',
   ADD: 'add',
-
-  // Or :
-  OR: 'or',
 };
 

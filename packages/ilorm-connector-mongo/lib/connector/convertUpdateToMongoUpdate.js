@@ -1,6 +1,5 @@
 'use strict';
 
-const fields = [ '$set', '$inc', ];
 const convert = {
   INC: '$inc',
   SET: '$set',
@@ -8,36 +7,30 @@ const convert = {
 
 /**
  * Convert a valid update ilorm query to an update mongo query.
- * @param {Object} ilormUpdate The ilorm query you want to convert
+ * @param {Query} query The ilorm query you want to convert
  * @returns {Object} The result mongo Query.
  */
-function convertQueryToMongoQuery(ilormUpdate) {
-  if (!ilormUpdate || ilormUpdate.length === 0) {
+function convertQueryToMongoQuery(query) {
+  if (!query) {
     return {};
   }
 
-  const updated = {};
   const updateMongo = {};
 
-  fields.forEach(field => {
-    updateMongo[field] = {};
-    updated[field] = 0;
-  });
+  query.updateBuilder({
+    onOperator: (key, operator, value) => {
+      const mongoOperator = convert[operator] || null;
 
-  ilormUpdate.forEach(currentIlormUpdate => {
-    const mongoOperator = convert[currentIlormUpdate.operator] || null;
+      if (!mongoOperator) {
+        throw new Error(`connector.MongoDB - UNDEFINED OPERATOR : ${operator} `);
+      }
 
-    if (!mongoOperator) {
-      throw new Error('connector.MongoDB', 'UNDEFINED OPERATOR : ', currentIlormUpdate.operator);
-    }
-    updated[mongoOperator]++;
-    updateMongo[mongoOperator] = { [currentIlormUpdate.context]: currentIlormUpdate.value, };
-  });
+      if (!updateMongo[mongoOperator]) {
+        updateMongo[mongoOperator] = {};
+      }
 
-  fields.forEach(field => {
-    if (updated[field] === 0) {
-      delete updateMongo[field];
-    }
+      updateMongo[mongoOperator][key] = value;
+    },
   });
 
   return updateMongo;

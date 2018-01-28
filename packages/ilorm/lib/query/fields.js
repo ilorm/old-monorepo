@@ -11,6 +11,9 @@ module.exports = {
   // The current query state (the query will be run on the connector) :
   QUERY: Symbol('query'),
 
+  // Current query state if you enable branch or :
+  QUERY_OR: Symbol('queryOr'),
+
   // The current update state (the update will be run on the connector) :
   UPDATE: Symbol('update'),
 

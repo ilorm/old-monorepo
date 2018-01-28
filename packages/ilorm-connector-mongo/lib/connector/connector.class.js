@@ -67,7 +67,7 @@ const injectDependencies = ({ db, }) => {
 
     /**
      * Find one or more document into your mongoDb database.
-     * @param {Object} query The ilorm query you want to run on your Database.
+     * @param {Query} query The ilorm query you want to run on your Database.
      * @returns {Promise} Every documents who match the query
      */
     async find(query) {
@@ -77,7 +77,7 @@ const injectDependencies = ({ db, }) => {
 
     /**
      * Find one document from your database
-     * @param {Object} query The ilorm query you want to run on your Database.
+     * @param {Query} query The ilorm query you want to run on your Database.
      * @returns {*|Promise.<Model>|*} The document first found
      */
     findOne(query) {
@@ -86,7 +86,7 @@ const injectDependencies = ({ db, }) => {
 
     /**
      * Count the number of document who match the query
-     * @param {Object} query The ilorm query you want to run on your Database.
+     * @param {Query} query The ilorm query you want to run on your Database.
      * @returns {Promise.<Number>} The number of document found
      */
     count(query) {
@@ -95,55 +95,42 @@ const injectDependencies = ({ db, }) => {
 
     /**
      * Prepare update by converting raw query to mongo query, and raw update to mongo update
-     * @param {Object} query The ilorm query you want to run on your Database.
-     * @param {Object} update The ilorm update you want to run on your Database.
+     * @param {Query} query The ilorm query you want to run on your Database.
      * @returns {{query: ({}|{$and}|*), update: ({}|*)}} The query and update you want to run
      */
-    prepareUpdate({ query, update, }) {
+    prepareUpdate(query) {
       return {
         mongoQuery: convertQueryToMongoQuery(query),
-        mongoUpdate: convertUpdateToMongoUpdate(update),
+        mongoUpdate: convertUpdateToMongoUpdate(query),
       };
     }
 
     /**
      * Update one or more document who match query
-     * @param {Object} query The ilorm query you want to run on your Database.
-     * @param {Object} update The ilorm update you want to run on your Database.
+     * @param {Query} query The ilorm query you want to run on your Database.
      * @returns {*} The number of document updated
      */
-    update({ query, update, }) {
-      return this.runUpdate('updateMany', {
-        query,
-        update,
-      });
+    update(query) {
+      return this.runUpdate('updateMany', query);
     }
 
     /**
      * Update one document who match query
-     * @param {Object} query The ilorm query you want to run on your Database.
-     * @param {Object} update The ilorm update you want to run on your Database.
+     * @param {Query} query The ilorm query you want to run on your Database.
      * @returns {*} Return true if a document was updated
      */
-    updateOne({ query, update, }) {
-      return this.runUpdate('findOneAndUpdate', {
-        query,
-        update,
-      });
+    updateOne(query) {
+      return this.runUpdate('findOneAndUpdate', query);
     }
 
     /**
      * Run specific update operator on linked collection
      * @param {String} operator function to run on the collection
-     * @param {Object} query The ilorm query you want to run on your Database.
-     * @param {Object} update The ilorm update you want to run on your Database.
+     * @param {Query} query The ilorm query you want to run on your Database.
      * @returns {Promise.<*>} Return operator result
      */
-    async runUpdate(operator, { query, update, }) {
-      const { mongoQuery, mongoUpdate, } = this.prepareUpdate({
-        query,
-        update,
-      });
+    async runUpdate(operator, query) {
+      const { mongoQuery, mongoUpdate, } = this.prepareUpdate(query);
       const collection = await this.getCollection();
 
       return collection[operator](mongoQuery, mongoUpdate);
@@ -152,7 +139,7 @@ const injectDependencies = ({ db, }) => {
     /**
      * Apply basic query with the given mongo function
      * @param {String} mongoOperation The name of the operation to invoke on the mongo collection
-     * @param {Object} query The ilorm query you want to run on your Database.
+     * @param {Query} query The ilorm query you want to run on your Database.
      * @returns {Promise} Return mixed result based on the Mongo operation
      */
     async applyBasicQuery(mongoOperation, query) {
@@ -164,7 +151,7 @@ const injectDependencies = ({ db, }) => {
 
     /**
      * Remove one or document who match the query
-     * @param {Object} query The ilorm query you want to run on your Database.
+     * @param {Query} query The ilorm query you want to run on your Database.
      * @returns {Promise.<Number>} The number of document removed
      */
     remove(query) {
@@ -173,7 +160,7 @@ const injectDependencies = ({ db, }) => {
 
     /**
      * Remove one document who match the query
-     * @param {Object} query The ilorm query you want to run on your Database.
+     * @param {Query} query The ilorm query you want to run on your Database.
      * @returns {Promise.<Boolean>} Return true if a document was removed
      */
     removeOne(query) {
@@ -182,7 +169,7 @@ const injectDependencies = ({ db, }) => {
 
     /**
      * Create a stream object from the query
-     * @param {Object} query The ilorm query you want to use to generate the stream
+     * @param {Query} query The ilorm query you want to use to generate the stream
      * @returns {Stream} The stream associated with the query/
      */
     async stream(query) {

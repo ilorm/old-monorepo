@@ -42,10 +42,10 @@ let Query = class Query {
    * @returns {Model} Return an instance of the linked model
    */
   async findOne() {
-    const query = await this.prepareQuery(this[fields.QUERY]);
+    await this.prepareQuery();
 
     const Model = this[fields.MODEL];
-    const rawResult = await this[fields.CONNECTOR].findOne(query);
+    const rawResult = await this[fields.CONNECTOR].findOne(this);
 
     return Model.instantiate(rawResult);
   }
@@ -55,10 +55,10 @@ let Query = class Query {
    * @returns {Array<Model>} Return an array of instance linked with the model
    */
   async find() {
-    const query = await this.prepareQuery(this[fields.QUERY]);
+    await this.prepareQuery();
 
     const Model = this[fields.MODEL];
-    const rawResultList = await this[fields.CONNECTOR].find(query);
+    const rawResultList = await this[fields.CONNECTOR].find(this);
 
     return rawResultList.map(rawResult => Model.instantiate(rawResult));
   }
@@ -109,9 +109,9 @@ let Query = class Query {
    * @returns {Promise.<*>} The result of the operation
    */
   async runQuery(connectorOperation) {
-    const query = await this.prepareQuery(this[fields.QUERY]);
+    await this.prepareQuery();
 
-    return this[fields.CONNECTOR][connectorOperation](query);
+    return this[fields.CONNECTOR][connectorOperation](this);
   }
 
   /**
@@ -120,32 +120,68 @@ let Query = class Query {
    * @returns {Promise.<*>} The result of the operation
    */
   async runUpdate(connectorOperation) {
-    const updateParams = await this.prepareUpdate(this[fields.QUERY], this[fields.UPDATE]);
+    await this.prepareQuery();
+    await this.prepareUpdate();
 
-    return this[fields.CONNECTOR][connectorOperation](updateParams);
+    return this[fields.CONNECTOR][connectorOperation](this);
   }
 
   /**
-   * Utility method called before each query, could be used to change query bahevior
-   * @param {Object} query the input query
-   * @returns {Object} The converted query
+   * Helper to convert ilorm query object to query on the Connector side
+   * @param {Function} onOr This function will be called if the user have calling an or on this query
+   * @param {Function} onOperator This function will be called per every key operator value combination
+   * @returns {void} Return nothing
    */
-  prepareQuery(query) {
-    return query;
+  queryBuilder({ onOr, onOperator, }) {
+    if (onOr) {
+      if (this[fields.QUERY_OR]) {
+        onOr(this[fields.QUERY_OR]);
+      }
+    }
+
+    if (onOperator) {
+      const query = this[fields.QUERY];
+
+      for (const key of Object.keys(query)) {
+        for (const operator of Object.keys(query[key])) {
+          const value = query[key][operator];
+
+          onOperator(key, operator, value);
+        }
+      }
+    }
   }
 
   /**
-   * Utility method called before each update, could be used to change update bahevior
-   * @param {Object} query the input query
-   * @param {Object} update the input update
-   * @returns {Object} The converted update
+   * Helper to convert ilorm query object to query on the Connector side
+   * @param {Function} onOperator This function will be called per every key operator value combination
+   * @returns {void} Return nothing
    */
-  prepareUpdate(query, update) {
-    return {
-      query: this.prepareQuery(query),
-      update,
-    };
+  updateBuilder({ onOperator, }) {
+    if (onOperator) {
+      const query = this[fields.UPDATE];
+
+      for (const key of Object.keys(query)) {
+        for (const operator of Object.keys(query[key])) {
+          const value = query[key][operator];
+
+          onOperator(key, operator, value);
+        }
+      }
+    }
   }
+
+  /**
+   * Utility method called before each query, could be used to change query behavior
+   * @returns {void} Return nothing, only change the internal state of query
+   */
+  prepareQuery() {}
+
+  /**
+   * Utility method called before each update, could be used to change update behavior
+   * @returns {void} Return nothing, only change the internal state of query
+   */
+  prepareUpdate() {}
 
   /**
    * Declare or field
@@ -169,7 +205,7 @@ let Query = class Query {
 
     handler(branch);
 
-    this[fields.QUERY][operations.OR] = orClause;
+    this[fields.QUERY_OR] = orClause;
 
     return this;
   }
@@ -179,10 +215,10 @@ let Query = class Query {
    * @returns {Stream} A readable stream to manipulate resulting data
    */
   async stream() {
-    const query = await this.prepareQuery(this[fields.QUERY]);
+    await this.prepareQuery();
 
     const Model = this[fields.MODEL];
-    const rawStream = await this[fields.CONNECTOR].stream(query);
+    const rawStream = await this[fields.CONNECTOR].stream(this);
 
     const instantiateStream = new Transform({
       transform: (rawObject, encoding, callback) => {

@@ -15,50 +15,48 @@ const operatorConversion = {
 
 /**
  * Convert a valid inputQuery to a query
- * @param {Object} inputQuery The ilorm query you want to convert
+ * @param {Query} query The ilorm query you want to convert
  * @returns {Object} The mongo query
  */
-function convertQueryToMongoQuery(inputQuery) {
-  if (!inputQuery) {
+function convertQueryToMongoQuery(query) {
+  if (!query) {
     return {};
   }
 
   const $and = [];
 
-  for (const key of Object.keys(inputQuery)) {
-    if (key === OPERATIONS.OR) {
-      const orClauses = inputQuery[key];
+  const keys = {};
 
+  query.queryBuilder({
+    onOr: arrayOfQuery => {
       $and.push({
-        $or: orClauses.map(query => convertQueryToMongoQuery(query)),
+        $or: arrayOfQuery.map(query => convertQueryToMongoQuery(query)),
       });
-
-    } else {
-
-      const currentKey = {
-        [key]: {},
-      };
-
-      for (const operator of Object.keys(inputQuery[key])) {
-        const value = inputQuery[key][operator];
-
-        if (operatorConversion[operator]) {
-          const mongoOperator = operatorConversion[operator];
-
-          currentKey[key][mongoOperator] = value;
-
-        } else if (operator === OPERATIONS.BETWEEN) {
-          currentKey[key].$gt = value.min;
-          currentKey[key].$lt = value.max;
-
-        } else {
-          throw new Error(`connector.MongoDB: UNDEFINED OPERATOR : ${operator}`);
-        }
+    },
+    onOperator: (key, operator, value) => {
+      if (!keys[key]) {
+        keys[key] = {};
       }
 
-      $and.push(currentKey);
+      if (operatorConversion[operator]) {
+        const mongoOperator = operatorConversion[operator];
 
-    }
+        keys[key][mongoOperator] = value;
+
+      } else if (operator === OPERATIONS.BETWEEN) {
+        keys[key].$gt = value.min;
+        keys[key].$lt = value.max;
+
+      } else {
+        throw new Error(`connector.MongoDB: UNDEFINED OPERATOR : ${operator}`);
+      }
+    },
+  });
+
+  for (const key of Object.keys(keys)) {
+    $and.push({
+      [key]: keys[key],
+    });
   }
 
   if ($and.length === 1) {
