@@ -1,6 +1,6 @@
 'use strict';
 
-const { OPERATIONS, } = require('ilorm').Query;
+const { OPERATIONS, } = require('ilorm-constants').QUERY;
 
 const operatorConversion = {
   [OPERATIONS.IS]: '$eq',

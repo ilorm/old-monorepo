@@ -1,23 +1,19 @@
 {
-  "name": "ilorm-connector-mongo",
+  "name": "ilorm-constants",
   "version": "0.1.0",
-  "description": "Connector to MongoDB for ilorm ORM",
+  "description": "Core package to use shared constants with ilorm",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [
-    "connector",
+    "plugin",
+    "delete",
     "mongodb",
     "orm",
     "ilorm"
   ],
   "dependencies": {
-    "ilorm-constants": "0.1.0",
-    "mongodb": "^3.0.0-rc0"
-  },
-  "devDependencies": {
-    "ilorm": "0.1.0"
   },
   "author": "guillaume DAIX",
   "license": "ISC"

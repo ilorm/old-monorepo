@@ -1,7 +1,6 @@
 'use strict';
 
-const fields = require('./fields');
-const operations = require('./operations');
+const { SCHEMA, MODEL, CONNECTOR, QUERY, QUERY_OR, UPDATE, } = require('ilorm-constants').QUERY.FIELDS;
 const { Transform, } = require('stream');
 
 /**
@@ -21,8 +20,8 @@ let Query = class Query {
    * @returns {void} return nothing
    */
   declareQueryFields() {
-    this[fields.SCHEMA].properties.forEach(property => {
-      const propertyDefinition = this[fields.SCHEMA].definition[property];
+    this[SCHEMA].properties.forEach(property => {
+      const propertyDefinition = this[SCHEMA].definition[property];
 
       Object.defineProperty(this, property, { value: propertyDefinition.getQueryOperations(this), });
     });
@@ -44,8 +43,8 @@ let Query = class Query {
   async findOne() {
     await this.prepareQuery();
 
-    const Model = this[fields.MODEL];
-    const rawResult = await this[fields.CONNECTOR].findOne(this);
+    const Model = this[MODEL];
+    const rawResult = await this[CONNECTOR].findOne(this);
 
     return Model.instantiate(rawResult);
   }
@@ -57,8 +56,8 @@ let Query = class Query {
   async find() {
     await this.prepareQuery();
 
-    const Model = this[fields.MODEL];
-    const rawResultList = await this[fields.CONNECTOR].find(this);
+    const Model = this[MODEL];
+    const rawResultList = await this[CONNECTOR].find(this);
 
     return rawResultList.map(rawResult => Model.instantiate(rawResult));
   }
@@ -111,7 +110,7 @@ let Query = class Query {
   async runQuery(connectorOperation) {
     await this.prepareQuery();
 
-    return this[fields.CONNECTOR][connectorOperation](this);
+    return this[CONNECTOR][connectorOperation](this);
   }
 
   /**
@@ -123,7 +122,7 @@ let Query = class Query {
     await this.prepareQuery();
     await this.prepareUpdate();
 
-    return this[fields.CONNECTOR][connectorOperation](this);
+    return this[CONNECTOR][connectorOperation](this);
   }
 
   /**
@@ -134,13 +133,13 @@ let Query = class Query {
    */
   queryBuilder({ onOr, onOperator, }) {
     if (onOr) {
-      if (this[fields.QUERY_OR]) {
-        onOr(this[fields.QUERY_OR]);
+      if (this[QUERY_OR]) {
+        onOr(this[QUERY_OR]);
       }
     }
 
     if (onOperator) {
-      const query = this[fields.QUERY];
+      const query = this[QUERY];
 
       for (const key of Object.keys(query)) {
         for (const operator of Object.keys(query[key])) {
@@ -159,7 +158,7 @@ let Query = class Query {
    */
   updateBuilder({ onOperator, }) {
     if (onOperator) {
-      const query = this[fields.UPDATE];
+      const query = this[UPDATE];
 
       for (const key of Object.keys(query)) {
         for (const operator of Object.keys(query[key])) {
@@ -205,7 +204,7 @@ let Query = class Query {
 
     handler(branch);
 
-    this[fields.QUERY_OR] = orClause;
+    this[QUERY_OR] = orClause;
 
     return this;
   }
@@ -217,8 +216,8 @@ let Query = class Query {
   async stream() {
     await this.prepareQuery();
 
-    const Model = this[fields.MODEL];
-    const rawStream = await this[fields.CONNECTOR].stream(this);
+    const Model = this[MODEL];
+    const rawStream = await this[CONNECTOR].stream(this);
 
     const instantiateStream = new Transform({
       transform: (rawObject, encoding, callback) => {
@@ -238,12 +237,8 @@ let Query = class Query {
 const overload = Class => {
   Query = Class;
   Query.overload = overload;
-  Query.FIELDS = fields;
-  Query.OPERATIONS = operations;
 };
 
 Query.overload = overload;
-Query.FIELDS = fields;
-Query.OPERATIONS = operations;
 
 module.exports = Query;

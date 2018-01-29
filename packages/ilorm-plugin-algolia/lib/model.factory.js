@@ -6,6 +6,7 @@
  * @returns {ModelAlgolia} The model algolia
  */
 const injectModel = ParentModel => class ModelAlgolia extends ParentModel {
+
 };
 
 module.exports = injectModel;

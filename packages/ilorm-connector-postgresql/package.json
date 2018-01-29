@@ -14,7 +14,11 @@
     "ilorm"
   ],
   "dependencies": {
+    "ilorm-constants": "0.1.0",
     "pg": "^7.4.1"
+  },
+  "devDependencies": {
+    "ilorm": "0.1.0"
   },
   "author": "guillaume DAIX",
   "license": "ISC"

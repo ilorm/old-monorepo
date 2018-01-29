@@ -1,6 +1,3 @@
-/**
- * Created by guil_ on 07/12/2017.
- */
 
 /**
  * Create a new Mongo Model class.

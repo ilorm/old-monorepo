@@ -2,7 +2,7 @@
  * Created by guil_ on 13/12/2017.
  */
 
-const { OPERATIONS, FIELDS, } = require('ilorm').Query;
+const { OPERATIONS, FIELDS, } = require('ilorm-constants').QUERY;
 const { NOT_IS, SET, } = OPERATIONS;
 const { UPDATE, } = FIELDS;
 
