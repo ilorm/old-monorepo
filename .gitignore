@@ -3,6 +3,7 @@
 .vscode/
 .idea/
 node_modules/*
+*/node_modules/*
 misc/
 tmp/
 dist/
