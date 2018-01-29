@@ -1,8 +1,8 @@
 # ilorm-plugin-algolia
-This plugin add binding between your data an algolia.
+This plugin adds binding between your data and algolia.
 
 ## Schema
-With the plugin enable you can define which field will be stored in your database
+With this plugin enabled you can define which fields will be stored in your database
 and in algolia.
 
 ```javascript
@@ -31,7 +31,7 @@ const UserModel = newModel({
 ```
 
 ## Search
-With algolia enable on your model, you have a new search method on the query
+With algolia enabled on your model, you will have a new search method on the query
 ```javascript
 const User = require('./user.model');
 
