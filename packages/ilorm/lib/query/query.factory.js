@@ -3,7 +3,7 @@
  */
 
 const Query = require('./query.class');
-const FIELDS = require('./fields');
+const { SCHEMA, MODEL, CONNECTOR, QUERY, } = require('ilorm-constants').QUERY.FIELDS;
 
 /**
  * Create a property option object (Object.defineProperty)
@@ -31,10 +31,10 @@ const queryFactory = ({ model, }) => {
   class InternalQuery extends Query {}
 
   Object.defineProperties(InternalQuery.prototype, {
-    [FIELDS.SCHEMA]: defineProperty(schema),
-    [FIELDS.CONNECTOR]: defineProperty(connector),
-    [FIELDS.QUERY]: defineProperty({}),
-    [FIELDS.MODEL]: defineProperty(model),
+    [SCHEMA]: defineProperty(schema),
+    [CONNECTOR]: defineProperty(connector),
+    [QUERY]: defineProperty({}),
+    [MODEL]: defineProperty(model),
   });
 
   const connectorQueryOptions = {

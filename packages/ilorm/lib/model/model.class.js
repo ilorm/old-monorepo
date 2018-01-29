@@ -67,12 +67,11 @@ let Model = class Model {
 
   /**
    * Get the instance of the model linked with the given id
-   * @param {Connector} connector The connector to use to query the model instance
    * @param {ID} id The id of the target model
    * @return {Model} A model instance
    */
-  static async getById(connector, id) {
-    const rawInstance = await Model.getConnector(connector).getById(id);
+  static async getById(id) {
+    const rawInstance = await this.constructor.getConnector().getById(id);
 
     const instance = this.instantiate(rawInstance);
 
@@ -101,19 +100,18 @@ let Model = class Model {
 
     const query = this.getQueryPrimary();
 
-    return Model.getConnector(this.connector).removeOne(query);
+    return this.constructor.getConnector().removeOne(query);
   }
 
   /**
    * Save the current instance in db
-   * @param {Connector} connector inject connector in function
    * @return {null} null
    */
-  async save(connector) {
+  async save() {
     if (this[IS_NEW]) {
       const rawJson = await this.getJson();
 
-      await Model.getConnector(connector).create(rawJson);
+      await this.constructor.getConnector().create(rawJson);
 
       this[IS_NEW] = false;
 
@@ -124,7 +122,7 @@ let Model = class Model {
 
     const update = {};
 
-    await Model.getConnector(connector).updateOne(query, update);
+    await this.constructor.getConnector().updateOne(query, update);
 
     return this;
   }
@@ -139,11 +137,10 @@ let Model = class Model {
 
   /**
    * Return json associated with the curent instance
-   * @param {Schema} paramSchema inject the schema associated with the model
    * @return {Object} The json associated with the instance
    */
-  getJson(paramSchema) {
-    const schema = Model.getSchema(paramSchema);
+  getJson() {
+    const schema = this.constructor.getSchema();
 
     return schema.initInstance(this);
   }

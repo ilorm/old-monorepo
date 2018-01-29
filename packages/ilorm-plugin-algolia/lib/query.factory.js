@@ -1,6 +1,6 @@
 'use strict';
 
-const { QUERY, QUERY_OR, UPDATE, } = require('ilorm').Query.FIELDS;
+// const { QUERY, QUERY_OR, UPDATE, } = require('ilorm').Query.FIELDS;
 
 const { ALGOLIA_INDEX, } = require('./fields');
 const ALGOLIA_SEARCH = Symbol('algoliaSearch');

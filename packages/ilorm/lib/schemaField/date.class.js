@@ -1,14 +1,14 @@
 'use strict';
 
-const operations = require('../query/operations');
+const { OPERATIONS, } = require('ilorm-constants').QUERY;
 const SchemaField = require('./schemaField.class');
 
 const DATE_OPERATIONS = [
-  operations.BETWEEN,
-  operations.GREATER_THAN,
-  operations.GREATER_OR_EQUAL_THAN,
-  operations.LOWER_THAN,
-  operations.LOWER_OR_EQUAL_THAN,
+  OPERATIONS.BETWEEN,
+  OPERATIONS.GREATER_THAN,
+  OPERATIONS.GREATER_OR_EQUAL_THAN,
+  OPERATIONS.LOWER_THAN,
+  OPERATIONS.LOWER_OR_EQUAL_THAN,
 ];
 
 /**

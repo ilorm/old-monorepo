@@ -1,16 +1,15 @@
 'use strict';
 
-const operations = require('../query/operations');
-const fields = require('../query/fields');
+const { OPERATIONS, FIELDS, } = require('ilorm-constants').QUERY;
 const declareOperation = require('./helpers/declareOperation');
 const SchemaField = require('./schemaField.class');
 
 const NUMBER_OPERATIONS = [
-  operations.BETWEEN,
-  operations.GREATER_THAN,
-  operations.GREATER_OR_EQUAL_THAN,
-  operations.LOWER_THAN,
-  operations.LOWER_OR_EQUAL_THAN,
+  OPERATIONS.BETWEEN,
+  OPERATIONS.GREATER_THAN,
+  OPERATIONS.GREATER_OR_EQUAL_THAN,
+  OPERATIONS.LOWER_THAN,
+  OPERATIONS.LOWER_OR_EQUAL_THAN,
 ];
 
 /**
@@ -27,11 +26,11 @@ class Number extends SchemaField {
   getQueryOperations(query, additionalOperations = []) {
     const queryOperations = super.getQueryOperations(query, NUMBER_OPERATIONS.concat(additionalOperations));
 
-    queryOperations[operations.ADD] = declareOperation({
+    queryOperations[OPERATIONS.ADD] = declareOperation({
       query,
-      operation: operations.ADD,
+      operation: OPERATIONS.ADD,
       key: this._name,
-      field: fields.UPDATE,
+      field: FIELDS.UPDATE,
     });
 
     return queryOperations;

@@ -8,7 +8,6 @@ describe('ilorm', () => {
   it('Should init with the good value', () => {
     expect(lib).to.be.a('object');
     expect(lib.Schema).to.be.a('function');
-    expect(lib.Query).to.be.a('function');
   });
 
 });

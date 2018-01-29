@@ -1,6 +1,6 @@
 'use strict';
 
-const { QUERY, } = require('../../query/fields');
+const { QUERY, } = require('ilorm-constants').QUERY.FIELDS;
 
 /**
  * Declare an operation linked with the query

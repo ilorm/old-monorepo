@@ -1,14 +1,13 @@
 'use strict';
 
-const operations = require('../query/operations');
-const fields = require('../query/fields');
+const { OPERATIONS, FIELDS, } = require('ilorm-constants').QUERY;
 const declareOperation = require('./helpers/declareOperation');
 
 const SCHEMA_FIELDS_OPERATIONS = [
-  operations.IS,
-  operations.IS_NOT,
-  operations.IS_IN,
-  operations.IS_NOT_IN,
+  OPERATIONS.IS,
+  OPERATIONS.IS_NOT,
+  OPERATIONS.IS_IN,
+  OPERATIONS.IS_NOT_IN,
 ];
 
 /**
@@ -92,10 +91,10 @@ let SchemaField = class SchemaField {
    */
   getQueryOperations(query, additionalOperations = []) {
     const resultQueryOperations = {
-      [operations.SET]: declareOperation({
+      [OPERATIONS.SET]: declareOperation({
         query,
-        operation: operations.SET,
-        field: fields.UPDATE,
+        operation: OPERATIONS.SET,
+        field: FIELDS.UPDATE,
         key: this.name,
       }),
     };

@@ -1,7 +1,6 @@
 'use strict';
 
-const operations = require('../query/operations');
-const fields = require('../query/fields');
+const { OPERATIONS, FIELDS, } = require('ilorm-constants').QUERY;
 const declareOperation = require('./helpers/declareOperation');
 const SchemaField = require('./schemaField.class');
 
@@ -18,10 +17,10 @@ class Reference extends SchemaField {
   getQueryOperations(query) {
     const resultQueryOperations = super.getQueryOperations();
 
-    resultQueryOperations[operations.LINKED_WITH] = declareOperation({
+    resultQueryOperations[OPERATIONS.LINKED_WITH] = declareOperation({
       query,
-      operation: operations.LINKED_WITH,
-      field: fields.QUERY,
+      operation: OPERATIONS.LINKED_WITH,
+      field: FIELDS.QUERY,
       key: this.name,
     });
 
