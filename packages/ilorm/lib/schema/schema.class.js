@@ -11,6 +11,7 @@ const DEFAULT_OPTIONS = {
 };
 
 const UNDEFINED_INDEX = -1;
+const schemaPluginOption = [];
 
 /**
  * Class representing schema of data
@@ -24,8 +25,17 @@ let Schema = class Schema {
   constructor(schemaDefinition, options = DEFAULT_OPTIONS) {
     this.definition = schemaDefinition;
     this.properties = Object.keys(this.definition);
+    schemaPluginOption.forEach(pluginField => {
+      this[pluginField] = {};
+    });
     this.properties.forEach(property => {
       this.definition[property]._name = property;
+
+      schemaPluginOption.forEach(pluginField => {
+        if (property[pluginField]) {
+          this[pluginField].push(property);
+        }
+      });
     });
     this.undefinedPropertyPolicy = options.undefinedPropertyPolicy;
   }
@@ -120,6 +130,24 @@ let Schema = class Schema {
    */
   isValid() {
     return null;
+  }
+
+  /**
+   * Return list of field associated with the given plugin option
+   * @param {Symbol} pluginOption The plugin option to use
+   * @returns {Array.<String>} List of field associated with the given plugin option
+   */
+  getFieldsAssociatedWithPlugin(pluginOption) {
+    return this[pluginOption];
+  }
+
+  /**
+   * Add a new tracked field to your schemaPluginOption
+   * @param {String} pluginOption The field to track
+   * @returns {void} return nothing
+   */
+  static declarePluginOption(pluginOption) {
+    schemaPluginOption.push(pluginOption);
   }
 };
 

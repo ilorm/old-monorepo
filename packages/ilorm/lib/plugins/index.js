@@ -28,6 +28,10 @@ const use = ({ plugins, }) => {
     return null;
   }
 
+  if (plugins.schemaOptions) {
+    plugins.schemaOptions.forEach(option => SchemaClass.declarePluginOption(option));
+  }
+
   // Handle core plugins ;
   if (plugins.core) {
     CORE_PLUGINS.forEach(coreType => {
