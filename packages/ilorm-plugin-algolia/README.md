@@ -43,3 +43,8 @@ const user = await User.query()
     .findOne();
 ```
 
+### How it's work?
+- At save and remove classic model method, the associated algolia index
+will be updated (upsert instance or remove from index).
+- At query, the Query will first search in algolia, and filtering with
+the returning ObjectId the query to the main database.
