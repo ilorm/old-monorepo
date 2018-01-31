@@ -59,7 +59,7 @@ let Model = class Model {
    * @Returns {Model} The model instance
    */
   static instantiate(rawObject = {}) {
-    const Class = modelsMap.get(this.constructor.getName());
+    const Class = modelsMap.get(this.getName());
 
     return new Class(rawObject);
   }
