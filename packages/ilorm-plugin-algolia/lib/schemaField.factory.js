@@ -1,4 +1,4 @@
-const ALGOLIA = Symbol('algolia');
+const { ALGOLIA_SCHEMA_FIELDS_OPTIONS, } = require('./fields');
 
 /**
  * Create SchemaFieldAlgolia this plugin add algolia to schemaField
@@ -11,7 +11,7 @@ const injectSchemaField = SchemaField => class SchemaFieldAlgolia extends Schema
    */
   constructor() {
     super();
-    this[ALGOLIA] = null;
+    this[ALGOLIA_SCHEMA_FIELDS_OPTIONS] = null;
   }
 
   /**
@@ -19,7 +19,7 @@ const injectSchemaField = SchemaField => class SchemaFieldAlgolia extends Schema
    *  @return {SchemaField} Return the field (to chainable definition)
    */
   algolia() {
-    this[ALGOLIA] = true;
+    this[ALGOLIA_SCHEMA_FIELDS_OPTIONS] = true;
 
     return this;
   }

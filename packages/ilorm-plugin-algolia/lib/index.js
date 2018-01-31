@@ -1,4 +1,5 @@
 const schemaField = require('./schemaField.factory');
+const { ALGOLIA_SCHEMA_FIELDS_OPTIONS, } = require('./fields');
 
 /**
  * Create the plugin with a specific configurations
@@ -9,6 +10,9 @@ module.exports = {
     core: {
       schemaField,
     },
+    schemaOptions: [
+      ALGOLIA_SCHEMA_FIELDS_OPTIONS,
+    ],
   },
 };
 

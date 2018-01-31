@@ -16,14 +16,17 @@ const userSchema = new Schema({
 
 ## Declare model index
 ```javascript
+const algoliasearch = require('algoliasearch');
 const { newModel } = require('ilorm');
+
+const client = algoliasearch(CLIENT_ID, CLIENT_SECRET);
 
 const UserModel = newModel({
   name: 'users',
   schema: userSchema,
   pluginsOptions: {
     algolia: {
-      index: 'users',
+      index: client.index('users'),
     },
   },
   connector: // ...
