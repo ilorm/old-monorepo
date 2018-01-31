@@ -55,12 +55,11 @@ let Model = class Model {
 
   /**
    * Instantiate a raw json object to an instance representing the data model
-   * @param {String} className The name of the class to instantiate
    * @param {Object} rawObject the raw object to instantiate
    * @Returns {Model} The model instance
    */
-  static instantiate(className, rawObject = {}) {
-    const Class = modelsMap.get(this.getName(className));
+  static instantiate(rawObject = {}) {
+    const Class = modelsMap.get(this.constructor.getName());
 
     return new Class(rawObject);
   }

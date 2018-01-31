@@ -63,31 +63,12 @@ const modelFactory = ({ name = Symbol('Model'), schema, connector, pluginsOption
       return connector;
     }
 
-
     /**
      * Return the plugins configuration associated with the model
      * @returns {Object} The plugin options
      */
     static getPluginsOptions() {
       return pluginsOptions;
-    }
-
-    /**
-     * Instantiate a specific object
-     * @param {Object} rawObject The object to instantiate.
-     * @returns {Proxy} Return the model object.
-     */
-    static instantiate(rawObject) {
-      return super.instantiate(name, rawObject);
-    }
-
-    /**
-     * Get a specific instance of the model by it's id
-     * @param {ID} id The unique id of the instance
-     * @returns {Model} The instance of the model
-     */
-    static getById(id) {
-      return super.getById(connector, id);
     }
 
     /**
@@ -98,24 +79,6 @@ const modelFactory = ({ name = Symbol('Model'), schema, connector, pluginsOption
       return super.query(queryFactory({
         model: modelMap.get(name),
       }));
-    }
-
-    /**
-     * Save instance in database
-     * Create it, if it's not exists
-     * else, save it in database.
-     * @returns {Model} Return instance.
-     */
-    save() {
-      return super.save(connector);
-    }
-
-    /**
-     * Return instance object
-     * @return {Object} Return the object raw
-     */
-    getJson() {
-      return super.getJson(schema);
     }
   }
 
