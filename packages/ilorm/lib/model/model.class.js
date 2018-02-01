@@ -108,9 +108,7 @@ let Model = class Model {
    */
   async save() {
     if (this[IS_NEW]) {
-      const rawJson = await this.getJson();
-
-      await this.constructor.getConnector().create(rawJson);
+      await this.constructor.getConnector().create(this);
 
       this[IS_NEW] = false;
 

@@ -56,13 +56,22 @@ const injectDependencies = ({ db, }) => {
 
     /**
      * Create one or more docs into the database.
-     * @param {Object} docs The object you want to create in the database
+     * @param {Object} items The object you want to create in the database
      * @returns {*} The result of the operation
      */
-    async create(docs) {
+    async create(items) {
+      const instances = [].concat(items);
       const collection = await this.getCollection();
 
-      return collection.insertMany([].concat(docs));
+      const rawJson = await Promise.all(instances.map(doc => doc.getJson()));
+
+      const { insertedIds, } = await collection.insertMany(rawJson);
+
+      for (let docIndex = 0; docIndex < instances.length; docIndex++) {
+        instances[docIndex]._id = insertedIds[docIndex];
+      }
+
+      return null;
     }
 
     /**
