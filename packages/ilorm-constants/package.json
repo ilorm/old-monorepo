@@ -1,6 +1,6 @@
 {
   "name": "ilorm-constants",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "Core package to use shared constants with ilorm",
   "main": "index.js",
   "scripts": {
@@ -13,8 +13,6 @@
     "orm",
     "ilorm"
   ],
-  "dependencies": {
-  },
   "author": "guillaume DAIX",
   "license": "ISC"
 }

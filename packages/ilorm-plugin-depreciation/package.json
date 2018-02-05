@@ -1,6 +1,6 @@
 {
   "name": "ilorm-plugin-depreciation",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "Plugin to handle depreciation of field with ilorm",
   "main": "index.js",
   "scripts": {
@@ -14,7 +14,7 @@
     "ilorm"
   ],
   "dependencies": {
-    "ilorm": "0.0.0"
+    "ilorm": "^0.1.0"
   },
   "author": "guillaume DAIX",
   "license": "ISC"
