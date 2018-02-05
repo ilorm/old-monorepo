@@ -1,25 +1,77 @@
+#=====#
+# GIT #
+#=====#
 .foreverignore
-.elasticbeanstalk/
-.vscode/
+commit.txt
+
+#======#
+# LOGS #
+#======#
+*.log
+logs
+npm-debug.log*
+
+#===============#
+# RUNTIME FILES #
+#===============#
+pids
+*.pid
+*.seed
+
+#=============#
+# TRASH FILES #
+#=============#
+.DS_Store
 .idea/
-node_modules/*
-*/node_modules/*
+.vscode/
+*.sublime-*
+dist/
+heapdump-*
 misc/
 tmp/
-dist/
-coverage/
 typings/
 uploads/
+
+#=====#
+# NPM #
+#=====#
+.node_repl_history
+.npm
+.npmrc
+jspm_packages
+node_modules
+packages/**/package-lock.json
+
+#===============#
+# DOCUMENTATION #
+#===============#
 docs/
-commit.txt
-providers/config.js
-*.sublime-*
-heapdump-*
-.DS_Store
+public/
 
-# CONFIG
+#==================#
+# COVERAGE REPORTS #
+#==================#
+.nyc_output/
+coverage/
+lib-cov/
+mochawesome-report/
+test-results.xml
 
-# Elastic Beanstalk Files
+#====================#
+# COMPILED ARTIFACTS #
+#====================#
+.grunt
+.lock-wscript
+build/Release
+
+#=========================#
+# AMAZON ELASTICBEANSTALK #
+#=========================#
 .elasticbeanstalk/*
 !.elasticbeanstalk/*.cfg.yml
 !.elasticbeanstalk/*.global.yml
+
+#================#
+# ILORM SPECIFIC #
+#================#
+providers/config.js
