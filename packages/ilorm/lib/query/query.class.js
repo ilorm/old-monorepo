@@ -51,11 +51,7 @@ let Query = class Query {
     const Model = this[MODEL];
     const rawResult = await this[CONNECTOR].findOne(this);
 
-    if (!rawResult) {
-      return null;
-    }
-
-    return Model.instantiate(rawResult);
+    return rawResult ? Model.instantiate(rawResult) : null;
   }
 
   /**
