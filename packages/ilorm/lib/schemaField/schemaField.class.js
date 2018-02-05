@@ -20,7 +20,7 @@ let SchemaField = class SchemaField {
    */
   constructor() {
     this._isRequired = false;
-    this._default = null;
+    this._default = undefined;
     this._name = null;
   }
 
@@ -48,6 +48,10 @@ let SchemaField = class SchemaField {
       }
 
       return value;
+    }
+
+    if (this._default) {
+      return undefined;
     }
 
     if (typeof this._default === 'function') {
@@ -89,13 +93,13 @@ let SchemaField = class SchemaField {
    * @param {Array.<String>} additionalOperations Add operations to the field builder
    * @return {Object} The query operations
    */
-  getQueryOperations(query, additionalOperations = []) {
+  getQueryOperations({ query, name, additionalOperations = [], }) {
     const resultQueryOperations = {
       [OPERATIONS.SET]: declareOperation({
         query,
         operation: OPERATIONS.SET,
         field: FIELDS.UPDATE,
-        key: this.name,
+        key: name || this.name,
       }),
     };
 
@@ -105,7 +109,7 @@ let SchemaField = class SchemaField {
         resultQueryOperations[operation] = declareOperation({
           query,
           operation,
-          key: this._name,
+          key: name || this._name,
         });
       });
 

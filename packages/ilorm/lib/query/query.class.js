@@ -23,7 +23,12 @@ let Query = class Query {
     this[SCHEMA].properties.forEach(property => {
       const propertyDefinition = this[SCHEMA].definition[property];
 
-      Object.defineProperty(this, property, { value: propertyDefinition.getQueryOperations(this), });
+      Object.defineProperty(this, property, {
+        value: propertyDefinition.getQueryOperations({
+          name: property,
+          query: this,
+        }),
+      });
     });
   }
 
@@ -45,6 +50,10 @@ let Query = class Query {
 
     const Model = this[MODEL];
     const rawResult = await this[CONNECTOR].findOne(this);
+
+    if (!rawResult) {
+      return null;
+    }
 
     return Model.instantiate(rawResult);
   }
