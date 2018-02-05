@@ -113,7 +113,11 @@ let Schema = class Schema {
     const instance = {};
 
     const initAllFields = this.properties.map(async property => {
-      instance[property] = await this.definition[property].init(modelInstance, property);
+      const value = await this.definition[property].init(modelInstance, property);
+
+      if (value !== undefined) {
+        instance[property] = value;
+      }
 
       return null;
     });

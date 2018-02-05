@@ -14,7 +14,7 @@ class Reference extends SchemaField {
    * @param {Query} query the instance of query to use
    * @return {Object} The query operations
    */
-  getQueryOperations(query) {
+  getQueryOperations({ query, }) {
     const resultQueryOperations = super.getQueryOperations();
 
     resultQueryOperations[OPERATIONS.LINKED_WITH] = declareOperation({

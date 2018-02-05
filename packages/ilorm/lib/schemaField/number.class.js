@@ -23,8 +23,11 @@ class Number extends SchemaField {
    * @param {Array.<String>} additionalOperations Add operations to the field builder
    * @return {Object} The query operations
    */
-  getQueryOperations(query, additionalOperations = []) {
-    const queryOperations = super.getQueryOperations(query, NUMBER_OPERATIONS.concat(additionalOperations));
+  getQueryOperations({ query, additionalOperations = [], }) {
+    const queryOperations = super.getQueryOperations({
+      query,
+      additionalOperations: NUMBER_OPERATIONS.concat(additionalOperations),
+    });
 
     queryOperations[OPERATIONS.ADD] = declareOperation({
       query,
