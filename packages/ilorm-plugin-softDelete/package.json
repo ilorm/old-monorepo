@@ -1,6 +1,6 @@
 {
   "name": "ilorm-plugin-softdelete",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Plugin to handle soft delete with ilorm",
   "main": "index.js",
   "scripts": {
@@ -17,7 +17,7 @@
     "ilorm-constants": "^0.1.0"
   },
   "devDependencies": {
-    "ilorm": "^0.1.0"
+    "ilorm": "^0.2.0"
   },
   "author": "guillaume DAIX",
   "license": "ISC"
