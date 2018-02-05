@@ -67,6 +67,10 @@ class ArrayField extends SchemaField {
   init(instance, field) {
     const arrayOfValues = instance[field];
 
+    if (typeof arrayOfValues !== 'object' || !Array.isArray(arrayOfValues)) {
+      throw new Error(`${field} is not an Array in the ArrayField definition`);
+    }
+
     const initValueList = arrayOfValues.map(value => this[SCHEMA].initInstance(value));
 
     return Promise.all(initValueList);
