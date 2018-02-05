@@ -1,10 +1,12 @@
 'use strict';
 
 const { OPERATIONS, } = require('ilorm-constants').QUERY;
+const { PUSH, } = require('../query/operations');
 
 const convert = {
   [OPERATIONS.ADD]: '$inc',
   [OPERATIONS.SET]: '$set',
+  [PUSH]: '$push',
 };
 
 /**

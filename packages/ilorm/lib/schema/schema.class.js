@@ -111,7 +111,7 @@ let Schema = class Schema {
    */
   async initInstance(modelInstance = {}) {
     const instance = {};
-
+    
     const initAllFields = this.properties.map(async property => {
       const value = await this.definition[property].init(modelInstance, property);
 
