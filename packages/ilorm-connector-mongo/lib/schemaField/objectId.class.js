@@ -6,7 +6,7 @@ const { ObjectId, } = require('mongodb');
 /**
  * Class representing a ObjectId field
  */
-class SchemaObjectId extends SchemaField {
+class ObjectIdField extends SchemaField {
   /**
    * Cast a value to match the specific field or throw an exception
    * @param {Mixed} value the value to cast
@@ -17,4 +17,4 @@ class SchemaObjectId extends SchemaField {
   }
 }
 
-module.exports = SchemaObjectId;
+module.exports = ObjectIdField;
