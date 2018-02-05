@@ -1,5 +1,8 @@
 'use strict';
 
+const ArrayField = require('../schemaField/array.class');
+const MapField = require('../schemaField/map.class');
+const ObjectField = require('../schemaField/object.class');
 const ObjectIdField = require('../schemaField/objectId.class');
 
 /**
@@ -24,12 +27,37 @@ const injectSchema = Schema => class MongoSchema extends Schema {
   }
 
   /**
+   * Instantiate an Array field
+   * @returns {ArrayField} return an Array field
+   */
+  static array() {
+    return new ArrayField();
+  }
+
+  /**
+   * Instantiate an Map field
+   * @returns {MapField} return an Map field
+   */
+  static map() {
+    return new MapField();
+  }
+
+  /**
+   * Instantiate an Object field
+   * @returns {ObjectField} return an Object field
+   */
+  static object() {
+    return new ObjectField();
+  }
+
+  /**
    * Instantiate an objectId field
-   * @returns {SchemaObjectId} return an ObjectId field
+   * @returns {ObjectIdField} return an ObjectId field
    */
   static objectId() {
     return new ObjectIdField();
   }
+
 };
 
 
