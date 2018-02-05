@@ -3,7 +3,7 @@
  */
 
 const connector = require('./connector');
-
+const schema = require('./schema');
 
 /**
  * Create the Connector from the given database
@@ -13,7 +13,11 @@ const connector = require('./connector');
 const fromClient = database => connector({ db: database, });
 
 module.exports = {
-  plugins: {},
+  plugins: {
+    core: {
+      schema,
+    },
+  },
   fromClient,
 };
 

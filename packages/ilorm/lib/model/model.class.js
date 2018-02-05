@@ -1,6 +1,7 @@
 'use strict';
 
 const modelsMap = require('./models.map');
+const queryFactory = require('../query/query.factory');
 
 const { IS_NEW, } = require('./fields');
 
@@ -61,7 +62,11 @@ let Model = class Model {
   static instantiate(rawObject = {}) {
     const Class = modelsMap.get(this.getName());
 
-    return new Class(rawObject);
+    const instance = new Class(rawObject);
+
+    instance[IS_NEW] = false;
+
+    return instance;
   }
 
   /**
@@ -81,10 +86,13 @@ let Model = class Model {
 
   /**
    * Create a query targeting the model
-   * @param {Query} Query inject the resulting query
    * @return {Query} return the query binded with the model
    */
-  static query(Query) {
+  static query() {
+    const Query = queryFactory({
+      model: modelsMap.get(this.getName()),
+    });
+
     return new Query();
   }
 
@@ -145,14 +153,20 @@ let Model = class Model {
 
 /**
  * Overload model class by another (to plugin)
- * @param {Model} Class A new Model to replace the current one (plugin)
+ * @param {Function} classFactory The class factory used to replace current model
  * @returns {void} Return nothing
  */
-const overload = Class => {
-  Model = Class;
-  Model.overload = overload;
+const overload = classFactory => {
+  Model = classFactory(Model);
 };
 
-Model.overload = overload;
+/**
+ * Get current Model class
+ * @returns {Model} Model class
+ */
+const getModel = () => Model;
 
-module.exports = Model;
+module.exports = {
+  overload,
+  getModel,
+};

@@ -1,6 +1,7 @@
 'use strict';
 
 const prepareAlgoliaSave = require('./prepareAlgoliaSave');
+const { ALGOLIA_INDEX, } = require('./fields');
 
 /**
  * Inject Model to create a Model Algolia
@@ -13,9 +14,9 @@ const injectModel = ParentModel => class ModelAlgolia extends ParentModel {
    * @returns {Object} Return algolia options
    */
   static getAlgoliaIndex() {
-    const algoliaOptions = this.constructor.getPluginsOptions().algolia;
+    const algoliaOptions = this.getPluginsOptions().algolia;
 
-    if (algoliaOptions) {
+    if (!algoliaOptions) {
       return null;
     }
 
@@ -27,7 +28,7 @@ const injectModel = ParentModel => class ModelAlgolia extends ParentModel {
    * @returns {Model} Return current instance model.
    */
   async save() {
-    const algoliaIndex = ModelAlgolia.getAlgoliaIndex();
+    const algoliaIndex = this.constructor.getAlgoliaIndex();
 
     const saveResult = await super.save();
 
@@ -49,7 +50,7 @@ const injectModel = ParentModel => class ModelAlgolia extends ParentModel {
   async remove() {
     const removeResult = await super.remove();
 
-    const algoliaIndex = ModelAlgolia.getAlgoliaIndex();
+    const algoliaIndex = this.constructor.getAlgoliaIndex();
 
     if (!algoliaIndex) {
       return removeResult;
@@ -58,6 +59,18 @@ const injectModel = ParentModel => class ModelAlgolia extends ParentModel {
     await algoliaIndex.deleteObject(this._id);
 
     return removeResult;
+  }
+
+  /**
+   * Associate current index with the query
+   * @returns {Query} The query to use
+   */
+  static query() {
+    const query = super.query();
+
+    query[ALGOLIA_INDEX] = this.getAlgoliaIndex();
+
+    return query;
   }
 };
 

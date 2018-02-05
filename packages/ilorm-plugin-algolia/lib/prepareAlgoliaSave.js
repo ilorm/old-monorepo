@@ -17,7 +17,7 @@ const prepareAlgoliaSave = instance => {
 
   schemaFields.forEach(field => {
     algoliaObject[field] = instance[field];
-  })
+  });
 
   return algoliaObject;
 };

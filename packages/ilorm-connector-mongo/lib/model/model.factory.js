@@ -11,9 +11,8 @@ const mongoModelFactory = ({ ParentModel, }) => (
      * @returns {Object} Return the query to use to target the current instance
      */
     getQueryPrimary() {
-      return {
-        _id: this._id,
-      };
+      return this.constructor.query()
+        ._id.is(this._id);
     }
   }
 );

@@ -13,7 +13,7 @@ const { Boolean, } = require('ilorm').Schema.Types;
 const injectSchema = ({ deletedField, }) => Schema => class SoftDeleteSchema extends Schema {
 
   /**
-   * Constructor for Schema field
+   * Constructor for Schema
    * Add a isDeleted field (used to handle software delete).
    * @param {Object} schema The given schema
    */

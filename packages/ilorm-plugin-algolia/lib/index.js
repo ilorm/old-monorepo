@@ -1,4 +1,7 @@
 const schemaField = require('./schemaField.factory');
+const query = require('./query.factory');
+const model = require('./model.factory');
+
 const { ALGOLIA_SCHEMA_FIELDS_OPTIONS, } = require('./fields');
 
 /**
@@ -9,6 +12,8 @@ module.exports = {
   plugins: {
     core: {
       schemaField,
+      query,
+      model,
     },
     schemaOptions: [
       ALGOLIA_SCHEMA_FIELDS_OPTIONS,

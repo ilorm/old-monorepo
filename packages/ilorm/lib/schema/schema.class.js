@@ -26,7 +26,7 @@ let Schema = class Schema {
     this.definition = schemaDefinition;
     this.properties = Object.keys(this.definition);
     schemaPluginOption.forEach(pluginField => {
-      this[pluginField] = {};
+      this[pluginField] = [];
     });
     this.properties.forEach(property => {
       this.definition[property]._name = property;
@@ -153,14 +153,20 @@ let Schema = class Schema {
 
 /**
  * Overload schema class by another (to plugin)
- * @param {Schema} Class A new Schema to replace the current one (plugin)
+ * @param {Function} classFactory The class factory used to replace current schema
  * @returns {void} Return nothing
  */
-const overload = Class => {
-  Schema = Class;
-  Schema.overload = overload;
+const overload = classFactory => {
+  Schema = classFactory(Schema);
 };
 
-Schema.overload = overload;
+/**
+ * Return current schema class
+ * @returns {Schema} current Schema
+ */
+const getSchema = () => Schema;
 
-module.exports = Schema;
+module.exports = {
+  overload,
+  getSchema,
+};

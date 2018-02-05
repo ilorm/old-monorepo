@@ -2,9 +2,8 @@
  * Created by guil_ on 07/12/2017.
  */
 
-const Model = require('./model.class');
 const modelMap = require('./models.map');
-const queryFactory = require('../query/query.factory');
+const { getModel, } = require('./model.class');
 
 /**
  * Create a new Model class with the given parameter
@@ -20,7 +19,7 @@ const modelFactory = ({ name = Symbol('Model'), schema, connector, pluginsOption
    * The InternalModel it's a class created dynamically in function of the schema, the connector and the name
    * given by the model.
    */
-  class InternalModel extends Model {
+  class InternalModel extends getModel() {
     /**
      * Construct a new instance of the model
      * @param {Object} rawJson object to instantiate directly the data
@@ -69,16 +68,6 @@ const modelFactory = ({ name = Symbol('Model'), schema, connector, pluginsOption
      */
     static getPluginsOptions() {
       return pluginsOptions;
-    }
-
-    /**
-     * Get a query linked with the model to build request
-     * @returns {Query} The query instance associated with the given model
-     */
-    static query() {
-      return super.query(queryFactory({
-        model: modelMap.get(name),
-      }));
     }
   }
 

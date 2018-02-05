@@ -29,7 +29,7 @@ const use = ({ plugins, }) => {
   }
 
   if (plugins.schemaOptions) {
-    plugins.schemaOptions.forEach(option => SchemaClass.declarePluginOption(option));
+    plugins.schemaOptions.forEach(option => SchemaClass.getSchema().declarePluginOption(option));
   }
 
   // Handle core plugins ;
@@ -37,9 +37,8 @@ const use = ({ plugins, }) => {
     CORE_PLUGINS.forEach(coreType => {
       if (plugins.core[coreType]) {
         const Class = CoreClass[coreType];
-        const OverloadClass = plugins.core[coreType](Class);
 
-        Class.overload(OverloadClass);
+        Class.overload(plugins.core[coreType]);
       }
     });
   }

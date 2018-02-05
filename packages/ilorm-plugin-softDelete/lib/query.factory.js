@@ -21,17 +21,14 @@ const injectQuery = ({ deletedField, }) => Query => class SoftDeleteQuery extend
    * If false => not deleted
    * If missing => not deleted (maybe old item, create before the plugin and the support of soft delete query)
    *
-   * @param {Object} query The query to change
-   * @returns {Object} The new query
+   * @returns {void} Return nothing
    */
-  prepareQuery(query) {
-    if (!query[deletedField]) {
-      query[deletedField] = {
+  prepareQuery() {
+    if (!this[deletedField]) {
+      this[deletedField] = {
         [NOT_IS]: true,
       };
     }
-
-    return query;
   }
 
   /**

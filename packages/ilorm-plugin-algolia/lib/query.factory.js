@@ -18,7 +18,7 @@ const injectQuery = ParentQuery => class QueryAlgolia extends ParentQuery {
    * @returns {QueryAlgolia} Return the query to chainable query
    */
   search(text) {
-    if (this[ALGOLIA_INDEX]) {
+    if (!this[ALGOLIA_INDEX]) {
       throw new Error('Could not use search on a non indexed model');
     }
 
@@ -47,7 +47,7 @@ const injectQuery = ParentQuery => class QueryAlgolia extends ParentQuery {
 
     const { hits, } = algoliaResult;
 
-    const objectIDList = hits.map(hit => hit.objectID);
+    const objectIDList = hits.map(hit => hit.ObjectID);
 
     this._id.isIn(objectIDList);
   }

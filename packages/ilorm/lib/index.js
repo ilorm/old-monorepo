@@ -1,5 +1,6 @@
 const model = require('./model');
-const Schema = require('./schema');
+
+const { getSchema, } = require('./schema');
 const Fields = require('./schemaField');
 const { use, } = require('./plugins');
 
@@ -11,8 +12,15 @@ const { use, } = require('./plugins');
 const finalLib = {
   newModel: model.factory,
   declareModel: model.declareModel,
-  Schema: Object.assign(Schema, Fields),
   use,
 };
+
+Object.defineProperty(finalLib, 'Schema', {
+  get: () => {
+    const Schema = Object.assign(getSchema(), Fields);
+
+    return Schema;
+  },
+});
 
 module.exports = finalLib;

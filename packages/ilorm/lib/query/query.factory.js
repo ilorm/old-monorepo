@@ -2,7 +2,7 @@
  * Created by guil_ on 09/12/2017.
  */
 
-const Query = require('./query.class');
+const { getQuery, } = require('./query.class');
 const { SCHEMA, MODEL, CONNECTOR, QUERY, } = require('ilorm-constants').QUERY.FIELDS;
 
 /**
@@ -28,7 +28,7 @@ const queryFactory = ({ model, }) => {
   /**
    * The InternalQuery is a class created dynamically in function of the model.
    */
-  class InternalQuery extends Query {}
+  class InternalQuery extends getQuery() {}
 
   Object.defineProperties(InternalQuery.prototype, {
     [SCHEMA]: defineProperty(schema),

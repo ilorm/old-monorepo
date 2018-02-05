@@ -231,14 +231,20 @@ let Query = class Query {
 
 /**
  * Overload query class by another (to plugin)
- * @param {Query} Class A new Query to replace the current one (plugin)
+ * @param {Function} classFactory The class factory used to replace current query
  * @returns {void} Return nothing
  */
-const overload = Class => {
-  Query = Class;
-  Query.overload = overload;
+const overload = classFactory => {
+  Query = classFactory(Query);
 };
 
-Query.overload = overload;
+/**
+ * Get the current Query class
+ * @returns {Query} Current query
+ */
+const getQuery = () => Query;
 
-module.exports = Query;
+module.exports = {
+  getQuery,
+  overload,
+};
