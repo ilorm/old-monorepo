@@ -1,6 +1,6 @@
 {
   "name": "ilorm-connector-mongo",
-  "version": "0.1.0",
+  "version": "0.0.0",
   "description": "Connector to MongoDB for ilorm ORM",
   "main": "index.js",
   "scripts": {
@@ -13,11 +13,11 @@
     "ilorm"
   ],
   "dependencies": {
-    "ilorm-constants": "0.1.0",
+    "ilorm-constants": "0.0.0",
     "mongodb": "^3.0.0-rc0"
   },
   "devDependencies": {
-    "ilorm": "0.1.0"
+    "ilorm": "0.0.0"
   },
   "author": "guillaume DAIX",
   "license": "ISC"
