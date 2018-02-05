@@ -28,26 +28,29 @@ const injectSchema = Schema => class MongoSchema extends Schema {
 
   /**
    * Instantiate an Array field
+   * @param {Object} childSchema The child schema to use
    * @returns {ArrayField} return an Array field
    */
-  static array() {
-    return new ArrayField();
+  static array(childSchema) {
+    return new ArrayField(childSchema);
   }
 
   /**
    * Instantiate an Map field
+   * @param {Object} childSchema The child schema to use
    * @returns {MapField} return an Map field
    */
-  static map() {
-    return new MapField();
+  static map(childSchema) {
+    return new MapField(childSchema);
   }
 
   /**
    * Instantiate an Object field
+   * @param {Object} childSchema The child schema to use
    * @returns {ObjectField} return an Object field
    */
-  static object() {
-    return new ObjectField();
+  static object(childSchema) {
+    return new ObjectField(childSchema);
   }
 
   /**
