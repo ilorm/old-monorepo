@@ -4,6 +4,7 @@
     "watch": "watch 'npm run launchtest' ./ packages --wait 5",
     "eslint": "eslint --fix packages",
     "test": "npm run launchtest",
+    "lerna": "lerna",
     "test-win": "set NODE_ENV=test&& mocha --recursive --reporter spec test/unit/ packages/**/*.test.js",
     "launchtest": "NODE_ENV=test mocha --recursive --reporter spec $(find packages -name '*.test.js'  -not -path '**/node_modules/**' )",
     "cover": "npm run docs && npm run eslint && NODE_ENV=test istanbul --include-all-sources cover -x '**/docs/**' -x '**/node_modules/**' _mocha -- --recursive --reporter spec $(find packages -name '*.test.js'  -not -path '**/node_modules/**' )",
