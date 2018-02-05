@@ -17,7 +17,8 @@
     "ilorm": "0.1.0"
   },
   "devDependencies": {
-    "ilorm-connector-mongo": "0.1.0"
+    "ilorm-connector-mongo": "0.1.0",
+    "mongodb": "^3.0.0-rc0"
   },
   "author": "guillaume DAIX",
   "license": "ISC"
