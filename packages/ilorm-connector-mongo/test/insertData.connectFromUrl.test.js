@@ -11,23 +11,24 @@ const DB_URL = 'mongodb://localhost:27017/ilorm';
 const { Schema, declareModel, newModel, } = ilorm;
 
 describe('ilorm-connector-mongodb', () => {
-  describe('test/insertData', () => {
+  describe('test/insertData - connectFromUrl', () => {
 
-    let mongoClient;
     let database;
+    let MongoConnector;
 
     before(async () => {
-      mongoClient = await MongoClient.connect(DB_URL);
-      database = await mongoClient.db('ilorm');
+      MongoConnector = await ilormMongo.fromUrl({
+        database: 'ilorm',
+        url: DB_URL,
+      });
 
+      database = MongoConnector.getDatabase();
       ilorm.use(ilormMongo);
 
       const userSchema = new Schema({
         firstName: Schema.string().required(),
         lastName: Schema.string().required(),
       });
-
-      const MongoConnector = ilormMongo.fromClient(database);
 
       const modelFactoryParams = {
         name: 'users',
@@ -61,7 +62,7 @@ describe('ilorm-connector-mongodb', () => {
     after(async () => {
       await database.dropCollection('users');
 
-      await mongoClient.close();
+      await MongoConnector.close();
     });
 
     it('Guillaume exists', async() => {
@@ -85,7 +86,3 @@ describe('ilorm-connector-mongodb', () => {
     });
   });
 });
-
-
-
-
