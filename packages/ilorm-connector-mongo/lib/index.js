@@ -1,6 +1,6 @@
-/**
- * Created by guil_ on 07/12/2017.
- */
+'use strict';
+
+const { MongoClient, } = require('mongodb');
 
 const connector = require('./connector');
 const schema = require('./schema');
@@ -12,6 +12,21 @@ const schema = require('./schema');
  */
 const fromClient = database => connector({ db: database, });
 
+/**
+ * Create the Connector from the given database
+ * @param {Object} params Object encapsulating URL parameter (and optionally database name)
+ * @returns {Connector} The MongoDB connector object
+ */
+const fromUrl = async ({ url, database = 'ilorm', }) => {
+  const mongoClient = await MongoClient.connect(url);
+  const db = await mongoClient.db(database);
+
+  return connector({
+    db,
+    mongoClient,
+  });
+};
+
 module.exports = {
   plugins: {
     core: {
@@ -19,5 +34,5 @@ module.exports = {
     },
   },
   fromClient,
+  fromUrl,
 };
-
