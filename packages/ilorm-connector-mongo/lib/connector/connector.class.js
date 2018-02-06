@@ -11,7 +11,7 @@ const convertUpdateToMongoUpdate = require('./convertUpdateToMongoUpdate');
  * @param {Object} db A valid mongo connection
  * @returns {MongoConnector} Return a mongo connector
  */
-const injectDependencies = ({ db, }) => {
+const injectDependencies = ({ db, mongoClient, }) => {
   /**
    * The Mongo MongoConnector class
    */
@@ -204,6 +204,16 @@ const injectDependencies = ({ db, }) => {
      */
     queryFactory({ ParentQuery, }) {
       return queryFactory({ ParentQuery, });
+    }
+
+    /**
+     * Close mongoClient connection, when applicable.
+     * @returns {void}
+     */
+    static close() {
+      if (mongoClient) {
+        mongoClient.close();
+      }
     }
   }
 
