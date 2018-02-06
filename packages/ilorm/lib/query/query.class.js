@@ -139,7 +139,7 @@ let Query = class Query {
   queryBuilder({ onOr, onOperator, }) {
     if (onOr) {
       if (this[QUERY_OR]) {
-        onOr(this[QUERY_OR]);
+        this[QUERY_OR].forEach(onOr);
       }
     }
 
@@ -209,7 +209,11 @@ let Query = class Query {
 
     handler(branch);
 
-    this[QUERY_OR] = orClause;
+    if (!this[QUERY_OR]) {
+      this[QUERY_OR] = [];
+    }
+
+    this[QUERY_OR].push(orClause);
 
     return this;
   }
