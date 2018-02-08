@@ -1,6 +1,6 @@
 'use strict';
 
-const { SCHEMA, MODEL, CONNECTOR, QUERY, QUERY_OR, UPDATE, } = require('ilorm-constants').QUERY.FIELDS;
+const { SCHEMA, MODEL, CONNECTOR, QUERY, QUERY_OR, UPDATE, SKIP, LIMIT, } = require('ilorm-constants').QUERY.FIELDS;
 const { Transform, } = require('stream');
 
 /**
@@ -65,6 +65,28 @@ let Query = class Query {
     const rawResultList = await this[CONNECTOR].find(this);
 
     return rawResultList.map(rawResult => Model.instantiate(rawResult));
+  }
+
+  /**
+   * Declare the number of element to skip (the query will ignore this element).
+   * @param {Number} nbElementToSkip The number of element to skip
+   * @returns {Query} Return the query to make additional link or filters
+   */
+  skip(nbElementToSkip) {
+    this[SKIP] = nbElementToSkip;
+
+    return this;
+  }
+
+  /**
+   * Declare the number of element to query (the query will only returns this elements).
+   * @param {Number} nbElementToQuery The number of element to get
+   * @returns {Query} Return the query to make additional link or filters
+   */
+  limit(nbElementToQuery) {
+    this[LIMIT] = nbElementToQuery;
+
+    return this;
   }
 
   /**

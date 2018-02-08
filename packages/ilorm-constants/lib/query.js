@@ -19,6 +19,12 @@ module.exports = {
 
     // The linked model :
     MODEL: Symbol('model'),
+
+    // Declare element to ignore during the run of the query
+    SKIP: Symbol('skip'),
+
+    // Declare the number of element to query during the run of the query
+    LIMIT: Symbol('limit'),
   },
 
   OPERATIONS: {
