@@ -109,7 +109,7 @@ const injectDependencies = ({ db, mongoClient, }) => {
      */
     prepareUpdate(query) {
       return {
-        mongoQuery: convertQueryToMongoQuery(query),
+        queryResults: convertQueryToMongoQuery(query),
         mongoUpdate: convertUpdateToMongoUpdate(query),
       };
     }
@@ -135,27 +135,27 @@ const injectDependencies = ({ db, mongoClient, }) => {
     /**
      * Run specific update operator on linked collection
      * @param {String} operator function to run on the collection
-     * @param {Query} query The ilorm query you want to run on your Database.
+     * @param {Query} ilormQuery The ilorm query you want to run on your Database.
      * @returns {Promise.<*>} Return operator result
      */
-    async runUpdate(operator, query) {
-      const { mongoQuery, mongoUpdate, } = this.prepareUpdate(query);
+    async runUpdate(operator, ilormQuery) {
+      const { queryResults: { mongoQuery, mongoOptions, }, mongoUpdate, } = this.prepareUpdate(ilormQuery);
       const collection = await this.getCollection();
 
-      return collection[operator](mongoQuery, mongoUpdate);
+      return collection[operator](mongoQuery, mongoUpdate, mongoOptions);
     }
 
     /**
      * Apply basic query with the given mongo function
      * @param {String} mongoOperation The name of the operation to invoke on the mongo collection
-     * @param {Query} query The ilorm query you want to run on your Database.
+     * @param {Query} ilormQuery The ilorm query you want to run on your Database.
      * @returns {Promise} Return mixed result based on the Mongo operation
      */
-    async applyBasicQuery(mongoOperation, query) {
-      const mongoQuery = convertQueryToMongoQuery(query);
+    async applyBasicQuery(mongoOperation, ilormQuery) {
+      const { mongoQuery, mongoOptions, } = convertQueryToMongoQuery(ilormQuery);
       const collection = await this.getCollection();
 
-      return collection[mongoOperation](mongoQuery);
+      return collection[mongoOperation](mongoQuery, mongoOptions);
     }
 
     /**

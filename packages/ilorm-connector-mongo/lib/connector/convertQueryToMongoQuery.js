@@ -27,7 +27,13 @@ function convertQueryToMongoQuery(query) {
 
   const keys = {};
 
+  const mongoOptions = {};
+
   query.queryBuilder({
+    onOptions: ({ skip, limit, }) => {
+      mongoOptions.skip = skip;
+      mongoOptions.limit = limit;
+    },
     onOr: arrayOfQuery => {
       $and.push({
         $or: arrayOfQuery.map(query => convertQueryToMongoQuery(query)),
@@ -59,11 +65,12 @@ function convertQueryToMongoQuery(query) {
     });
   }
 
-  if ($and.length === 1) {
-    return $and[0];
-  }
+  const mongoQuery = $and.length === 1 ? $and[0] : { $and, };
 
-  return { $and, };
+  return {
+    mongoQuery,
+    mongoOptions,
+  };
 }
 
 module.exports = convertQueryToMongoQuery;
