@@ -156,13 +156,21 @@ let Query = class Query {
    * Helper to convert ilorm query object to query on the Connector side
    * @param {Function} onOr This function will be called if the user have calling an or on this query
    * @param {Function} onOperator This function will be called per every key operator value combination
+   * @param {Function} onOptions This function will be called to put skip and limit to the child query
    * @returns {void} Return nothing
    */
-  queryBuilder({ onOr, onOperator, }) {
+  queryBuilder({ onOr, onOperator, onOptions, }) {
     if (onOr) {
       if (this[QUERY_OR]) {
         onOr(this[QUERY_OR]);
       }
+    }
+
+    if (onOptions) {
+      onOptions({
+        skip: this[SKIP],
+        limit: this[LIMIT],
+      });
     }
 
     if (onOperator) {
