@@ -1,6 +1,7 @@
 'use strict';
 
 const { Transform, } = require('stream');
+const { getModel, } = require('../model').Class;
 
 const { FIELDS, SELECT_BEHAVIOR, } = require('ilorm-constants').QUERY;
 const { CONNECTOR, LIMIT, MODEL, QUERY_OR, SELECT, SKIP, UPDATE, } = FIELDS;
@@ -25,7 +26,19 @@ class BaseQuery {
    * @param {Model|Query} relatedElement Specify an element which be linked with the query result
    * @returns {Query} Return the query to make additional link or filters
    */
-  linkedWith(relatedElement) { // eslint-disable-line
+  linkedWith(relatedElement) {
+    let query;
+
+    if (relatedElement instanceof getModel()) {
+      query = relatedElement.getQueryPrimary();
+    }
+    if (relatedElement instanceof this.constructor) {
+      query = relatedElement;
+    }
+    if (!query) {
+      throw new Error('linkedWith parameter is not valid, need to be an instanceof Query or Model');
+    }
+
     return this;
   }
 
