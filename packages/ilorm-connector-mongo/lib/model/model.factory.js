@@ -1,4 +1,6 @@
 
+const aggregateFactory = require('../query/aggregate.factory');
+
 /**
  * Create a new Mongo Model class.
  * @param {Model} ParentModel The Model used as Parent
@@ -21,6 +23,16 @@ const mongoModelFactory = ({ ParentModel, }) => (
      */
     getPrimary() {
       return this._id;
+    }
+
+    /**
+     * Create a MongoDB Aggregate query
+     * @returns {AggregateQuery} Return an aggregate query builder
+     */
+    static aggregate() {
+      const Aggregate = aggregateFactory(this);
+
+      return new Aggregate();
     }
   }
 );
