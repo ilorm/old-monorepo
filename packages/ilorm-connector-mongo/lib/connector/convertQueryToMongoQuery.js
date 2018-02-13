@@ -1,6 +1,6 @@
 'use strict';
 
-const { OPERATIONS, } = require('ilorm-constants').QUERY;
+const { OPERATIONS, SORT_BEHAVIOR, } = require('ilorm-constants').QUERY;
 
 const operatorConversion = {
   [OPERATIONS.IS]: '$eq',
@@ -12,6 +12,9 @@ const operatorConversion = {
   [OPERATIONS.GREATER_OR_EQUAL_THAN]: '$gte',
   [OPERATIONS.LOWER_OR_EQUAL_THAN]: '$lte',
 };
+
+const ASCENDING = 1;
+const DESCENDING = -1;
 
 /**
  * Convert a valid inputQuery to a query
@@ -45,6 +48,16 @@ function convertQueryToMongoQuery(query) {
       }
 
       mongoOptions.projection[field] = 1;
+    },
+    onSort: (key, order) => {
+      if (!mongoOptions.sort) {
+        mongoOptions.sort = [];
+      }
+
+      mongoOptions.sort.push([
+        key,
+        order === SORT_BEHAVIOR.ASCENDING ? ASCENDING : DESCENDING,
+      ]);
     },
     onOperator: (key, operator, value) => {
       if (!keys[key]) {
