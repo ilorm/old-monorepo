@@ -1,33 +1,88 @@
 'use strict';
 
 const definition = Symbol('definition');
-const previous = Symbol('previous');
+const pipeline = Symbol('pipeline');
 
 const aggregateFactory = Model => {
 
   class AggregateQuery {
-    constructor({ previous, }) {
-      this[previous] = previous;
+    constructor() {
+      this[pipeline] = [];
+      this[definition] = {};
     }
 
     /**
-     * Internal method to build pipeline
-     * @returns {Array} Return pipeline to execute
+     * Match level aggregation
      */
-    buildPipeline() {
-      if (this.previous) {
-        return this[previous].concat(this[definition]);
-      }
+    match(handler) {
+      const match = {};
+      const pipelineStage = {};
 
-      return [ this[definition], ];
+      handler({ match, });
+
+      this[pipeline].push(pipelineStage);
+
+      return this;
+    }
+
+    /**
+     * Skip over the specified number of document that pass into the stage
+     * @param {Number} number Number of document to skip
+     * @returns {AggregateQuery} The aggregate query to chain stage
+     */
+    skip(number) {
+      this[pipeline].push({
+        $skip: number,
+      });
+
+      return this;
+    }
+
+    /**
+     * Limits the number of documents passed to the next stage in the pipeline.
+     * @param {Number} number Number of document to limit
+     * @returns {AggregateQuery} The aggregate query to chain stage
+     */
+    limit(number) {
+      this[pipeline].push({
+        $limit: number,
+      });
+
+      return this;
+    }
+
+    /**
+     * Group level aggregation
+     */
+    group(handler) {
+      const previous = {};
+      const next = {};
+      const pipelineStage = {};
+
+      handler({ previous, next, });
+
+      this[pipeline].push(pipelineStage);
+
+      return this;
+    }
+
+    unwind(handler) {
+
+      return this;
+    }
+
+    sort(handler) {
+
+      return this;
     }
 
     /**
      * Execute the aggregate and return the results
      * @returns {Array} The aggregate result
      */
-    async exec() {
-      const pipeline = this.buildPipeline();
+    exec() {
+      return Model.getConnector()
+        .aggregate(this[pipeline]);
     }
 
     /**

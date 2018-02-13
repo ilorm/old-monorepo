@@ -68,22 +68,27 @@ describe('ilorm-connector-mongodb', () => {
       await mongoClient.close();
     });
 
-    it('Could query Guillaume', async() => {
+    it('Should run the aggregate and return one result', async() => {
       class User extends newModel(modelFactoryParams) {}
 
       declareModel('users', User);
 
-      const user = await User.aggregate()
-        .group(stage => {
-          stage.gender.asId();
-          stage.total.sum(1);
+      const result = await User.aggregate()
+        .group(({ previous, next }) => {
+          next._id.is(previous.gender);
+          next.total.sum(1);
+          next.weight.avg(previous.weight);
         })
-        .group()
+        .group(({ previous, next }) => {
+          next._id.is(null);
+          next.total.sum(previous.total);
+          next.weight.avg(previous.weight);
+        })
         .execAndReturnOne();
 
-      expect(user.firstName).to.be.equal('Guillaume');
-      expect(user.lastName).to.be.equal('Daix');
-      expect(user.gender).to.be.equal('M');
+      expect(result._id).to.be.equal(null);
+      expect(result.total).to.be.equal(3);
+      expect(result.weight).to.be.equal(69.75);
     });
 
   });

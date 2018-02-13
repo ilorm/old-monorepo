@@ -159,6 +159,18 @@ const injectDependencies = ({ db, mongoClient, }) => {
     }
 
     /**
+     * Run a standard aggregate MongoDB
+     * @param {Array} pipeline The pipeline to run
+     * @returns {Promise.<null|AggregationCursor>} Return the aggregation cursor
+     */
+    async aggregate(pipeline) {
+      const collection = await this.getCollection();
+
+      return collection.aggregate(pipeline)
+        .toArray();
+    }
+
+    /**
      * Remove one or document who match the query
      * @param {Query} query The ilorm query you want to run on your Database.
      * @returns {Promise.<Number>} The number of document removed
