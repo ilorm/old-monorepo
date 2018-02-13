@@ -198,7 +198,7 @@ let Query = class Query {
       });
     }
 
-    if (onSelect) {
+    if (onSelect && this[SELECT] && this[SELECT].fields && this[SELECT].fields.length > 0) {
       this[SELECT].fields.forEach(field => onSelect({ field, }));
     }
 
