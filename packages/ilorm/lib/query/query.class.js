@@ -3,7 +3,7 @@
 'use strict';
 
 
-const { FIELDS, SELECT_BEHAVIOR, OPERATIONS, } = require('ilorm-constants').QUERY;
+const { FIELDS, SELECT_BEHAVIOR, SORT_BEHAVIOR, OPERATIONS, } = require('ilorm-constants').QUERY;
 const { CONNECTOR, LIMIT, MODEL, QUERY, QUERY_OR, SCHEMA, SELECT, SKIP, SORT, UPDATE, } = FIELDS;
 const { Transform, } = require('stream');
 
@@ -187,7 +187,7 @@ let Query = class Query {
    * @param {Function} onSelect This function will be called to handle select specific fields from the database
    * @returns {void} Return nothing
    */
-  queryBuilder({ onOr, onOperator, onOptions, onSelect, }) {
+  queryBuilder({ onOr, onOperator, onOptions, onSelect, onSort, }) {
     if (onOr) {
       if (this[QUERY_OR]) {
         this[QUERY_OR].forEach(onOr);
@@ -199,6 +199,19 @@ let Query = class Query {
         skip: this[SKIP],
         limit: this[LIMIT],
       });
+    }
+
+    if (onSort) {
+      const query = this[QUERY];
+
+      for (const key of Object.keys(query)) {
+        for (const operator of Object.keys(query[key])) {
+          onSort({
+            key,
+            order: operator === OPERATIONS.SORT_ASCENDING ? SORT_BEHAVIOR.ASCENDING : SORT_BEHAVIOR.DESCENDING,
+          });
+        }
+      }
     }
 
     if (onSelect && this[SELECT] && this[SELECT].fields && this[SELECT].fields.length > 0) {
