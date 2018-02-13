@@ -29,6 +29,8 @@ const injectQuery = ({ deletedField, }) => Query => class SoftDeleteQuery extend
         [NOT_IS]: true,
       };
     }
+
+    return super.prepareQuery();
   }
 
   /**
