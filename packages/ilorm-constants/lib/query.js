@@ -39,6 +39,11 @@ module.exports = {
     ONE: Symbol('selectOne'),
   },
 
+  SORT_BEHAVIOR: {
+    ASCENDING: Symbol('ascending'),
+    DESCENDING: Symbol('descending'),
+  },
+
   OPERATIONS: {
     // Basic operations :
     IS: 'is',
