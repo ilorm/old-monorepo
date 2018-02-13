@@ -202,10 +202,10 @@ let Query = class Query {
     }
 
     if (onSort) {
-      const query = this[QUERY];
+      const sort = this[SORT];
 
-      for (const key of Object.keys(query)) {
-        for (const operator of Object.keys(query[key])) {
+      for (const key of Object.keys(sort)) {
+        for (const operator of Object.keys(sort[key])) {
           onSort({
             key,
             order: operator === OPERATIONS.SORT_ASCENDING ? SORT_BEHAVIOR.ASCENDING : SORT_BEHAVIOR.DESCENDING,
