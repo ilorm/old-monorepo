@@ -1,6 +1,6 @@
 'use strict';
 
-const { FIELDS, } = require('ilorm-constants').QUERY;
+const { FIELDS, SELECT_BEHAVIOR, OPERATIONS, } = require('ilorm-constants').QUERY;
 const { CONNECTOR, LIMIT, MODEL, QUERY, QUERY_OR, SCHEMA, SELECT, SKIP, SORT, UPDATE, } = FIELDS;
 const { Transform, } = require('stream');
 
@@ -49,10 +49,9 @@ let Query = class Query {
   async findOne() {
     await this.prepareQuery();
 
-    const Model = this[MODEL];
     const rawResult = await this[CONNECTOR].findOne(this);
 
-    return rawResult ? Model.instantiate(rawResult) : null;
+    return this.applySelectBehaviorOnConnectorResult(rawResult);
   }
 
   /**
@@ -62,10 +61,34 @@ let Query = class Query {
   async find() {
     await this.prepareQuery();
 
-    const Model = this[MODEL];
     const rawResultList = await this[CONNECTOR].find(this);
 
-    return rawResultList.map(rawResult => Model.instantiate(rawResult));
+    return rawResultList.map(rawResult => this.applySelectBehaviorOnConnectorResult(rawResult));
+  }
+
+  /**
+   * Convert raw result from connector find or findOne to instance or selected field
+   * @param {Object} rawResult The raw result to convert
+   * @returns {Object|null} The result in function of select behavior
+   */
+  applySelectBehaviorOnConnectorResult(rawResult) {
+    // Without raw result, you return null to show the absence of value :
+    if (!rawResult) {
+      return null;
+    }
+
+    // Classic way, without select, you only instantiate the child model :
+    if (this[SELECT].behavior === SELECT_BEHAVIOR.ALL) {
+      return this[MODEL].instantiate(rawResult);
+    }
+
+    // queryField.selectOnly() will return only the field value :
+    if (this[SELECT].behavior === SELECT_BEHAVIOR.ONE) {
+      return rawResult[this[SELECT].fields[0]];
+    }
+
+    // queryField.select() it's the connector work to choose the select field :
+    return rawResult;
   }
 
   /**
@@ -158,9 +181,10 @@ let Query = class Query {
    * @param {Function} onOr This function will be called if the user have calling an or on this query
    * @param {Function} onOperator This function will be called per every key operator value combination
    * @param {Function} onOptions This function will be called to put skip and limit to the child query
+   * @param {Function} onSelect This function will be called to handle select specific fields from the database
    * @returns {void} Return nothing
    */
-  queryBuilder({ onOr, onOperator, onOptions, }) {
+  queryBuilder({ onOr, onOperator, onOptions, onSelect, }) {
     if (onOr) {
       if (this[QUERY_OR]) {
         this[QUERY_OR].forEach(onOr);
@@ -172,6 +196,10 @@ let Query = class Query {
         skip: this[SKIP],
         limit: this[LIMIT],
       });
+    }
+
+    if (onSelect) {
+      this[SELECT].fields.forEach(field => onSelect({ field, }));
     }
 
     if (onOperator) {
@@ -210,7 +238,43 @@ let Query = class Query {
    * Utility method called before each query, could be used to change query behavior
    * @returns {void} Return nothing, only change the internal state of query
    */
-  prepareQuery() {}
+  prepareQuery() {
+    if (!this[SELECT]) {
+      this[SELECT] = {
+        behavior: SELECT_BEHAVIOR.ALL,
+      };
+
+      return;
+    }
+    const select = {
+      behavior: null,
+      fields: [],
+    };
+
+    for (const key of this[SELECT]) {
+      const operation = this[SELECT][key];
+
+      if (operation === OPERATIONS.SELECT_ONLY) {
+        if (select.behavior !== null) {
+          throw new Error(`Could not select only field ${key}, if you already selected others fields.`);
+        }
+
+        select.behavior = SELECT_BEHAVIOR.ONE;
+        select.fields.push(key);
+      } else {
+        if (select.behavior === OPERATIONS.SELECT_ONLY) {
+          throw new Error(`Could not select field ${key}, if you already selectOnly the field ${select.fields[0]}`);
+        }
+
+        select.behavior = SELECT_BEHAVIOR.MULTIPLE;
+        select.fields.push(key);
+      }
+    }
+
+    this[SELECT] = select;
+
+    return;
+  }
 
   /**
    * Utility method called before each update, could be used to change update behavior

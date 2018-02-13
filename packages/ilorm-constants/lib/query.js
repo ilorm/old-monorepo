@@ -33,6 +33,12 @@ module.exports = {
     SORT: Symbol('sort'),
   },
 
+  SELECT_BEHAVIOR: {
+    ALL: Symbol('selectAll'),
+    MULTIPLE: Symbol('selectMultiple'),
+    ONE: Symbol('selectOne'),
+  },
+
   OPERATIONS: {
     // Basic operations :
     IS: 'is',

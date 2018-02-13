@@ -39,6 +39,13 @@ function convertQueryToMongoQuery(query) {
         $or: arrayOfQuery.map(query => convertQueryToMongoQuery(query)),
       });
     },
+    onSelect: ({ field, }) => {
+      if (!mongoOptions.projection) {
+        mongoOptions.projection = {};
+      }
+
+      mongoOptions.projection[field] = 1;
+    },
     onOperator: (key, operator, value) => {
       if (!keys[key]) {
         keys[key] = {};
