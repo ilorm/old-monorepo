@@ -53,5 +53,13 @@ module.exports = {
     // Update :
     SET: 'set',
     ADD: 'add',
+
+    // Sort
+    SORT_ASCENDING: 'useAsSortAsc',
+    SORT_DESCENDING: 'useAsSortDesc',
+
+    // Select
+    SELECT_ONLY: 'selectOnly',
+    SELECT: 'select',
   },
 };
