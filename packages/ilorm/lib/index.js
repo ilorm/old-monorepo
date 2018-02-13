@@ -4,11 +4,6 @@ const { getSchema, } = require('./schema');
 const Fields = require('./schemaField');
 const { use, } = require('./plugins');
 
-/**
- * Noop function
- * @return {void} Return nothing
- */
-
 const finalLib = {
   newModel: model.factory,
   declareModel: model.declareModel,
