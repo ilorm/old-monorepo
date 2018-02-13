@@ -1,4 +1,7 @@
+// eslint-disable-line max-lines
+
 'use strict';
+
 
 const { FIELDS, SELECT_BEHAVIOR, OPERATIONS, } = require('ilorm-constants').QUERY;
 const { CONNECTOR, LIMIT, MODEL, QUERY, QUERY_OR, SCHEMA, SELECT, SKIP, SORT, UPDATE, } = FIELDS;
