@@ -239,10 +239,8 @@ let Query = class Query {
    * @returns {void} Return nothing, only change the internal state of query
    */
   prepareQuery() {
-    if (!this[SELECT]) {
-      this[SELECT] = {
-        behavior: SELECT_BEHAVIOR.ALL,
-      };
+    if (Object.keys(this[SELECT]).length === 0) {
+      this[SELECT].behavior = SELECT_BEHAVIOR.ALL;
 
       return;
     }
@@ -251,8 +249,8 @@ let Query = class Query {
       fields: [],
     };
 
-    for (const key of this[SELECT]) {
-      const operation = this[SELECT][key];
+    for (const key of Object.keys(this[SELECT])) {
+      const [ operation, ] = Object.keys(this[SELECT][key]);
 
       if (operation === OPERATIONS.SELECT_ONLY) {
         if (select.behavior !== null) {
@@ -271,7 +269,8 @@ let Query = class Query {
       }
     }
 
-    this[SELECT] = select;
+    this[SELECT].behavior = select.behavior;
+    this[SELECT].fields = select.fields;
 
     return;
   }

@@ -3,7 +3,7 @@
  */
 
 const { getQuery, } = require('./query.class');
-const { SCHEMA, MODEL, CONNECTOR, QUERY, UPDATE, } = require('ilorm-constants').QUERY.FIELDS;
+const { SCHEMA, MODEL, CONNECTOR, QUERY, UPDATE, SORT, SELECT, } = require('ilorm-constants').QUERY.FIELDS;
 
 /**
  * Create a property option object (Object.defineProperty)
@@ -35,6 +35,8 @@ const queryFactory = ({ model, }) => {
     [CONNECTOR]: defineProperty(connector),
     [QUERY]: defineProperty({}),
     [UPDATE]: defineProperty({}),
+    [SORT]: defineProperty({}),
+    [SELECT]: defineProperty({}),
     [MODEL]: defineProperty(model),
   });
 
