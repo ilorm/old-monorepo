@@ -101,6 +101,30 @@ let SchemaField = class SchemaField {
         field: FIELDS.UPDATE,
         key: name || this.name,
       }),
+      [OPERATIONS.SELECT]: declareOperation({
+        query,
+        operation: OPERATIONS.SELECT,
+        field: FIELDS.SELECT,
+        key: name || this.name,
+      }),
+      [OPERATIONS.SELECT_ONLY]: declareOperation({
+        query,
+        operation: OPERATIONS.SELECT_ONLY,
+        field: FIELDS.SELECT,
+        key: name || this.name,
+      }),
+      [OPERATIONS.SORT_ASCENDING]: declareOperation({
+        query,
+        operation: OPERATIONS.SORT_ASCENDING,
+        field: FIELDS.SORT,
+        key: name || this.name,
+      }),
+      [OPERATIONS.SORT_DESCENDING]: declareOperation({
+        query,
+        operation: OPERATIONS.SORT_DESCENDING,
+        field: FIELDS.SORT,
+        key: name || this.name,
+      }),
     };
 
     SCHEMA_FIELDS_OPERATIONS
