@@ -1,3 +1,5 @@
+'use strict';
+
 const model = require('./model');
 
 const { getSchema, } = require('./schema');
