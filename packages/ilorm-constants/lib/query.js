@@ -25,6 +25,12 @@ module.exports = {
 
     // Declare the number of element to query during the run of the query
     LIMIT: Symbol('limit'),
+
+    // Declare Select specific fields
+    SELECT: Symbol('select'),
+
+    // Declare sort
+    SORT: Symbol('sort'),
   },
 
   OPERATIONS: {

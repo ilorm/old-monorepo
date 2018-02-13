@@ -1,6 +1,7 @@
 'use strict';
 
-const { SCHEMA, MODEL, CONNECTOR, QUERY, QUERY_OR, UPDATE, SKIP, LIMIT, } = require('ilorm-constants').QUERY.FIELDS;
+const { FIELDS, } = require('ilorm-constants').QUERY;
+const { CONNECTOR, LIMIT, MODEL, QUERY, QUERY_OR, SCHEMA, SELECT, SKIP, SORT, UPDATE, } = FIELDS;
 const { Transform, } = require('stream');
 
 /**
