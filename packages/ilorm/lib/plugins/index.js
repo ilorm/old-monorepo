@@ -55,7 +55,7 @@ const clear = () => {
   CORE_PLUGINS.forEach(coreType => {
     const Class = CoreClass[coreType];
 
-    Class.clearPlugins();
+    Class.clear();
   });
 };
 

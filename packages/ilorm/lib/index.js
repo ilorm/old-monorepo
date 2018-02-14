@@ -4,11 +4,12 @@ const model = require('./model');
 
 const { getSchema, } = require('./schema');
 const getFields = require('./schemaField');
-const { use, } = require('./plugins');
+const { clear, use, } = require('./plugins');
 
 const finalLib = {
-  newModel: model.factory,
+  clear,
   declareModel: model.declareModel,
+  newModel: model.factory,
   use,
 };
 
