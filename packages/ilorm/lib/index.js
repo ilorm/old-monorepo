@@ -3,7 +3,7 @@
 const model = require('./model');
 
 const { getSchema, } = require('./schema');
-const Fields = require('./schemaField');
+const getFields = require('./schemaField');
 const { use, } = require('./plugins');
 
 const finalLib = {
@@ -14,7 +14,7 @@ const finalLib = {
 
 Object.defineProperty(finalLib, 'Schema', {
   get: () => {
-    const Schema = Object.assign(getSchema(), Fields);
+    const Schema = Object.assign(getSchema(), getFields());
 
     return Schema;
   },

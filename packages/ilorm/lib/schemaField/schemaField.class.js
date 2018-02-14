@@ -13,7 +13,7 @@ const SCHEMA_FIELDS_OPERATIONS = [
 /**
  * Class representing a field of the schema
  */
-let SchemaField = class SchemaField {
+class BaseSchemaField {
 
   /**
    * Create a new Schema field
@@ -148,18 +148,35 @@ let SchemaField = class SchemaField {
   castValue(value) {
     return value;
   }
+}
+
+let SchemaField = BaseSchemaField;
+
+/**
+ * Remove plugins from schema
+ * @returns {void} return nothing
+ */
+const clear = () => {
+  SchemaField = BaseSchemaField;
 };
 
 /**
+ * Return current SchemaField class
+ * @returns {Schema} current Schema
+ */
+const getSchemaField = () => SchemaField;
+
+/**
  * Overload SchemaField class by another (to plugin)
- * @param {Model} Class A new SchemaField to replace the current one (plugin)
+ * @param  {Function} classFactory The class factory used to replace current SchemaField
  * @returns {void} Return nothing
  */
-const overload = Class => {
-  SchemaField = Class;
-  SchemaField.overload = overload;
+const overload = classFactory => {
+  SchemaField = classFactory(SchemaField);
 };
 
-SchemaField.overload = overload;
-
-module.exports = SchemaField;
+module.exports = {
+  clear,
+  getSchemaField,
+  overload,
+};
