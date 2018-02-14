@@ -2,38 +2,23 @@
 
 'use strict';
 
+const { Transform, } = require('stream');
 
 const { FIELDS, SELECT_BEHAVIOR, SORT_BEHAVIOR, OPERATIONS, } = require('ilorm-constants').QUERY;
 const { CONNECTOR, LIMIT, MODEL, QUERY, QUERY_OR, SCHEMA, SELECT, SKIP, SORT, UPDATE, } = FIELDS;
-const { Transform, } = require('stream');
+
+const proxyFactory = require('./proxyFactory');
 
 /**
  * Class representing a queryBuilder
  * It's used by the framework to build query
  */
-let Query = class Query {
+class BaseQuery {
   /**
    * Init the query object
    */
   constructor() {
-    this.declareQueryFields();
-  }
-
-  /**
-   * Init query fields
-   * @returns {void} return nothing
-   */
-  declareQueryFields() {
-    this[SCHEMA].properties.forEach(property => {
-      const propertyDefinition = this[SCHEMA].definition[property];
-
-      Object.defineProperty(this, property, {
-        value: propertyDefinition.getQueryOperations({
-          name: property,
-          query: this,
-        }),
-      });
-    });
+    return proxyFactory(this);
   }
 
   /**
@@ -346,7 +331,23 @@ let Query = class Query {
 
     return rawStream.pipe(instantiateStream);
   }
+}
+
+let Query = BaseQuery;
+
+/**
+ * Remove plugins from schema
+ * @returns {void} return nothing
+ */
+const clear = () => {
+  Query = BaseQuery;
 };
+
+/**
+ * Get the current Query class
+ * @returns {Query} Current query
+ */
+const getQuery = () => Query;
 
 /**
  * Overload query class by another (to plugin)
@@ -357,13 +358,8 @@ const overload = classFactory => {
   Query = classFactory(Query);
 };
 
-/**
- * Get the current Query class
- * @returns {Query} Current query
- */
-const getQuery = () => Query;
-
 module.exports = {
+  clear,
   getQuery,
   overload,
 };

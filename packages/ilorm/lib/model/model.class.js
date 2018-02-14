@@ -8,7 +8,7 @@ const { IS_NEW, } = require('./fields');
 /**
  * Class representing a Model
  */
-let Model = class Model {
+class BaseModel {
   /**
    * Construct a new instance of the model
 *   */
@@ -149,7 +149,23 @@ let Model = class Model {
 
     return schema.initInstance(this);
   }
+}
+
+let Model = BaseModel;
+
+/**
+ * Remove plugins from Model
+ * @returns {void} return nothing
+ */
+const clear = () => {
+  Model = BaseModel;
 };
+
+/**
+ * Get current Model class
+ * @returns {Model} Model class
+ */
+const getModel = () => Model;
 
 /**
  * Overload model class by another (to plugin)
@@ -160,13 +176,8 @@ const overload = classFactory => {
   Model = classFactory(Model);
 };
 
-/**
- * Get current Model class
- * @returns {Model} Model class
- */
-const getModel = () => Model;
-
 module.exports = {
-  overload,
+  clear,
   getModel,
+  overload,
 };

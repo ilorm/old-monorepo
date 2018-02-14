@@ -16,7 +16,7 @@ const schemaPluginOption = [];
 /**
  * Class representing schema of data
  */
-let Schema = class Schema {
+class BaseSchema {
   /**
    * Instantiate a new schema
    * @param {Object} schemaDefinition The definition to apply
@@ -153,7 +153,19 @@ let Schema = class Schema {
   static declarePluginOption(pluginOption) {
     schemaPluginOption.push(pluginOption);
   }
-};
+
+  /**
+   * Clear plugins options
+   * @returns {void} Remove schema plugins options
+   */
+  static clearPluginOption() {
+    while (schemaPluginOption.length > 0) {
+      schemaPluginOption.pop();
+    }
+  }
+}
+
+let Schema = BaseSchema;
 
 /**
  * Overload schema class by another (to plugin)
@@ -170,7 +182,16 @@ const overload = classFactory => {
  */
 const getSchema = () => Schema;
 
+/**
+ * Remove plugins from schema
+ * @returns {void} return nothing
+ */
+const clear = () => {
+  Schema = BaseSchema;
+};
+
 module.exports = {
-  overload,
+  clear,
   getSchema,
+  overload,
 };
