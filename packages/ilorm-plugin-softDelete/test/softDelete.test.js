@@ -13,6 +13,10 @@ describe('ilorm-plugin-softDelete', () => {
       ilorm.use(ilormSoftDelete());
     });
 
+    after(async () => {
+      ilorm.clear();
+    });
+
     it('Should add isDeleted field to schema', () => {
       const { Schema, } = ilorm;
 
