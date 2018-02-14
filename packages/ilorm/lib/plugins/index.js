@@ -46,6 +46,20 @@ const use = ({ plugins, }) => {
   return null;
 };
 
+/**
+ * Internal utility method to remove all plugins from ilorm
+ * @returns {void} returns nothing
+ */
+const clear = () => {
+  SchemaClass.getSchema().clearPluginOption();
+  CORE_PLUGINS.forEach(coreType => {
+    const Class = CoreClass[coreType];
+
+    Class.clearPlugins();
+  });
+};
+
 module.exports = {
+  clear,
   use,
 };
