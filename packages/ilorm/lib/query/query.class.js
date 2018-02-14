@@ -5,7 +5,7 @@
 const { Transform, } = require('stream');
 
 const { FIELDS, SELECT_BEHAVIOR, SORT_BEHAVIOR, OPERATIONS, } = require('ilorm-constants').QUERY;
-const { CONNECTOR, LIMIT, MODEL, QUERY, QUERY_OR, SCHEMA, SELECT, SKIP, SORT, UPDATE, } = FIELDS;
+const { CONNECTOR, LIMIT, MODEL, QUERY, QUERY_OR, SELECT, SKIP, SORT, UPDATE, } = FIELDS;
 
 const proxyFactory = require('./proxyFactory');
 
