@@ -1,7 +1,9 @@
 'use strict';
 
 const { getQuery, } = require('./query.class');
-const { SCHEMA, MODEL, CONNECTOR, QUERY, UPDATE, SORT, SELECT, } = require('ilorm-constants').QUERY.FIELDS;
+const { FIELDS, SELECT_BEHAVIOR, } = require('ilorm-constants').QUERY;
+const { SCHEMA, MODEL, CONNECTOR, QUERY, UPDATE, SORT, SELECT, } = FIELDS;
+
 
 /**
  * Create a property option object (Object.defineProperty)
@@ -13,6 +15,15 @@ const { SCHEMA, MODEL, CONNECTOR, QUERY, UPDATE, SORT, SELECT, } = require('ilor
  * @returns {Object} The param object
  */
 const defineProperty = variable => ({ value: variable, });
+
+/**
+ * Create select base in the query class.
+ * @returns {Object} Create an object to store the select options on the current query.
+ */
+const selectBaseFactory = () => ({
+  behavior: SELECT_BEHAVIOR.ALL,
+  fields: [],
+});
 
 /**
  * Create a new Query class from the given context
@@ -34,7 +45,7 @@ const queryFactory = ({ model, }) => {
     [QUERY]: defineProperty({}),
     [UPDATE]: defineProperty({}),
     [SORT]: defineProperty({}),
-    [SELECT]: defineProperty({}),
+    [SELECT]: defineProperty(selectBaseFactory()),
     [MODEL]: defineProperty(model),
   });
 

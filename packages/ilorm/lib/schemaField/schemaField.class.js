@@ -2,6 +2,7 @@
 
 const { OPERATIONS, FIELDS, } = require('ilorm-constants').QUERY;
 const declareOperation = require('./helpers/declareOperation');
+const declareSelect = require('./helpers/declareSelect');
 
 const SCHEMA_FIELDS_OPERATIONS = [
   OPERATIONS.IS,
@@ -101,16 +102,14 @@ class BaseSchemaField {
         field: FIELDS.UPDATE,
         key: name || this.name,
       }),
-      [OPERATIONS.SELECT]: declareOperation({
+      [OPERATIONS.SELECT]: declareSelect({
         query,
         operation: OPERATIONS.SELECT,
-        field: FIELDS.SELECT,
         key: name || this.name,
       }),
-      [OPERATIONS.SELECT_ONLY]: declareOperation({
+      [OPERATIONS.SELECT_ONLY]: declareSelect({
         query,
         operation: OPERATIONS.SELECT_ONLY,
-        field: FIELDS.SELECT,
         key: name || this.name,
       }),
       [OPERATIONS.SORT_ASCENDING]: declareOperation({
