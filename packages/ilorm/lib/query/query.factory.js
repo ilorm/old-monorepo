@@ -1,6 +1,4 @@
-/**
- * Created by guil_ on 09/12/2017.
- */
+'use strict';
 
 const { getQuery, } = require('./query.class');
 const { SCHEMA, MODEL, CONNECTOR, QUERY, UPDATE, SORT, SELECT, } = require('ilorm-constants').QUERY.FIELDS;
