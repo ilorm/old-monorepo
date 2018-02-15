@@ -27,7 +27,7 @@ const getDateField = SchemaField => {
      * @param {Array.<String>} additionalOperations Add operations to the field builder
      * @return {Object} The query operations
      */
-    getQueryOperations({query, additionalOperations = [],}) {
+    getQueryOperations({ query, additionalOperations = [], }) {
       return super.getQueryOperations({
         query,
         additionalOperations: DATE_OPERATIONS.concat(additionalOperations),

@@ -1,12 +1,11 @@
-// eslint-disable-line max-lines
-
 'use strict';
 
 const { Transform, } = require('stream');
 
-const { FIELDS, SELECT_BEHAVIOR, SORT_BEHAVIOR, OPERATIONS, } = require('ilorm-constants').QUERY;
-const { CONNECTOR, LIMIT, MODEL, QUERY, QUERY_OR, SELECT, SKIP, SORT, UPDATE, } = FIELDS;
+const { FIELDS, SELECT_BEHAVIOR, } = require('ilorm-constants').QUERY;
+const { CONNECTOR, LIMIT, MODEL, QUERY_OR, SELECT, SKIP, UPDATE, } = FIELDS;
 
+const bindQueryBuilder = require('./bindQueryBuilder');
 const proxyFactory = require('./proxyFactory');
 
 /**
@@ -173,47 +172,13 @@ class BaseQuery {
    * @returns {void} Return nothing
    */
   queryBuilder({ onOr, onOperator, onOptions, onSelect, onSort, }) {
-    if (onOr) {
-      if (this[QUERY_OR]) {
-        this[QUERY_OR].forEach(onOr);
-      }
-    }
-
-    if (onOptions) {
-      onOptions({
-        skip: this[SKIP],
-        limit: this[LIMIT],
-      });
-    }
-
-    if (onSort) {
-      const sort = this[SORT];
-
-      for (const key of Object.keys(sort)) {
-        for (const operator of Object.keys(sort[key])) {
-          onSort({
-            key,
-            order: operator === OPERATIONS.SORT_ASCENDING ? SORT_BEHAVIOR.ASCENDING : SORT_BEHAVIOR.DESCENDING,
-          });
-        }
-      }
-    }
-
-    if (onSelect && this[SELECT] && this[SELECT].fields && this[SELECT].fields.length > 0) {
-      this[SELECT].fields.forEach(field => onSelect({ field, }));
-    }
-
-    if (onOperator) {
-      const query = this[QUERY];
-
-      for (const key of Object.keys(query)) {
-        for (const operator of Object.keys(query[key])) {
-          const value = query[key][operator];
-
-          onOperator(key, operator, value);
-        }
-      }
-    }
+    return bindQueryBuilder(this)({
+      onOr,
+      onOperator,
+      onOptions,
+      onSelect,
+      onSort,
+    });
   }
 
   /**
