@@ -239,42 +239,7 @@ class BaseQuery {
    * Utility method called before each query, could be used to change query behavior
    * @returns {void} Return nothing, only change the internal state of query
    */
-  prepareQuery() {
-    if (Object.keys(this[SELECT]).length === 0) {
-      this[SELECT].behavior = SELECT_BEHAVIOR.ALL;
-
-      return;
-    }
-    const select = {
-      behavior: null,
-      fields: [],
-    };
-
-    for (const key of Object.keys(this[SELECT])) {
-      const [ operation, ] = Object.keys(this[SELECT][key]);
-
-      if (operation === OPERATIONS.SELECT_ONLY) {
-        if (select.behavior !== null) {
-          throw new Error(`Could not select only field ${key}, if you already selected others fields.`);
-        }
-
-        select.behavior = SELECT_BEHAVIOR.ONE;
-        select.fields.push(key);
-      } else {
-        if (select.behavior === OPERATIONS.SELECT_ONLY) {
-          throw new Error(`Could not select field ${key}, if you already selectOnly the field ${select.fields[0]}`);
-        }
-
-        select.behavior = SELECT_BEHAVIOR.MULTIPLE;
-        select.fields.push(key);
-      }
-    }
-
-    this[SELECT].behavior = select.behavior;
-    this[SELECT].fields = select.fields;
-
-    return;
-  }
+  prepareQuery() {}
 
   /**
    * Utility method called before each update, could be used to change update behavior
