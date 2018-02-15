@@ -1,6 +1,4 @@
-/**
- * Created by guil_ on 07/12/2017.
- */
+'use strict';
 
 const modelMap = require('./models.map');
 const { getModel, } = require('./model.class');

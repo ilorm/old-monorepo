@@ -1,3 +1,4 @@
+'use strict';
 
 const SchemaClass = require('../schema/schema.class');
 const ModelClass = require('../model/model.class');
