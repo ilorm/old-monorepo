@@ -18,11 +18,11 @@ const declareOperationFactory = ({ query = {}, key, operation, field = QUERY, })
  * @returns {Object} Return the query item with the applied params
  */
   params => {
-    if (!query[field][key]) {
-      query[field][key] = {};
-    }
-
-    query[field][key][operation] = params;
+    query[field].push({
+      field: key,
+      operator: operation,
+      value: params,
+    });
 
     return query;
   }

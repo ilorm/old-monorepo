@@ -42,8 +42,8 @@ const queryFactory = ({ model, }) => {
   Object.defineProperties(InternalQuery.prototype, {
     [SCHEMA]: defineProperty(schema),
     [CONNECTOR]: defineProperty(connector),
-    [QUERY]: defineProperty({}),
-    [UPDATE]: defineProperty({}),
+    [QUERY]: defineProperty([]),
+    [UPDATE]: defineProperty([]),
     [SORT]: defineProperty({}),
     [SELECT]: defineProperty(selectBaseFactory()),
     [MODEL]: defineProperty(model),

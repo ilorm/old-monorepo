@@ -55,7 +55,7 @@ describe('ilorm-connector-mongodb', () => {
       await mongoClient.close();
     });
 
-    it('Could insert object with map field', async() => {
+    it('Could insert object with array field', async() => {
       const item = {
         alias: [
           {
@@ -69,7 +69,7 @@ describe('ilorm-connector-mongodb', () => {
       await smith.save();
     });
 
-    it('Could update object with map field', async() => {
+    it('Could update object with array field', async() => {
       const smith = await Users.query()
         .alias.email.is('smith@noemail.com')
         .alias.push({
@@ -78,7 +78,7 @@ describe('ilorm-connector-mongodb', () => {
         .updateOne();
     });
 
-    it('Could query object with map field', async() => {
+    it('Could query object with array field', async() => {
       const smith = await Users.query()
         .alias.email.is('smith@noemail.com')
         .findOne();

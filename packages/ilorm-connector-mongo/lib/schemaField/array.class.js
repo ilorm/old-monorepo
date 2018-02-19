@@ -35,11 +35,12 @@ class ArrayField extends SchemaField {
     const key = name || this._name;
 
     queryOperations[PUSH] = params => {
-      if (!query[FIELDS.UPDATE][key]) {
-        query[FIELDS.UPDATE][key] = {};
-      }
 
-      query[FIELDS.UPDATE][key][PUSH] = params;
+      query[FIELDS.UPDATE].push({
+        field: key,
+        operator: PUSH,
+        value: params,
+      });
 
       return query;
     };

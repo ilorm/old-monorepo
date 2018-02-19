@@ -11,14 +11,8 @@ const { LIMIT, QUERY, QUERY_OR, SELECT, SKIP, SORT, } = FIELDS;
  */
 const handleOnOperator = (queryClass, onOperator) => {
   if (onOperator) {
-    const query = queryClass[QUERY];
-
-    for (const key of Object.keys(query)) {
-      for (const operator of Object.keys(query[key])) {
-        const value = query[key][operator];
-
-        onOperator(key, operator, value);
-      }
+    for (const { field, operator, value, } of queryClass[QUERY]) {
+      onOperator(field, operator, value);
     }
   }
 };

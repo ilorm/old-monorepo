@@ -188,14 +188,10 @@ class BaseQuery {
    */
   updateBuilder({ onOperator, }) {
     if (onOperator) {
-      const query = this[UPDATE];
 
-      for (const key of Object.keys(query)) {
-        for (const operator of Object.keys(query[key])) {
-          const value = query[key][operator];
 
-          onOperator(key, operator, value);
-        }
+      for (const { field, operator, value, } of this[UPDATE]) {
+        onOperator(field, operator, value);
       }
     }
   }
