@@ -85,6 +85,13 @@ function convertQueryToMongoQuery(query) {
     });
   }
 
+  if ($and.length === 0) {
+    return {
+      mongoQuery: {},
+      mongoOptions,
+    };
+  }
+
   const mongoQuery = $and.length === 1 ? $and[0] : { $and, };
 
   return {
