@@ -44,7 +44,7 @@ const queryFactory = ({ model, }) => {
     [CONNECTOR]: defineProperty(connector),
     [QUERY]: defineProperty([]),
     [UPDATE]: defineProperty([]),
-    [SORT]: defineProperty({}),
+    [SORT]: defineProperty([]),
     [SELECT]: defineProperty(selectBaseFactory()),
     [MODEL]: defineProperty(model),
   });

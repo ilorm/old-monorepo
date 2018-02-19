@@ -64,15 +64,11 @@ const handleSelect = (queryClass, onSelect) => {
  */
 const handleSort = (queryClass, onSort) => {
   if (onSort) {
-    const sort = queryClass[SORT];
-
-    for (const key of Object.keys(sort)) {
-      for (const operator of Object.keys(sort[key])) {
-        onSort({
-          key,
-          order: operator === OPERATIONS.SORT_ASCENDING ? SORT_BEHAVIOR.ASCENDING : SORT_BEHAVIOR.DESCENDING,
-        });
-      }
+    for (const { key, behavior, } of queryClass[SORT]) {
+      onSort({
+        key,
+        behavior,
+      });
     }
   }
 };
