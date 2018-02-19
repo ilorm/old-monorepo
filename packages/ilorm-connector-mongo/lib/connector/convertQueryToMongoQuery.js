@@ -49,14 +49,14 @@ function convertQueryToMongoQuery(query) {
 
       mongoOptions.projection[field] = 1;
     },
-    onSort: (key, order) => {
+    onSort: ({ key, behavior, }) => {
       if (!mongoOptions.sort) {
         mongoOptions.sort = [];
       }
 
       mongoOptions.sort.push([
         key,
-        order === SORT_BEHAVIOR.ASCENDING ? ASCENDING : DESCENDING,
+        behavior === SORT_BEHAVIOR.ASCENDING ? ASCENDING : DESCENDING,
       ]);
     },
     onOperator: (key, operator, value) => {
