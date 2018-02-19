@@ -1,7 +1,6 @@
 'use strict';
 
-const { FIELDS, SORT_BEHAVIOR, OPERATIONS, } = require('ilorm-constants').QUERY;
-const { LIMIT, QUERY, QUERY_OR, SELECT, SKIP, SORT, } = FIELDS;
+const { LIMIT, QUERY, QUERY_OR, SELECT, SKIP, SORT, } = require('ilorm-constants').QUERY.FIELDS;
 
 /**
  * Call onOperator if exists, per each operator bind with the current query
