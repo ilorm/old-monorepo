@@ -46,7 +46,7 @@ describe('ilorm-connector-mongodb', () => {
 
       Users = newModel(modelFactoryParams);
 
-      declareModel('users', Users);
+      declareModel(Users);
     });
 
     after(async () => {

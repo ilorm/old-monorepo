@@ -60,7 +60,7 @@ describe('ilorm-connector-mongodb', () => {
     it('Could query only firstName and lastName', async() => {
       class User extends newModel(modelFactoryParams) {}
 
-      declareModel('users', User);
+      declareModel(User);
 
       const user = await User.query()
         .firstName.is('Guillaume')
@@ -76,7 +76,7 @@ describe('ilorm-connector-mongodb', () => {
     it('Could query only lastName', async() => {
       class User extends newModel(modelFactoryParams) {}
 
-      declareModel('users', User);
+      declareModel(User);
 
       const lastName = await User.query()
         .firstName.is('Guillaume')
