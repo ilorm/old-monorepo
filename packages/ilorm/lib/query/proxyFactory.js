@@ -1,7 +1,6 @@
 'use strict';
 
-const { FIELDS, } = require('ilorm-constants').QUERY;
-const { SCHEMA, } = FIELDS;
+const { SCHEMA, } = require('ilorm-constants').QUERY.FIELDS;
 
 /**
  * Create a proxy used to create dynamically properties of the model on the query.
