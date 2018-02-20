@@ -48,7 +48,7 @@ const initScenario = async mockAlgoliaIndex => {
 
   const User = newModel(modelFactoryParams);
 
-  declareModel('user', User);
+  declareModel(User);
 
   /**
    * Purge database after test

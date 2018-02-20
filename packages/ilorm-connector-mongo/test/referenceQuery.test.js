@@ -116,9 +116,9 @@ describe('ilorm-connector-mongodb', () => {
       class UserGroup extends modelFactory(modelFactoryParams.usersGroups) {}
       class Group extends modelFactory(modelFactoryParams.groups) {}
 
-      declareModel('users', User);
-      declareModel('usersGroups', UserGroup);
-      declareModel('groups', Group);
+      declareModel(User);
+      declareModel(UserGroup);
+      declareModel(Group);
 
       const userQuery = User.query()
         .firstName.is('Benjamin');

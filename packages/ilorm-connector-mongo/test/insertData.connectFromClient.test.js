@@ -39,7 +39,7 @@ describe('ilorm-connector-mongodb', () => {
 
       class User extends newModel(modelFactoryParams) {}
 
-      declareModel('user', User);
+      declareModel(User);
 
       // Create data :
       const guillaume = new User();

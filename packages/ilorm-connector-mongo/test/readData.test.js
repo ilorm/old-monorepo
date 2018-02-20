@@ -68,7 +68,7 @@ describe('ilorm-connector-mongodb', () => {
     it('Could query Guillaume', async() => {
       class User extends newModel(modelFactoryParams) {}
 
-      declareModel('users', User);
+      declareModel(User);
 
       const user = await User.query()
         .firstName.is('Guillaume')
@@ -82,7 +82,7 @@ describe('ilorm-connector-mongodb', () => {
     it('Could query two users', async() => {
       class User extends newModel(modelFactoryParams) {}
 
-      declareModel('users', User);
+      declareModel(User);
 
       const users = await User.query()
         .gender.is('M')
