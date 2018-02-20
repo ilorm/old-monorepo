@@ -6,12 +6,14 @@ const map = require('./models.map');
 
 /**
  * Declare a new model
- * @param {String} name Name of the model
- * @param {Model} Model the given class
+ * The declaration system is used to handle reference system.
+ * @param {BaseModel} Model the given class
  * @return {void} Return nothing
  */
-const declareModel = (name, Model) => {
-  map.set(name, Model);
+const declareModel = Model => {
+  // Use declaration name as key of the hashmap.
+  // A model name need to be unique in a project.
+  map.set(Model.getName(), Model);
 };
 
 module.exports = {
