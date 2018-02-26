@@ -8,14 +8,14 @@ const ilormMongo = require('../index');
 
 const DB_URL = 'mongodb://localhost:27017/ilorm';
 
-const { Schema, declareModel, modelFactory, } = ilorm;
+const { Schema, declareModel, newModel, } = ilorm;
 
 describe('ilorm-connector-mongodb', () => {
-  describe.skip('test/referenceQuery', () => {
+  describe('test/referenceQuery', () => {
 
     let mongoClient;
     let database;
-    let modelFactoryParams;
+    let newModelParams;
 
     before(async () => {
 
@@ -31,18 +31,14 @@ describe('ilorm-connector-mongodb', () => {
         gender: Schema.string().required()
       });
 
-      const userGroupSchema = new Schema({
+      const invoiceSchema = new Schema({
         user: Schema.reference('users').required(),
-        group: Schema.reference('groups').required()
-      });
-
-      const groupSchema = new Schema({
-        name: Schema.string().required(),
+        amount: Schema.number().required(),
       });
 
       const MongoConnector = ilormMongo.fromClient(database);
 
-      modelFactoryParams = {
+      newModelParams = {
         users: {
           name: 'users',
           schema: userSchema,
@@ -50,24 +46,16 @@ describe('ilorm-connector-mongodb', () => {
             collectionName: 'users',
           }),
         },
-        usersGroups: {
-          name: 'usersGroups',
-          schema: userGroupSchema,
+        invoices: {
+          name: 'invoices',
+          schema: invoiceSchema,
           connector: new MongoConnector({
-            collectionName: 'usersGroups',
-          }),
-        },
-        groups: {
-          name: 'groups',
-          schema: groupSchema,
-          connector: new MongoConnector({
-            collectionName: 'groups',
+            collectionName: 'invoices',
           }),
         },
       };
 
       const benjaminId = new ObjectID();
-      const groupOneId = new ObjectID();
 
       await database.collection('users').insertMany([
         {
@@ -86,48 +74,36 @@ describe('ilorm-connector-mongodb', () => {
         }
       ]);
 
-      await database.collection('groups').insertMany([
-        {
-          _id: groupOneId,
-          name: 'groupOneName'
-        }, {
-          name: 'groupTwoName'
-        }
-      ]);
-
-      await database.collection('usersGroups').insertMany([
+      await database.collection('invoices').insertMany([
         {
           user: benjaminId,
-          group: groupOneId
+          amount: 400
         }
       ]);
     });
 
     after(async () => {
       await database.dropCollection('users');
-      await database.dropCollection('usersGroups');
-      await database.dropCollection('groups');
+      await database.dropCollection('invoices');
 
       await mongoClient.close();
     });
 
-    it('Could query Guillaume', async() => {
-      class User extends modelFactory(modelFactoryParams.users) {}
-      class UserGroup extends modelFactory(modelFactoryParams.usersGroups) {}
-      class Group extends modelFactory(modelFactoryParams.groups) {}
+    it('Could query invoice', async() => {
+      class User extends newModel(newModelParams.users) {}
+      class Invoice extends newModel(newModelParams.invoices) {}
 
       declareModel(User);
-      declareModel(UserGroup);
-      declareModel(Group);
+      declareModel(Invoice);
 
       const userQuery = User.query()
         .firstName.is('Benjamin');
 
-      const group = await Group.query()
+      const invoice = await Invoice.query()
         .linkedWith(userQuery)
         .findOne();
 
-      expect(group.name).to.be.equal('groupOneName');
+      expect(invoice.amount).to.be.equal(400);
     });
 
   });

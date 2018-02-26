@@ -5,32 +5,35 @@ module.exports = {
     // The target connector of the query :
     CONNECTOR: Symbol('connector'),
 
+    // Declare the number of element to query during the run of the query
+    LIMIT: Symbol('limit'),
+
+    // Build a query with linked with clause :
+    LINKED_WITH: Symbol('linkedWith'),
+
+    // The linked model :
+    MODEL: Symbol('model'),
+
     // The current query state (the query will be run on the connector) :
     QUERY: Symbol('query'),
 
     // Current query state if you enable branch or :
     QUERY_OR: Symbol('queryOr'),
 
-    // The current update state (the update will be run on the connector) :
-    UPDATE: Symbol('update'),
-
     // The schema associated with the query :
     SCHEMA: Symbol('schema'),
-
-    // The linked model :
-    MODEL: Symbol('model'),
-
-    // Declare element to ignore during the run of the query
-    SKIP: Symbol('skip'),
-
-    // Declare the number of element to query during the run of the query
-    LIMIT: Symbol('limit'),
 
     // Declare Select specific fields
     SELECT: Symbol('select'),
 
+    // Declare element to ignore during the run of the query
+    SKIP: Symbol('skip'),
+
     // Declare sort
     SORT: Symbol('sort'),
+
+    // The current update state (the update will be run on the connector) :
+    UPDATE: Symbol('update'),
   },
 
   SELECT_BEHAVIOR: {

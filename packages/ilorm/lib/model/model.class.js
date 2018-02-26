@@ -141,6 +141,14 @@ class BaseModel {
   }
 
   /**
+   * Return a unique key to identify the current instance
+   * @returns {Void} Current primary key
+   */
+  getPrimary() {
+    throw new Error('Missing overload by the connector model');
+  }
+
+  /**
    * Return json associated with the curent instance
    * @return {Object} The json associated with the instance
    */

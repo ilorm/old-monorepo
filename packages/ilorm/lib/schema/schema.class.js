@@ -73,6 +73,20 @@ class BaseSchema {
   }
 
   /**
+   * Bind current schema with the current model
+   * @param {InternalModel} InternalModel The model to bind with the schema
+   * @returns {Void} Return nothing
+   */
+  bindWithModel({ InternalModel, }) {
+    this.properties.forEach(property => {
+      this.definition[property].bindWithModel({
+        InternalModel,
+        property,
+      });
+    });
+  }
+
+  /**
    * Init a new instance following the schema
    * @param {Object=} rawObject the base object to use
    * @return {Object} An object following the schema (init or raw json)

@@ -1,10 +1,10 @@
 'use strict';
 
 const { Transform, } = require('stream');
-const { getModel, } = require('../model').Class;
+const relationship = require('../model/relationship');
 
 const { FIELDS, SELECT_BEHAVIOR, } = require('ilorm-constants').QUERY;
-const { CONNECTOR, LIMIT, MODEL, QUERY_OR, SELECT, SKIP, UPDATE, } = FIELDS;
+const { CONNECTOR, LIMIT, LINKED_WITH, MODEL, QUERY_OR, SELECT, SKIP, UPDATE, } = FIELDS;
 
 const bindQueryBuilder = require('./bindQueryBuilder');
 const proxyFactory = require('./proxyFactory');
@@ -22,22 +22,59 @@ class BaseQuery {
   }
 
   /**
+   * Restrict query to the related model
+   * @param {Model|Array.<Model>} relatedModel The related model instance to restrict the query
+   * @returns {Query} Return the current query
+   */
+  restrictToModel(relatedModel) {
+    const relatedModelList = [].concat(relatedModel);
+
+    const reference = relationship.getRelation({
+      modelReference: this[MODEL].getName(),
+      modelSource: relatedModelList[0].getName(),
+    });
+
+    // Simple case of reference
+    // Query.key = model.PrimaryKey
+    if (reference.referenceB === relationship.Primary) {
+      this[reference.referenceA].isIn(relatedModelList.map(relatedModel => relatedModel.getPrimary()));
+
+      return this;
+    }
+
+    if (reference.referenceA === relationship.Primary) {
+      // Another simple case
+      // Query.PrimaryKey = model.reference
+      this.restrictToPrimary(relatedModelList.map(relatedModel => relatedModel[reference.referenceB]));
+
+      return this;
+    }
+
+    this[reference.referenceA].isIn(relatedModelList.map(relatedModel => relatedModel[reference.referenceB]));
+
+    return this;
+  }
+
+  /**
    * Declare field as linked with another query, model or ID.
    * @param {Model|Query} relatedElement Specify an element which be linked with the query result
    * @returns {Query} Return the query to make additional link or filters
    */
   linkedWith(relatedElement) {
     let query;
-
-    if (relatedElement instanceof getModel()) {
-      query = relatedElement.getQueryPrimary();
-    }
-    if (relatedElement instanceof this.constructor) {
+    
+    if (relatedElement && relatedElement[MODEL]) {
       query = relatedElement;
+    }
+
+    if (!query && relatedElement && relatedElement.getName) {
+      return this.restrictToModel(relatedElement);
     }
     if (!query) {
       throw new Error('linkedWith parameter is not valid, need to be an instanceof Query or Model');
     }
+
+    this[LINKED_WITH] = query;
 
     return this;
   }
@@ -64,6 +101,15 @@ class BaseQuery {
     const rawResultList = await this[CONNECTOR].find(this);
 
     return rawResultList.map(rawResult => this.applySelectBehaviorOnConnectorResult(rawResult));
+  }
+
+  /**
+   * Apply the primary key of the current query
+   * @param {Mixed} primary The key to apply
+   * @returns {Void} Return nothing
+   */
+  restrictToPrimary() {
+    throw new Error('Required to be overload by connector query class');
   }
 
   /**
@@ -161,6 +207,10 @@ class BaseQuery {
   async runQuery(connectorOperation) {
     await this.prepareQuery();
 
+    if (this[LINKED_WITH]) {
+      this.restrictToModel(await this[LINKED_WITH].find());
+    }
+
     return this[CONNECTOR][connectorOperation](this);
   }
 
@@ -172,6 +222,10 @@ class BaseQuery {
   async runUpdate(connectorOperation) {
     await this.prepareQuery();
     await this.prepareUpdate();
+
+    if (this[LINKED_WITH]) {
+      this.restrictToModel(await this[LINKED_WITH].find());
+    }
 
     return this[CONNECTOR][connectorOperation](this);
   }
@@ -213,7 +267,7 @@ class BaseQuery {
    * Utility method called before each query, could be used to change query behavior
    * @returns {void} Return nothing, only change the internal state of query
    */
-  prepareQuery() {}
+  async prepareQuery() {}
 
   /**
    * Utility method called before each update, could be used to change update behavior
@@ -257,16 +311,39 @@ class BaseQuery {
    * @returns {Stream} A readable stream to manipulate resulting data
    */
   async stream() {
-    await this.prepareQuery();
-
     const Model = this[MODEL];
-    const rawStream = await this[CONNECTOR].stream(this);
-
     const instantiateStream = new Transform({
       transform: (rawObject, encoding, callback) => {
         callback(null, Model.instantiate(rawObject));
       },
     });
+
+    await this.prepareQuery();
+
+    if (this[LINKED_WITH]) {
+      const restrictStream = await this[LINKED_WITH].stream();
+      const query = this;
+
+      const loadInstance = new Transform({
+        transform: async (model, encoding, callback) => {
+          query.restrictToModel(model);
+
+          const rawStream = await this[CONNECTOR].stream(query);
+
+          rawStream.on('data', instance => this.push(instance));
+
+          rawStream.on('finish', () => {
+            callback(null);
+          });
+        },
+      });
+
+      return restrictStream
+        .pipe(loadInstance)
+        .pipe(instantiateStream);
+    }
+
+    const rawStream = await this[CONNECTOR].stream(this);
 
     return rawStream.pipe(instantiateStream);
   }

@@ -2,6 +2,9 @@
 
 const { OPERATIONS, FIELDS, } = require('ilorm-constants').QUERY;
 const declareOperation = require('./helpers/declareOperation');
+const modelsRelationShip = require('../model/relationship');
+
+const REFERENCE = Symbol('Reference');
 
 /**
  * Generate ReferenceField class from SchemaField
@@ -13,6 +16,15 @@ const getReferenceField = SchemaField => {
    * Class representing a reference field
    */
   class ReferenceField extends SchemaField {
+    /**
+     * Instantiate a new reference field.
+     * @param {String} reference Set model name linked with the current reference
+     */
+    constructor(reference) {
+      super();
+
+      this[REFERENCE] = reference;
+    }
 
     /**
      * Return the query operation associated with the given schema field
@@ -39,6 +51,20 @@ const getReferenceField = SchemaField => {
      */
     castValue(value) {
       return value;
+    }
+
+    /**
+     * Bind current schema field reference with the current model
+     * @param {InternalModel} InternalModel The model to bind with the schema field
+     * @param {String} property name of the current reference
+     * @returns {Void} Return nothing
+     */
+    bindWithModel({ InternalModel, property, }) {
+      modelsRelationShip.declareRelation({
+        modelSource: InternalModel.getName(),
+        attributeSource: property,
+        modelReference: this[REFERENCE],
+      });
     }
   }
 
