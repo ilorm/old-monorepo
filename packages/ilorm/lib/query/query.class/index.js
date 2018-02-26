@@ -1,7 +1,5 @@
 'use strict';
 
-const relationship = require('../../model/relation');
-
 const { FIELDS, SELECT_BEHAVIOR, } = require('ilorm-constants').QUERY;
 const { CONNECTOR, LIMIT, LINKED_WITH, MODEL, SELECT, SKIP, UPDATE, } = FIELDS;
 
@@ -10,6 +8,7 @@ const proxyFactory = require('./proxyFactory');
 
 const orMethod = require('./or.method');
 const streamMethod = require('./stream.method');
+const restrictToModelMethod = require('./restrictToModel.method');
 
 /**
  * Class representing a queryBuilder
@@ -29,32 +28,7 @@ class BaseQuery {
    * @returns {Query} Return the current query
    */
   restrictToModel(relatedModel) {
-    const relatedModelList = [].concat(relatedModel);
-
-    const reference = relationship.getRelation({
-      modelReference: this[MODEL].getName(),
-      modelSource: relatedModelList[0].getName(),
-    });
-
-    // Simple case of reference
-    // Query.key = model.PrimaryKey
-    if (reference.referenceB === relationship.Primary) {
-      this[reference.referenceA].isIn(relatedModelList.map(relatedModel => relatedModel.getPrimary()));
-
-      return this;
-    }
-
-    if (reference.referenceA === relationship.Primary) {
-      // Another simple case
-      // Query.PrimaryKey = model.reference
-      this.restrictToPrimary(relatedModelList.map(relatedModel => relatedModel[reference.referenceB]));
-
-      return this;
-    }
-
-    this[reference.referenceA].isIn(relatedModelList.map(relatedModel => relatedModel[reference.referenceB]));
-
-    return this;
+    return restrictToModelMethod(this)(relatedModel);
   }
 
   /**
