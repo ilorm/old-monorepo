@@ -31,7 +31,19 @@ const declareRelation = ({ modelSource, attributeSource, modelReference, }) => {
 
 const getRelation = ({ modelSource, modelReference, }) => references.get(modelSource).get(modelReference);
 
+const isSimple = ({ modelSource, modelReference, }) => {
+  const { referenceA, } = getRelation({
+    modelSource,
+    modelReference,
+  });
+
+  return referenceA === Primary;
+};
+
+
+
 module.exports = {
   declareRelation,
   getRelation,
+  Primary,
 };

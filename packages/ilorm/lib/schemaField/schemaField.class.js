@@ -79,6 +79,13 @@ class BaseSchemaField {
   }
 
   /**
+   * Calling at schema binding with model.
+   * Could be use to implement specific link between Model class and SchemaField.
+   * @returns {Void} Return nothing
+   */
+  bindWithModel() {}
+
+  /**
    * Set the default value of the field
    * @param {*} value The default value
    * @return {SchemaField} Return the field (to chainable definition)

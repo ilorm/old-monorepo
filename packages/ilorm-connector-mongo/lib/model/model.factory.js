@@ -14,6 +14,14 @@ const mongoModelFactory = ({ ParentModel, }) => (
       return this.constructor.query()
         ._id.is(this._id);
     }
+
+    /**
+     * Return a unique key to identify the current instance
+     * @returns {ObjectId} Current primary key
+     */
+    getPrimary() {
+      return this._id;
+    }
   }
 );
 

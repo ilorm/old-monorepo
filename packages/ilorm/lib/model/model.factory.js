@@ -78,6 +78,10 @@ const modelFactory = ({ name = Symbol('Model'), schema, connector, pluginsOption
 
   modelMap.set(name, ConnectorModel);
 
+  schema.bindWithModel({
+    InternalModel,
+  });
+
   return ConnectorModel;
 };
 
