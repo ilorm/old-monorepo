@@ -1,7 +1,7 @@
 'use strict';
 
 const { Transform, } = require('stream');
-const relationship = require('../model/relationship');
+const relationship = require('../model/relation');
 
 const { FIELDS, SELECT_BEHAVIOR, } = require('ilorm-constants').QUERY;
 const { CONNECTOR, LIMIT, LINKED_WITH, MODEL, QUERY_OR, SELECT, SKIP, UPDATE, } = FIELDS;

@@ -2,7 +2,7 @@
 
 const { OPERATIONS, FIELDS, } = require('ilorm-constants').QUERY;
 const declareOperation = require('./helpers/declareOperation');
-const modelsRelationShip = require('../model/relationship');
+const modelsRelationShip = require('../model/relation');
 
 const REFERENCE = Symbol('Reference');
 
