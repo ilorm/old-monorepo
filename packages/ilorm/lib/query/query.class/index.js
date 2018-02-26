@@ -1,13 +1,15 @@
 'use strict';
 
-const { Transform, } = require('stream');
-const relationship = require('../model/relation');
+const relationship = require('../../model/relation');
 
 const { FIELDS, SELECT_BEHAVIOR, } = require('ilorm-constants').QUERY;
-const { CONNECTOR, LIMIT, LINKED_WITH, MODEL, QUERY_OR, SELECT, SKIP, UPDATE, } = FIELDS;
+const { CONNECTOR, LIMIT, LINKED_WITH, MODEL, SELECT, SKIP, UPDATE, } = FIELDS;
 
-const bindQueryBuilder = require('./bindQueryBuilder');
+const queryBuilderMethod = require('./queryBuilder.method');
 const proxyFactory = require('./proxyFactory');
+
+const orMethod = require('./or.method');
+const streamMethod = require('./stream.method');
 
 /**
  * Class representing a queryBuilder
@@ -239,7 +241,7 @@ class BaseQuery {
    * @returns {void} Return nothing
    */
   queryBuilder({ onOr, onOperator, onOptions, onSelect, onSort, }) {
-    return bindQueryBuilder(this)({
+    return queryBuilderMethod(this)({
       onOr,
       onOperator,
       onOptions,
@@ -255,8 +257,6 @@ class BaseQuery {
    */
   updateBuilder({ onOperator, }) {
     if (onOperator) {
-
-
       for (const { field, operator, value, } of this[UPDATE]) {
         onOperator(field, operator, value);
       }
@@ -281,71 +281,15 @@ class BaseQuery {
    * @returns {Query} Return current query to chain call
    */
   or(handler) {
-    const orClause = [];
-
-    /**
-     * The branch function could be invoked to each OR branch you want to describe
-     * @returns {Query} The query to use to explain what your branch do
-     */
-    const branch = () => {
-      const branchQuery = new this.constructor();
-
-      orClause.push(branchQuery);
-
-      return branchQuery;
-    };
-
-    handler(branch);
-
-    if (!this[QUERY_OR]) {
-      this[QUERY_OR] = [];
-    }
-
-    this[QUERY_OR].push(orClause);
-
-    return this;
+    return orMethod(this)(handler);
   }
 
   /**
    * Create a stream of data returned by the query on the database
-   * @returns {Stream} A readable stream to manipulate resulting data
+   * @returns {Promise.<Stream>} A readable stream to manipulate resulting data
    */
-  async stream() {
-    const Model = this[MODEL];
-    const instantiateStream = new Transform({
-      transform: (rawObject, encoding, callback) => {
-        callback(null, Model.instantiate(rawObject));
-      },
-    });
-
-    await this.prepareQuery();
-
-    if (this[LINKED_WITH]) {
-      const restrictStream = await this[LINKED_WITH].stream();
-      const query = this;
-
-      const loadInstance = new Transform({
-        transform: async (model, encoding, callback) => {
-          query.restrictToModel(model);
-
-          const rawStream = await this[CONNECTOR].stream(query);
-
-          rawStream.on('data', instance => this.push(instance));
-
-          rawStream.on('finish', () => {
-            callback(null);
-          });
-        },
-      });
-
-      return restrictStream
-        .pipe(loadInstance)
-        .pipe(instantiateStream);
-    }
-
-    const rawStream = await this[CONNECTOR].stream(this);
-
-    return rawStream.pipe(instantiateStream);
+  stream() {
+    return streamMethod(this);
   }
 }
 
