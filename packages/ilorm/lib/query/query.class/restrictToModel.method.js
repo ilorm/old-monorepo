@@ -12,8 +12,8 @@ const restrictToModelMethod = query => relatedModel => {
   const relatedModelList = [].concat(relatedModel);
 
   const reference = relationship.getRelation({
-    modelReference: query[MODEL].getName(),
-    modelSource: relatedModelList[0].getName(),
+    modelReference: relatedModelList[0].constructor.getName(),
+    modelSource: query[MODEL].getName(),
   });
 
   // Simple case of reference

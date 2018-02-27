@@ -25,6 +25,8 @@ class BaseSchema {
   constructor(schemaDefinition, options = DEFAULT_OPTIONS) {
     this.definition = schemaDefinition;
     this.properties = Object.keys(this.definition);
+    this.options = options;
+
     schemaPluginOption.forEach(pluginField => {
       this[pluginField] = [];
     });
@@ -38,6 +40,15 @@ class BaseSchema {
       });
     });
     this.undefinedPropertyPolicy = options.undefinedPropertyPolicy;
+  }
+
+  /**
+   * Create a copy of schema from the given instance
+   * @param {BaseSchema} schema The schema to copy
+   * @returns {BaseSchema} The copy of the schema
+   */
+  static copy(schema) {
+    return new this(schema.definition, schema.options);
   }
 
   /**

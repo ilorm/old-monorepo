@@ -8,7 +8,7 @@ const ilormMongo = require('../index');
 
 const DB_URL = 'mongodb://localhost:27017/ilorm';
 
-const { Schema, declareModel, newModel, } = ilorm;
+const { declareModel, newModel, } = ilorm;
 
 describe('ilorm-connector-mongodb', () => {
   describe('test/referenceQuery', () => {
@@ -24,6 +24,8 @@ describe('ilorm-connector-mongodb', () => {
 
 
       ilorm.use(ilormMongo);
+
+      const { Schema, } = ilorm;
 
       const userSchema = new Schema({
         firstName: Schema.string().required(),
@@ -56,6 +58,8 @@ describe('ilorm-connector-mongodb', () => {
       };
 
       const benjaminId = new ObjectID();
+      const kathyId = new ObjectID();
+      const paulineId = new ObjectID();
 
       await database.collection('users').insertMany([
         {
@@ -63,7 +67,13 @@ describe('ilorm-connector-mongodb', () => {
           lastName: 'Daix',
           gender: 'M'
         }, {
+          _id: kathyId,
           firstName: 'Kathy',
+          lastName: 'Pen-flame',
+          gender: 'F'
+        }, {
+          _id: paulineId,
+          firstName: 'Pauline',
           lastName: 'Pen-flame',
           gender: 'F'
         }, {
@@ -78,6 +88,18 @@ describe('ilorm-connector-mongodb', () => {
         {
           user: benjaminId,
           amount: 400
+        },
+        {
+          user: kathyId,
+          amount: 400
+        },
+        {
+          user: kathyId,
+          amount: 55
+        },
+        {
+          user: paulineId,
+          amount: 55
         }
       ]);
     });
@@ -104,6 +126,26 @@ describe('ilorm-connector-mongodb', () => {
         .findOne();
 
       expect(invoice.amount).to.be.equal(400);
+    });
+
+    it('Could query only Kathy with criteria from two query', async() => {
+
+      class User extends newModel(newModelParams.users) {}
+      class Invoice extends newModel(newModelParams.invoices) {}
+
+      declareModel(User);
+      declareModel(Invoice);
+
+      const invoiceQuery = Invoice.query()
+        .amount.is(400);
+
+      const users = await User.query()
+        .linkedWith(invoiceQuery)
+        .gender.is('F')
+        .find();
+
+      expect(users.length).to.be.equal(1);
+      expect(users[0].firstName).to.be.equal('Kathy');
     });
 
   });
