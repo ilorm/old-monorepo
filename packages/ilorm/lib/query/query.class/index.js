@@ -38,11 +38,13 @@ class BaseQuery {
    */
   linkedWith(relatedElement) {
     let query;
-    
+
+    // It's a query:
     if (relatedElement && relatedElement[MODEL]) {
       query = relatedElement;
     }
 
+    // It's a model:
     if (!query && relatedElement && relatedElement.getName) {
       return this.restrictToModel(relatedElement);
     }
@@ -60,9 +62,7 @@ class BaseQuery {
    * @returns {Model} Return an instance of the linked model
    */
   async findOne() {
-    await this.prepareQuery();
-
-    const rawResult = await this[CONNECTOR].findOne(this);
+    const rawResult = await this.runQuery('findOne');
 
     return this.applySelectBehaviorOnConnectorResult(rawResult);
   }
@@ -72,9 +72,7 @@ class BaseQuery {
    * @returns {Array<Model>} Return an array of instance linked with the model
    */
   async find() {
-    await this.prepareQuery();
-
-    const rawResultList = await this[CONNECTOR].find(this);
+    const rawResultList = await this.runQuery('find');
 
     return rawResultList.map(rawResult => this.applySelectBehaviorOnConnectorResult(rawResult));
   }

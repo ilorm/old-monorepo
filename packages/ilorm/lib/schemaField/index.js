@@ -24,11 +24,11 @@ const getFields = () => {
 
   // Shortcut to generate field in declaration schema :
   const factory = {
-    boolean: () => new BooleanField(),
-    date: () => new DateField(),
-    number: () => new NumberField(),
-    reference: () => new ReferenceField(),
-    string: () => new StringField(),
+    boolean: (...params) => new BooleanField(...params),
+    date: (...params) => new DateField(...params),
+    number: (...params) => new NumberField(...params),
+    reference: (...params) => new ReferenceField(...params),
+    string: (...params) => new StringField(...params),
   };
 
   // Expose raw types :

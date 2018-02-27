@@ -31,8 +31,12 @@ const getReferenceField = SchemaField => {
      * @param {Query} query the instance of query to use
      * @return {Object} The query operations
      */
-    getQueryOperations({ query, }) {
-      const resultQueryOperations = super.getQueryOperations();
+    getQueryOperations({ query, name, additionalOperations = [], }) {
+      const resultQueryOperations = super.getQueryOperations({
+        additionalOperations,
+        query,
+        name,
+      });
 
       resultQueryOperations[OPERATIONS.LINKED_WITH] = declareOperation({
         query,
