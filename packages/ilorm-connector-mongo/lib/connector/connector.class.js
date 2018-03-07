@@ -182,7 +182,7 @@ const injectDependencies = ({ db, mongoClient, }) => {
      * @returns {Stream} The stream associated with the query/
      */
     async stream(query) {
-      const mongoQuery = convertQueryToMongoQuery(query);
+      const { mongoQuery, } = convertQueryToMongoQuery(query);
       const collection = await this.getCollection();
 
       return collection.find(mongoQuery).stream();

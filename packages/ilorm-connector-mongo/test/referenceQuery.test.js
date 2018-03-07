@@ -148,6 +148,35 @@ describe('ilorm-connector-mongodb', () => {
       expect(users[0].firstName).to.be.equal('Kathy');
     });
 
+    it('Could stream data from the database', async() => {
+
+
+      class User extends newModel(newModelParams.users) {}
+      class Invoice extends newModel(newModelParams.invoices) {}
+
+      declareModel(User);
+      declareModel(Invoice);
+
+      const userQuery = User.query()
+        .gender.is('F');
+
+      let totalInvoice = 0;
+
+      const invoiceStream = await userQuery.stream();
+
+      console.log('ok'); // eslint-disable-line
+      invoiceStream.on('data', d => console.log(d));
+/*
+
+      const invoiceStream =(await Invoice.query()
+        .linkedWith(userQuery)
+        .stream());
+
+      invoiceStream.on('data', invoice => totalInvoice += invoice.amount);
+
+      expect(totalInvoice).to.be.equal(1);*/
+    });
+
   });
 });
 
