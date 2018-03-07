@@ -67,20 +67,25 @@ class LinkedStream extends Readable {
   }
 }
 
+
+class InstantiateStream extends Transform {
+  constructor(Model) {
+    super();
+
+    this.Model = Model;
+  }
+
+  _transform(rawInstance, encoding, callback) {
+    callback(null, this.Model.instantiate(rawInstance));
+  }
+}
+
 /**
  * Create a stream method from the query instance
  * @param {QueryBase} query The query instance to use
  * @returns {Promise.<Stream>} The stream to use.
  */
 const streamMethod = async query => {
-
-  const Model = query[MODEL];
-  const instantiateStream = new Transform({
-    transform: (rawObject, encoding, callback) => {
-      callback(null, Model.instantiate(rawObject));
-    },
-  });
-
   await query.prepareQuery();
 
   if (query[LINKED_WITH]) {
@@ -90,12 +95,12 @@ const streamMethod = async query => {
     });
 
     return readStream
-      .pipe(instantiateStream);
+      .pipe(new InstantiateStream(query[MODEL]));
   }
 
   const rawStream = await query[CONNECTOR].stream(query);
 
-  return rawStream.pipe(instantiateStream);
+  return rawStream.pipe(new InstantiateStream(query[MODEL]));
 };
 
 module.exports = streamMethod;
