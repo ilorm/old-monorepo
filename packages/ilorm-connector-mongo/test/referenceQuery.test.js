@@ -162,19 +162,18 @@ describe('ilorm-connector-mongodb', () => {
 
       let totalInvoice = 0;
 
-      const invoiceStream = await userQuery.stream();
-
-      console.log('ok'); // eslint-disable-line
-      invoiceStream.on('data', d => console.log(d));
-/*
-
       const invoiceStream =(await Invoice.query()
         .linkedWith(userQuery)
         .stream());
 
       invoiceStream.on('data', invoice => totalInvoice += invoice.amount);
 
-      expect(totalInvoice).to.be.equal(1);*/
+      await new Promise(function (resolve) {
+        invoiceStream.on('finish', () => {
+          resolve();
+        })
+      });
+      expect(totalInvoice).to.be.equal(510);
     });
 
   });
