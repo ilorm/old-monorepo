@@ -1,6 +1,7 @@
 'use strict';
 
 const modelsMap = require('./models.map');
+const MainStream = require('./main.stream');
 const queryFactory = require('../query/query.factory');
 
 const { IS_NEW, } = require('./fields');
@@ -18,6 +19,18 @@ class BaseModel {
         value: true,
         writable: true,
       },
+    });
+  }
+
+  /**
+   * Get a duplex stream linked with the model
+   * Could be use to write data from a stream into the linked database
+   * Could be use to read all data from the linked database
+   * @return {DuplexStream} The duplexstream to use
+   */
+  static stream() {
+    return new MainStream({
+      Model: this,
     });
   }
 
