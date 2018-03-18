@@ -1,20 +1,27 @@
 {
-  "name": "ilorm-connector-mongo",
-  "version": "0.2.0",
-  "description": "Connector to MongoDB for ilorm ORM",
+  "name": "ilorm-connector-postgresql",
+  "version": "0.1.1",
+  "description": "Connector to SQL database for ilorm ORM",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [
     "connector",
-    "mongodb",
+    "sql",
     "orm",
-    "ilorm"
+    "ilorm",
+    "knex",
+    "mariadb",
+    "postegres",
+    "oracle",
+    "mssql",
+    "sqlite",
+    "redshift"
   ],
   "dependencies": {
     "ilorm-constants": "^0.1.0",
-    "mongodb": "^3.0.0-rc0"
+    "knex": "0.14.2"
   },
   "devDependencies": {
     "ilorm": "^0.2.0"
