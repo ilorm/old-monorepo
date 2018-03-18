@@ -3,9 +3,20 @@
 const definition = Symbol('definition');
 const pipeline = Symbol('pipeline');
 
+/**
+ * Create an aggregate query class by injecting the linked Model
+ * @param {Model} Model class Model linked with the resulting aggregate query
+ * @return {AggregateQuery} The aggregate query linked with the given model
+ */
 const aggregateFactory = Model => {
 
+  /**
+   * Class representing an aggregate query
+   */
   class AggregateQuery {
+    /**
+     * Init the aggregate query class
+     */
     constructor() {
       this[pipeline] = [];
       this[definition] = {};
@@ -13,6 +24,8 @@ const aggregateFactory = Model => {
 
     /**
      * Match level aggregation
+     * @param {Function} handler the handler to apply match query
+     * @returns {AggregateQuery} Return current query to make other aggregate operation
      */
     match(handler) {
       const match = {};
