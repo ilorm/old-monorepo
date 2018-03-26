@@ -7,11 +7,11 @@ const { OPERATIONS, } = require('ilorm-constants').QUERY;
  * Convert a valid update ilorm query to an update mongo query.
  * @param {Query} query The ilorm query you want to convert
  * @param {Object} knex To apply query
- * @returns {void} Return nothing
+ * @returns {Object} Return knex parameter to chain call
  */
 function applyUpdateOnKnex(query, knex) {
   if (!query) {
-    return;
+    return knex;
   }
 
 
@@ -25,6 +25,7 @@ function applyUpdateOnKnex(query, knex) {
     },
   });
 
+  return knex;
 }
 
 module.exports = applyUpdateOnKnex;
