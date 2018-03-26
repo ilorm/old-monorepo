@@ -20,11 +20,11 @@ const DESCENDING = 'DESC';
  * Convert a valid inputQuery to a query
  * @param {Query} query The ilorm query you want to convert
  * @param {Object} knex To apply query
- * @returns {void} Return nothing
+ * @returns {Object} Return knex parameter to chain call
  */
 function applyQueryOnKnex(query, knex) {
   if (!query) {
-    return;
+    return knex;
   }
   const selectFields = [];
 
@@ -60,6 +60,8 @@ function applyQueryOnKnex(query, knex) {
   if (selectFields.length > 0) {
     knex.select(...selectFields);
   }
+
+  return knex;
 }
 
 module.exports = applyQueryOnKnex;
