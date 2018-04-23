@@ -103,8 +103,6 @@ const injectDb = ({ knex, }) => {
      * @returns {Promise.<Number>} The number of document removed
      */
     remove(query) {
-      query[KNEX];
-
       applyQueryOnKnex(query, query[KNEX]);
 
       return query[KNEX].del();
