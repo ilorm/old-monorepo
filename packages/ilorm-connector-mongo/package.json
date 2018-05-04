@@ -1,0 +1,24 @@
+{
+  "name": "ilorm-connector-mongo",
+  "version": "0.2.0",
+  "description": "Connector to MongoDB for ilorm ORM",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "connector",
+    "mongodb",
+    "orm",
+    "ilorm"
+  ],
+  "dependencies": {
+    "ilorm-constants": "^0.1.0",
+    "mongodb": "^3.0.0-rc0"
+  },
+  "devDependencies": {
+    "ilorm": "^0.2.0"
+  },
+  "author": "guillaume DAIX",
+  "license": "MIT"
+}
