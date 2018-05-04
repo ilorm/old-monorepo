@@ -5,6 +5,7 @@ const applyUpdateOnKnex = require('./applyUpdateOnKnex');
 const modelFactory = require('../model/model.factory');
 const queryFactory = require('../query/query.factory');
 const { KNEX, } = require('../query/fields');
+const initTable = require('./initTable');
 
 /**
  * Generate a KnexConnector by injecting the knex instance
@@ -138,7 +139,15 @@ const injectDb = ({ knex, }) => {
      * @returns {KnexModel} The result KnexModel
      */
     modelFactory({ ParentModel, }) {
-      return modelFactory({ ParentModel, });
+      initTable({
+        connector: this,
+        knex,
+        ParentModel,
+      });
+
+      return modelFactory({
+        ParentModel,
+      });
     }
 
     /**
