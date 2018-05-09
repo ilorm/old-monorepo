@@ -85,7 +85,7 @@
     "no-iterator": "error",
     "no-labels": "error",
     "no-lone-blocks": "error",
-    "no-loop-func": "error",
+    "no-loop-func": "warn",
     "no-magic-numbers": ["error", { "ignoreArrayIndexes": true, "ignore": [0, 1], "enforceConst": true }],
     "no-multi-spaces": "error",
     "no-multi-str": "error",
