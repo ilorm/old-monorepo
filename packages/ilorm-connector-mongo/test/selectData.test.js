@@ -8,7 +8,7 @@ const ilormMongo = require('../index');
 
 const DB_URL = 'mongodb://localhost:27017/ilorm';
 
-const { Schema, declareModel, newModel, } = ilorm;
+const { Schema, } = ilorm;
 
 describe('ilorm-connector-mongodb', () => {
   describe('test/readData', () => {
@@ -58,9 +58,9 @@ describe('ilorm-connector-mongodb', () => {
     });
 
     it('Could query only firstName and lastName', async() => {
-      class User extends newModel(modelFactoryParams) {}
+      class User extends ilorm.newModel(modelFactoryParams) {}
 
-      declareModel(User);
+      ilorm.declareModel(User);
 
       const user = await User.query()
         .firstName.is('Guillaume')
@@ -74,9 +74,9 @@ describe('ilorm-connector-mongodb', () => {
     });
 
     it('Could query only lastName', async() => {
-      class User extends newModel(modelFactoryParams) {}
+      class User extends ilorm.newModel(modelFactoryParams) {}
 
-      declareModel(User);
+      ilorm.declareModel(User);
 
       const lastName = await User.query()
         .firstName.is('Guillaume')

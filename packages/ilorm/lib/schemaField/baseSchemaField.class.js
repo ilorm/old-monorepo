@@ -155,33 +155,4 @@ class BaseSchemaField {
   }
 }
 
-let SchemaField = BaseSchemaField;
-
-/**
- * Remove plugins from schema
- * @returns {void} return nothing
- */
-const clear = () => {
-  SchemaField = BaseSchemaField;
-};
-
-/**
- * Return current SchemaField class
- * @returns {Schema} current Schema
- */
-const getSchemaField = () => SchemaField;
-
-/**
- * Overload SchemaField class by another (to plugin)
- * @param  {Function} classFactory The class factory used to replace current SchemaField
- * @returns {void} Return nothing
- */
-const overload = classFactory => {
-  SchemaField = classFactory(SchemaField);
-};
-
-module.exports = {
-  clear,
-  getSchemaField,
-  overload,
-};
+module.exports = BaseSchemaField;

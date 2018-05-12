@@ -8,8 +8,6 @@ const ilormMongo = require('../index');
 
 const DB_URL = 'mongodb://localhost:27017/ilorm';
 
-const { declareModel, newModel, } = ilorm;
-
 describe('ilorm-connector-mongodb', () => {
   describe('test/referenceQuery', () => {
 
@@ -112,11 +110,11 @@ describe('ilorm-connector-mongodb', () => {
     });
 
     it('Could query invoice', async() => {
-      class User extends newModel(newModelParams.users) {}
-      class Invoice extends newModel(newModelParams.invoices) {}
+      class User extends ilorm.newModel(newModelParams.users) {}
+      class Invoice extends ilorm.newModel(newModelParams.invoices) {}
 
-      declareModel(User);
-      declareModel(Invoice);
+      ilorm.declareModel(User);
+      ilorm.declareModel(Invoice);
 
       const userQuery = User.query()
         .firstName.is('Benjamin');
@@ -130,11 +128,11 @@ describe('ilorm-connector-mongodb', () => {
 
     it('Could query only Kathy with criteria from two query', async() => {
 
-      class User extends newModel(newModelParams.users) {}
-      class Invoice extends newModel(newModelParams.invoices) {}
+      class User extends ilorm.newModel(newModelParams.users) {}
+      class Invoice extends ilorm.newModel(newModelParams.invoices) {}
 
-      declareModel(User);
-      declareModel(Invoice);
+      ilorm.declareModel(User);
+      ilorm.declareModel(Invoice);
 
       const invoiceQuery = Invoice.query()
         .amount.is(400);
@@ -151,11 +149,11 @@ describe('ilorm-connector-mongodb', () => {
     it('Could stream data from the database', async() => {
 
 
-      class User extends newModel(newModelParams.users) {}
-      class Invoice extends newModel(newModelParams.invoices) {}
+      class User extends ilorm.newModel(newModelParams.users) {}
+      class Invoice extends ilorm.newModel(newModelParams.invoices) {}
 
-      declareModel(User);
-      declareModel(Invoice);
+      ilorm.declareModel(User);
+      ilorm.declareModel(Invoice);
 
       const userQuery = User.query()
         .gender.is('F');

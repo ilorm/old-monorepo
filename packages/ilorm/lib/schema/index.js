@@ -1,3 +1,8 @@
 'use strict';
 
-module.exports = require('./schema.class');
+const BaseSchema = require('./baseSchema.class');
+
+module.exports = {
+  BaseSchema,
+};
+

@@ -167,7 +167,7 @@ class BaseSchema {
    * @returns {Array.<String>} List of field associated with the given plugin option
    */
   getFieldsAssociatedWithPlugin(pluginOption) {
-    return this[pluginOption];
+    return this[pluginOption] || [];
   }
 
   /**
@@ -190,33 +190,4 @@ class BaseSchema {
   }
 }
 
-let Schema = BaseSchema;
-
-/**
- * Overload schema class by another (to plugin)
- * @param {Function} classFactory The class factory used to replace current schema
- * @returns {void} Return nothing
- */
-const overload = classFactory => {
-  Schema = classFactory(Schema);
-};
-
-/**
- * Return current schema class
- * @returns {Schema} current Schema
- */
-const getSchema = () => Schema;
-
-/**
- * Remove plugins from schema
- * @returns {void} return nothing
- */
-const clear = () => {
-  Schema = BaseSchema;
-};
-
-module.exports = {
-  clear,
-  getSchema,
-  overload,
-};
+module.exports = BaseSchema;
