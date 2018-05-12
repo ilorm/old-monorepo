@@ -2,7 +2,8 @@
 
 const { expect, } = require('chai');
 
-const ilorm = require('ilorm');
+const Ilorm = require('ilorm').constructor;
+const ilorm = new Ilorm();
 const ilormSoftDelete = require('../index');
 
 
@@ -11,10 +12,6 @@ describe('ilorm-plugin-softDelete', () => {
 
     before(async () => {
       ilorm.use(ilormSoftDelete());
-    });
-
-    after(async () => {
-      ilorm.clear();
     });
 
     it('Should add isDeleted field to schema', () => {

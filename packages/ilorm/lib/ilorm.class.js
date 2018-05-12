@@ -25,6 +25,11 @@ class Ilorm {
      * @type {Map<String, Model>}
      */
     this.modelsIndex = new Map();
+
+    /**
+     * Reference all Model relations
+     * @type {Map<String, Map<String, Relation>>}
+     */
     this.modelsRelationsIndex = new Map();
 
     // Base Class used by the framework:
@@ -135,9 +140,6 @@ class Ilorm {
       }
     }
   }
-
-  clear() {} // eslint-disable-line
-
 }
 
 module.exports = Ilorm;
