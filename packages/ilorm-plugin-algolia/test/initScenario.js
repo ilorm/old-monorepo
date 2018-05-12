@@ -6,7 +6,6 @@ const ilormAlgolia = require('../index');
 
 const { MongoClient, } = require('mongodb');
 
-const { declareModel, newModel, } = ilorm;
 const DB_URL = 'mongodb://localhost:27017/ilorm';
 
 /**
@@ -46,9 +45,9 @@ const initScenario = async mockAlgoliaIndex => {
     },
   };
 
-  const User = newModel(modelFactoryParams);
+  const User = ilorm.newModel(modelFactoryParams);
 
-  declareModel(User);
+  ilorm.declareModel(User);
 
   /**
    * Purge database after test

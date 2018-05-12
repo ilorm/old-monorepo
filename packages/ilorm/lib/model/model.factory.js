@@ -1,23 +1,22 @@
 'use strict';
 
-const modelMap = require('./models.map');
-const { getModel, } = require('./model.class');
-
 /**
  * Create a new Model class with the given parameter
- * @param {String|Symbol} name The name of the model
- * @param {Schema} schema The schema used by the model
  * @param {Connector} connector The connector used by the model
+ * @param {Ilorm} ilorm the current ilorm context instance
+ * @param {String|Symbol} name The name of the model
  * @param {Object} pluginsOptions Add special plugin configuration
+ * @param {Schema} schema The schema used by the model
  * @returns {Model} The new model to use in project
  */
-const modelFactory = ({ name = Symbol('Model'), schema, connector, pluginsOptions = {}, }) => {
+const modelFactory = ({ connector, ilorm, name = Symbol('Model'), pluginsOptions = {}, schema, }) => {
+  const { BaseModel, modelsIndex, } = ilorm;
 
   /**
    * The InternalModel it's a class created dynamically in function of the schema, the connector and the name
    * given by the model.
    */
-  class InternalModel extends getModel() {
+  class InternalModel extends BaseModel {
     /**
      * Construct a new instance of the model
      * @param {Object} rawJson object to instantiate directly the data
@@ -76,7 +75,7 @@ const modelFactory = ({ name = Symbol('Model'), schema, connector, pluginsOption
   };
   const ConnectorModel = connector.modelFactory(connectorModelParams);
 
-  modelMap.set(name, ConnectorModel);
+  modelsIndex.set(name, ConnectorModel);
 
   schema.bindWithModel({
     InternalModel,

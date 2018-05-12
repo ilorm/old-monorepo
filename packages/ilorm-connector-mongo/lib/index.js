@@ -3,7 +3,7 @@
 const { MongoClient, } = require('mongodb');
 
 const connector = require('./connector');
-const schema = require('./schema');
+const schemaFactory = require('./schema.factory');
 
 /**
  * Create the Connector from the given database
@@ -30,7 +30,7 @@ const fromUrl = async ({ url, database = 'ilorm', }) => {
 module.exports = {
   plugins: {
     core: {
-      schema,
+      schemaFactory,
     },
   },
   fromClient,

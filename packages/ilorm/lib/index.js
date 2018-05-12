@@ -1,19 +1,11 @@
 'use strict';
 
-const model = require('./model');
-const { clear, use, } = require('./plugins');
+const Ilorm = require('./ilorm.class');
 const { getSchema, } = require('./schema');
 const getFields = require('./schemaField');
 
-const finalLib = {
-  clear,
-  declareModel: model.declareModel,
-  newModel: model.factory,
-  use,
-};
-
 // Dynamic access to finalLib.Schema used to create schema from a factory ecosystem (to use plugin) :
-Object.defineProperty(finalLib, 'Schema', {
+Object.defineProperty({}, 'Schema', {
   get: () => {
     // Associate fields to Schema
     // Field could be accessed as a subpath of schema : Schema.SchemaField
@@ -24,4 +16,4 @@ Object.defineProperty(finalLib, 'Schema', {
 });
 
 // Export final ilorm library
-module.exports = finalLib;
+module.exports = new Ilorm();

@@ -2,7 +2,7 @@
 
 const { OPERATIONS, FIELDS, } = require('ilorm-constants').QUERY;
 const declareOperation = require('./helpers/declareOperation');
-const modelsRelationShip = require('../model/relation');
+const modelsRelationShipClassFactory = require('../model/relation.classFactory');
 
 const REFERENCE = Symbol('Reference');
 
@@ -11,7 +11,9 @@ const REFERENCE = Symbol('Reference');
  * @param {SchemaField} SchemaField to overload
  * @returns {ReferenceField} The new Reference field
  */
-const getReferenceField = SchemaField => {
+const getReferenceField = ({ ilorm, SchemaField, }) => {
+  const modelsRelationShip = modelsRelationShipClassFactory(ilorm);
+
   /**
    * Class representing a reference field
    */
