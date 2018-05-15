@@ -74,7 +74,7 @@ const injectIlorm = ilorm => {
     /**
      * Declare a relation between two items
      * @param {String} modelSource The model which reference another model
-     * @param {String[Symbol} attributeSource The field of modelSource used to reference modelReference
+     * @param {String|Symbol} attributeSource The field of modelSource used to reference modelReference
      * @param {String} modelReference The model to use as referenced
      * @param {String|Symbol} [attributeReference=Primary] The field of modelReference referenced by attributeSource
      * @return {void} Return nothing
