@@ -74,21 +74,22 @@ const injectIlorm = ilorm => {
     /**
      * Declare a relation between two items
      * @param {String} modelSource The model which reference another model
-     * @param {String} attributeSource The field used to modelSource side to reference modelReference
+     * @param {String[Symbol} attributeSource The field of modelSource used to reference modelReference
      * @param {String} modelReference The model to use as referenced
+     * @param {String|Symbol} [attributeReference=Primary] The field of modelReference referenced by attributeSource
      * @return {void} Return nothing
      */
-    static declareRelation({ modelSource, attributeSource, modelReference, }) {
+    static declareRelation({ modelSource, attributeSource, modelReference, attributeReference = Primary, }) {
       declareRelationSide({
         modelA: modelSource,
         referenceA: attributeSource,
         modelB: modelReference,
-        referenceB: Primary,
+        referenceB: attributeReference,
         Relation: this,
       });
       declareRelationSide({
         modelA: modelReference,
-        referenceA: Primary,
+        referenceA: attributeReference,
         modelB: modelSource,
         referenceB: attributeSource,
         Relation: this,
