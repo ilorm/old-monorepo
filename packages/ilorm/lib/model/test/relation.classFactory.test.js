@@ -14,7 +14,7 @@ const MODEL_B = Symbol('ModelB');
 const ATTRIBUTE_A = Symbol('AttributeA');
 
 
-describe('ilorm-unit', () => {
+describe('ilorm', () => {
   describe('model', () => {
     describe('relation.classFactory', () => {
       it('Should declare the relation into the reference map after calling the declareRelation on the class', () => {

@@ -22,10 +22,13 @@ class BaseSchema {
    * @param {Object} schemaDefinition The definition to apply
    * @param {Object} options Options to apply to the schema
    */
-  constructor(schemaDefinition, options = DEFAULT_OPTIONS) {
+  constructor(schemaDefinition, options = {}) {
     this.definition = schemaDefinition;
     this.properties = Object.keys(this.definition);
-    this.options = options;
+    this.options = {
+      ...options,
+      ...DEFAULT_OPTIONS,
+    };
 
     schemaPluginOption.forEach(pluginField => {
       this[pluginField] = [];
