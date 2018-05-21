@@ -3,7 +3,10 @@
 const MainStream = require('./main.stream');
 const { queryFactory, } = require('../query');
 
-const { IS_NEW, } = require('./fields');
+const {
+  IS_NEW,
+  LIST_UPDATED_FIELDS,
+} = require('./fields');
 
 /**
  * Inject ilorm to the class to bind current ilorm with BaseModel
@@ -23,6 +26,23 @@ const injectIlorm = ilorm => {
         [IS_NEW]: {
           value: true,
           writable: true,
+        },
+        [LIST_UPDATED_FIELDS]: {
+          value: [],
+          writable: true,
+        },
+      });
+
+      return new Proxy(this, {
+        get: (instance, property) => instance[property],
+        set: (instance, property, value) => {
+          if (typeof property !== 'symbol') {
+            instance[LIST_UPDATED_FIELDS].push(property);
+          }
+
+          instance[property] = value;
+
+          return true;
         },
       });
     }
@@ -93,7 +113,7 @@ const injectIlorm = ilorm => {
      * @return {Model} A model instance
      */
     static async getById(id) {
-      const rawInstance = await this.constructor.getConnector().getById(id);
+      const rawInstance = await this.getConnector().getById(id);
 
       const instance = this.instantiate(rawInstance);
 
@@ -134,19 +154,33 @@ const injectIlorm = ilorm => {
      * @return {null} null
      */
     async save() {
+      // If it's a new instance, save it into database:
       if (this[IS_NEW]) {
         await this.constructor.getConnector().create(this);
 
         this[IS_NEW] = false;
+        this[LIST_UPDATED_FIELDS] = [];
 
         return this;
       }
 
+      // Check if nothing require an update:
+      if (this[LIST_UPDATED_FIELDS].length === 0) {
+        return this;
+      }
+
+      // If something need to be updated:
       const query = this.getQueryPrimary();
 
-      const update = {};
+      const update = this[LIST_UPDATED_FIELDS].reduce((finalUpdate, property) => {
+        finalUpdate[property] = this[property];
+
+        return finalUpdate;
+      }, {});
 
       await this.constructor.getConnector().updateOne(query, update);
+
+      this[LIST_UPDATED_FIELDS] = [];
 
       return this;
     }
@@ -168,7 +202,7 @@ const injectIlorm = ilorm => {
     }
 
     /**
-     * Return json associated with the curent instance
+     * Return json associated with the current instance
      * @return {Object} The json associated with the instance
      */
     getJson() {
