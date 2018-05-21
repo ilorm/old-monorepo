@@ -69,7 +69,7 @@ class BaseSchema {
             return true;
           }
 
-          return new Error(`${property} does not exists in this model.`);
+          throw new Error(`${property} does not exists in this model.`);
         }
 
         instance[property] = this.definition[property].castValue(value);
