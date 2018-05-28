@@ -8,6 +8,8 @@ const ilormMongo = require('../index');
 
 const DB_URL = 'mongodb://localhost:27017/ilorm';
 
+ilorm.use(ilormMongo);
+
 const { Schema, } = ilorm;
 
 describe('ilorm-connector-mongodb', () => {
@@ -19,8 +21,6 @@ describe('ilorm-connector-mongodb', () => {
     before(async () => {
       mongoClient = await MongoClient.connect(DB_URL);
       database = await mongoClient.db('ilorm');
-
-      ilorm.use(ilormMongo);
 
       const userSchema = new Schema({
         firstName: Schema.string().required(),

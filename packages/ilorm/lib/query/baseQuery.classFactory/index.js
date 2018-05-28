@@ -218,7 +218,7 @@ const injectIlorm = ilorm => {
      * @param {Function} onSelect This function will be called to handle select specific fields from the database
      * @returns {void} Return nothing
      */
-    queryBuilder({onOr, onOperator, onOptions, onSelect, onSort,}) {
+    queryBuilder({ onOr, onOperator, onOptions, onSelect, onSort, }) {
       return queryBuilderMethod(this)({
         onOr,
         onOperator,
@@ -233,9 +233,9 @@ const injectIlorm = ilorm => {
      * @param {Function} onOperator This function will be called per every key operator value combination
      * @returns {void} Return nothing
      */
-    updateBuilder({onOperator,}) {
+    updateBuilder({ onOperator, }) {
       if (onOperator) {
-        for (const {field, operator, value,} of this[UPDATE]) {
+        for (const { field, operator, value, } of this[UPDATE]) {
           onOperator(field, operator, value);
         }
       }
