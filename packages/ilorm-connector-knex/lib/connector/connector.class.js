@@ -138,11 +138,12 @@ const injectDb = ({ knex, }) => {
      * @param {Model} ParentModel The ilorm global Model used as parent of ModelConnector
      * @returns {KnexModel} The result KnexModel
      */
-    modelFactory({ ParentModel, }) {
+    modelFactory({ ParentModel, schema, }) {
       initTable({
         connector: this,
         knex,
         ParentModel,
+        schema,
       });
 
       return modelFactory({

@@ -17,7 +17,7 @@ const knexReferenceFactory = Reference => {
      * @returns {void} Return nothing
      */
     initKnexTable(table) {
-      table.Reference(this._name);
+      table.references(this._name);
     }
   }
 
