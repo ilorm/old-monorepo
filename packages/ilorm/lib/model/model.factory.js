@@ -19,17 +19,15 @@ const modelFactory = ({ connector, ilorm, name = Symbol('Model'), pluginsOptions
   class InternalModel extends BaseModel {
     /**
      * Construct a new instance of the model
-     * @param {Object} rawJson object to instantiate directly the data
+     * @param {Object} [rawJson={}] object to instantiate directly the data
      */
-    constructor(rawJson) {
+    constructor(rawJson = {}) {
       super(rawJson);
 
       const instance = new Proxy(this, schema.getProxy());
 
-      if (rawJson) {
-        for (const property of Object.keys(rawJson)) {
-          instance[property] = rawJson[property];
-        }
+      for (const property of Object.keys(rawJson)) {
+        instance[property] = rawJson[property];
       }
 
       return instance;

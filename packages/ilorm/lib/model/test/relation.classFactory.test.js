@@ -7,8 +7,10 @@ const relationClassFactory = require('../relation.classFactory');
 const generateFakeIlorm = fakeReferenceMap => ({ modelsRelationsIndex: fakeReferenceMap });
 
 // Fake model:
-const MODEL_A = Symbol('ModelA');
-const MODEL_B = Symbol('ModelB');
+const MODEL_A = 'ModelA';
+const MODEL_B = 'ModelB';
+const MODEL_C = 'ModelC';
+const MODEL_D = 'ModelD';
 
 // Fake attribute:
 const ATTRIBUTE_A = Symbol('AttributeA');
@@ -70,6 +72,35 @@ describe('ilorm', () => {
         expect(relationSideB.modelB).to.be.equal(MODEL_B);
         expect(relationSideB.referenceA).to.be.equal(ATTRIBUTE_A);
         expect(relationSideB.referenceB).to.be.equal(Relations.Primary);
+      });
+      it('Should throw error if relation does not exists.', () => {
+        const referencesMap = new Map();
+        const Relations = relationClassFactory(generateFakeIlorm(referencesMap));
+
+        Relations.declareRelation({
+          modelSource: MODEL_A,
+          attributeSource: ATTRIBUTE_A,
+          modelReference: MODEL_B
+        });
+
+        Relations.declareRelation({
+          modelSource: MODEL_A,
+          attributeSource: ATTRIBUTE_A,
+          modelReference: MODEL_C
+        });
+
+        const missingRelation = () => Relations.getRelation({
+          modelSource: MODEL_B,
+          modelReference: MODEL_C,
+        });
+
+        const modelNotInRelation = () => Relations.getRelation({
+          modelSource: MODEL_D,
+          modelReference: MODEL_C,
+        });
+
+        expect(modelNotInRelation).to.throw(Error, `ModelD does not exists in references map. Could not be linked with ModelC`);
+        expect(missingRelation).to.throw(Error, `ModelB does not reference ModelC`);
       });
     });
   });

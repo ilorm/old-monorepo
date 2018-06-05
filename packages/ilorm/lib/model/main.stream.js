@@ -44,7 +44,11 @@ class MainStream extends Duplex {
       this.readStream = await this.Model.query().stream();
     }
 
-    this.push(this.readStream.read());
+    let stopRead;
+
+    do {
+      stopRead = this.push(this.readStream.read());
+    } while (stopRead !== false);
 
     return null;
   }

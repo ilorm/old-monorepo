@@ -115,11 +115,7 @@ const injectIlorm = ilorm => {
     static async getById(id) {
       const rawInstance = await this.getConnector().getById(id);
 
-      const instance = this.instantiate(rawInstance);
-
-      instance[IS_NEW] = false;
-
-      return instance;
+      return this.instantiate(rawInstance);
     }
 
     /**
@@ -141,7 +137,8 @@ const injectIlorm = ilorm => {
      */
     remove() {
       if (this[IS_NEW]) {
-        throw new Error('Can not remove an unsaved instance');
+        // Simulate async behavior (remove is async) :
+        return Promise.reject(new Error('Can not remove an unsaved instance'));
       }
 
       const query = this.getQueryPrimary();
