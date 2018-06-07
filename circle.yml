@@ -5,8 +5,8 @@ jobs:
   build:
     working_directory: ~/ilorm
     docker:
-      - image: circleci/mongo:latest
       - image: circleci/node:8.9
+      - image: circleci/mongo:latest
     steps:
       - checkout
       - run:
