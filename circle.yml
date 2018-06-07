@@ -1,7 +1,21 @@
-## Customize the test machine
-machine:
-  node:
-    version: 8.9.0
-test:
-  override:
-    - npm run circle_ci_test
+# Using circleCI 2
+version: 2
+
+jobs:
+  build:
+    working_directory: ~/ilorm
+    docker:
+      - image: circleci/mongo:latest
+      - image: circleci/node:8.9
+    steps:
+      - checkout
+      - run:
+          name: update-npm
+          command: 'sudo npm install -g npm@latest'
+      - run:
+          name: npm-install
+          command: npm install
+      - run:
+          name: test
+          command: npm run circle_ci_test
+
