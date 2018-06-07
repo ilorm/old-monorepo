@@ -1,0 +1,25 @@
+{
+  "all": true,
+  "cache": true,
+
+  "check-coverage": true,
+  "per-file": true,
+  "report-dir": "./coverage",
+
+  "branches": [0, 95],
+  "functions": [0, 95],
+  "statements": [0, 95],
+  "lines": [0, 95],
+
+  "reporter": [
+    "html",
+    "text-summary"
+  ],
+
+  "include": [
+    "packages/**/*.js"
+  ],
+
+  "exclude": [
+    "**/node_modules/**",
+  ]
