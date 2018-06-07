@@ -10,10 +10,10 @@ jobs:
     steps:
       - checkout
       - run:
-          name: update-npm
-          command: 'sudo npm install -g npm@latest'
+          name: "Update npm version"
+          command: sudo npm install -g npm@latest
       - run:
-          name: npm-install
+          name: "Run npm install"
           command: npm install
       - run:
           name: test
