@@ -7,10 +7,10 @@
     "lerna": "lerna",
     "test-win": "set NODE_ENV=test&& mocha --recursive --reporter spec test/unit/ packages/**/*.test.js",
     "launchtest": "NODE_ENV=test mocha --recursive --reporter spec $(find packages -name '*.test.js'  -not -path '**/node_modules/**' )",
-    "cover": "npm run docs && npm run eslint && NODE_ENV=test nyc node_modules/mocha/bin/_mocha",
-    "cover-ilorm": "npm run docs && npm run eslint && NODE_ENV=test nyc node_modules/mocha/bin/_mocha",
-    "cover-win": "set NODE_ENV=test&& nyc node_modules/mocha/bin/_mocha",
-    "circle_ci_test": "lerna bootstrap && NODE_ENV=test nyc node_modules/mocha/bin/_mocha"
+    "cover": "npm run docs && npm run eslint && NODE_ENV=test nyc node_modules/mocha/bin/_mocha --recursive --reporter spec $(find packages -name '*.test.js'  -not -path '**/node_modules/**' )",
+    "cover-ilorm": "npm run docs && npm run eslint && NODE_ENV=test nyc node_modules/mocha/bin/_mocha --recursive --reporter spec $(find packages -name '*.test.js'  -not -path '**/node_modules/**' )",
+    "cover-win": "set NODE_ENV=test&& nyc node_modules/mocha/bin/_mocha --recursive --reporter spec $(find packages -name '*.test.js'  -not -path '**/node_modules/**' )",
+    "circle_ci_test": "lerna bootstrap && NODE_ENV=test nyc node_modules/mocha/bin/_mocha --recursive --reporter spec $(find packages -name '*.test.js'  -not -path '**/node_modules/**' )"
   },
   "devDependencies": {
     "chai": "^3.5.0",
