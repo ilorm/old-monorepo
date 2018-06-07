@@ -10,7 +10,7 @@
     "cover": "npm run docs && npm run eslint && NODE_ENV=test nyc node_modules/mocha/bin/_mocha",
     "cover-ilorm": "npm run docs && npm run eslint && NODE_ENV=test nyc node_modules/mocha/bin/_mocha",
     "cover-win": "set NODE_ENV=test&& nyc node_modules/mocha/bin/_mocha",
-    "circle_ci_test": "lerna bootstrap && cross-env NODE_ENV=test nyc node_modules/mocha/bin/_mocha"
+    "circle_ci_test": "lerna bootstrap && NODE_ENV=test nyc node_modules/mocha/bin/_mocha"
   },
   "devDependencies": {
     "chai": "^3.5.0",
