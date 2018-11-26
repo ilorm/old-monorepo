@@ -16,6 +16,7 @@
   ],
   "dependencies": {
     "ilorm-constants": "^0.1.0",
+    "uuid": "^3.3.2"
   },
   "devDependencies": {
     "ilorm": "^0.2.0"
