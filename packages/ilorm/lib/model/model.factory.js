@@ -1,5 +1,7 @@
 'use strict';
 
+const assert = require('assert');
+
 /**
  * Create a new Model class with the given parameter
  * @param {Connector} connector The connector used by the model
@@ -11,6 +13,8 @@
  */
 const modelFactory = ({ connector = null, ilorm, name = Symbol('Model'), pluginsOptions = {}, schema, }) => {
   const { BaseModel, modelsIndex, } = ilorm;
+
+  assert(schema, 'IlormError: In the model factory the schema can not be undefined');
 
   /**
    * The InternalModel it's a class created dynamically in function of the schema, the connector and the name
