@@ -9,7 +9,7 @@
  * @param {Schema} schema The schema used by the model
  * @returns {Model} The new model to use in project
  */
-const modelFactory = ({ connector, ilorm, name = Symbol('Model'), pluginsOptions = {}, schema, }) => {
+const modelFactory = ({ connector = null, ilorm, name = Symbol('Model'), pluginsOptions = {}, schema, }) => {
   const { BaseModel, modelsIndex, } = ilorm;
 
   /**
@@ -71,7 +71,12 @@ const modelFactory = ({ connector, ilorm, name = Symbol('Model'), pluginsOptions
     schema,
     ParentModel: InternalModel,
   };
-  const ConnectorModel = connector.modelFactory(connectorModelParams);
+
+  let ConnectorModel = InternalModel;
+
+  if (connector) {
+    ConnectorModel = connector.modelFactory(connectorModelParams);
+  }
 
   modelsIndex.set(name, ConnectorModel);
 
