@@ -6,7 +6,7 @@ const { queryFactory, } = require('../query');
 const {
   IS_NEW,
   LIST_UPDATED_FIELDS,
-} = require('./fields');
+} = require('ilorm-constants').MODEL;
 
 /**
  * Inject ilorm to the class to bind current ilorm with BaseModel
