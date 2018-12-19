@@ -12,5 +12,8 @@ module.exports = {
   // Change the behavior of a save during an update process
   LIST_UPDATED_FIELDS: Symbol('listUpdatedFields'),
 
+  // Current schema binded with the model
+  SCHEMA: Symbol('schema'),
+
 };
 

@@ -2,6 +2,12 @@
 
 const assert = require('assert');
 
+
+const {
+  SCHEMA,
+} = require('ilorm-constants').MODEL;
+
+
 /**
  * Create a new Model class with the given parameter
  * @param {Connector} connector The connector used by the model
@@ -69,6 +75,8 @@ const modelFactory = ({ connector = null, ilorm, name = Symbol('Model'), plugins
       return pluginsOptions;
     }
   }
+
+  InternalModel[SCHEMA] = schema;
 
   const connectorModelParams = {
     name,
