@@ -34,16 +34,9 @@ const injectIlorm = ilorm => {
       });
 
       return new Proxy(this, {
-        get: (instance, property) => instance[property],
-        set: (instance, property, value) => {
-          if (typeof property !== 'symbol') {
-            instance[LIST_UPDATED_FIELDS].push(property);
-          }
-
-          instance[property] = value;
-
-          return true;
-        },
+        get: (instance, property) => instance.get(property),
+        set: (instance, property, value) => instance.set(property, value),
+        deleteProperty: (instance, property) => instance.deleteProperty(property),
       });
     }
 
@@ -206,6 +199,44 @@ const injectIlorm = ilorm => {
       const schema = this.constructor.getSchema();
 
       return schema.initInstance(this);
+    }
+
+    /**
+     * Traps handler for get a property
+     * When you try to get a property on an Ilorm model this method will be called
+     * @param {*} property The property of the model to get
+     * @return {*} Return the value of the model property
+     */
+    get(property) {
+      return this[property];
+    }
+
+    /**
+     * Traps handler for set a property
+     * When you try to set the value of property on an Ilorm Model this method will be called.
+     * @param {*} property The property of the model to set
+     * @param {*} value The value you want to associate
+     * @return {*} The value is returned, like standard set behavior
+     */
+    set(property, value) {
+      if (typeof property !== 'symbol') {
+        this[LIST_UPDATED_FIELDS].push(property);
+      }
+
+      this[property] = value;
+
+      return value;
+    }
+
+
+    /**
+     * Traps handler for delete a property
+     * When you try to delete a property on an Ilorm model this method will be called
+     * @param {*} property The property of the model to delete
+     * @return {*} Return the value of the model property
+     */
+    deleteProperty(property) {
+      return delete this[property];
     }
   }
 
