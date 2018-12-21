@@ -216,7 +216,7 @@ const injectIlorm = ilorm => {
      * When you try to set the value of property on an Ilorm Model this method will be called.
      * @param {*} property The property of the model to set
      * @param {*} value The value you want to associate
-     * @return {*} The value is returned, like standard set behavior
+     * @return {Boolean} Return true if the assignment was a success, false if not
      */
     set(property, value) {
       if (typeof property !== 'symbol') {
@@ -225,7 +225,7 @@ const injectIlorm = ilorm => {
 
       this[property] = value;
 
-      return value;
+      return true;
     }
 
 
@@ -236,7 +236,9 @@ const injectIlorm = ilorm => {
      * @return {*} Return the value of the model property
      */
     deleteProperty(property) {
-      return delete this[property];
+      delete this[property];
+
+      return true;
     }
   }
 
