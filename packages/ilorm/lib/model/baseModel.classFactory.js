@@ -20,8 +20,9 @@ const injectIlorm = ilorm => {
   class BaseModel {
     /**
      * Construct a new instance of the model
-     *   */
-    constructor() {
+     * @param {Object} [rawInstance={}] object to use as initial data of the model instance
+     */
+    constructor(rawInstance = {}) {
       Object.defineProperties(this, {
         [IS_NEW]: {
           value: true,
@@ -33,11 +34,17 @@ const injectIlorm = ilorm => {
         },
       });
 
-      return new Proxy(this, {
+      const instance = new Proxy(this, {
         get: (instance, property) => instance.get(property),
         set: (instance, property, value) => instance.set(property, value),
         deleteProperty: (instance, property) => instance.deleteProperty(property),
       });
+
+      for (const property of Object.keys(rawInstance)) {
+        instance[property] = rawInstance[property];
+      }
+
+      return instance;
     }
 
     /**
@@ -219,10 +226,12 @@ const injectIlorm = ilorm => {
      * @return {Boolean} Return true if the assignment was a success, false if not
      */
     set(property, value) {
+      // Use to remember which field as been update (case of a loaded instance), use after to update it at save ;
       if (typeof property !== 'symbol') {
         this[LIST_UPDATED_FIELDS].push(property);
       }
 
+      // Basic trap behavior when you set a property to an instance:
       this[property] = value;
 
       return true;

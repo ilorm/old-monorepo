@@ -77,6 +77,17 @@ describe('ilorm', () => {
 
           assert(initInstance.calledWith(instance));
         });
+
+        it('Should instantiate a model with data', () => {
+          const BaseModel = baseModelClassFactory(fakeIlorm);
+
+          const instance = new BaseModel({
+            property: 'value',
+          });
+
+          expect(instance).to.be.instanceOf(BaseModel);
+          expect(instance.property).to.be.equal('value');
+        });
       });
     });
   });
