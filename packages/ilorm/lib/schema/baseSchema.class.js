@@ -55,38 +55,6 @@ class BaseSchema {
   }
 
   /**
-   * Get the proxy associated with the specific schema
-   * @returns {Object} Return a Proxy configuration object
-   */
-  getProxy() {
-    return {
-      get: (instance, property) => instance[property],
-      set: (instance, property, value) => {
-        if (!this.properties.includes(property)) {
-          if (typeof property === 'symbol') {
-            instance[property] = value;
-
-            return true;
-          }
-
-          throw new Error(`${property} does not exists in this model.`);
-        }
-
-        instance[property] = this.definition[property].castValue(value);
-
-        return true;
-      },
-
-      /*
-      deleteProperty: (instance, property) => {
-
-      },
-      */
-
-    };
-  }
-
-  /**
    * Bind current schema with the current model
    * @param {InternalModel} InternalModel The model to bind with the schema
    * @returns {Void} Return nothing

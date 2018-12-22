@@ -51,21 +51,6 @@ describe('ilorm', () => {
 
         expect(instance).to.be.instanceOf(Model);
       });
-
-      it('Should instantiate a model with data', () => {
-        const Model = ModelFactory({
-          connector: fakeConnector,
-          ilorm: fakeIlorm,
-          schema: fakeSchema,
-        });
-
-        const instance = new Model({
-          property: 'value',
-        });
-
-        expect(instance).to.be.instanceOf(Model);
-        expect(instance.property).to.be.equal('value');
-      });
     });
   });
 });
